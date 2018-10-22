@@ -1,0 +1,26 @@
+Feedback-Driven Mutation Testing for Any Language
+
+
+1. Feedback-driven Mutation Testing
+- use FPF to steer away from already killed mutants and equivalent mutants
+- features include mutation type, code location, some kind of bag-of-words representation of the source code and modified source
+- research problems:  how to construct metric (deep learning?), weight to give different goals (avoid equivalent vs. newness)
+
+2. Any Language
+- to make a technique widely usable must apply to modern, multi-language projects and new languages
+- build off ICSE 18 regexp driven paper
+- allows for custom mutation operators
+- research problem: way to simply extend regexps to include more mutation operators, code constructs
+
+3. Mutation-driven testing / verification
+Use mutants to guide the whole testing process from scratch
+
+4. Mutation-driven development concept
+a. Write one test (like TDD)
+b. Write code to satisfy test
+c. Write tests to catch mutants of the code not caught by the test
+d. Go to a
+
+5. Evaluation
+- human developers
+- automated testing systems can simulate the process to see if it quickly finds not-killed mutants, how much manual effort is needed
