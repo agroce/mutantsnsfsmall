@@ -2,9 +2,11 @@ Feedback-Driven Mutation Testing for Any Language
 
 
 1. Feedback-driven Mutation Testing
-- use FPF to steer away from already killed mutants and equivalent mutants
+- use FPF to steer away from already killed mutants and equivalent mutants; allow user to state priority as well
 - features include mutation type, code location, some kind of bag-of-words representation of the source code and modified source
-- research problems:  how to construct metric (deep learning?), weight to give different goals (avoid equivalent vs. newness)
+- non-absolute definition of equivalence, importance of a mutant -- per project
+- research problems:  how to construct metric (deep learning?), weight
+   to give different goals (avoid equivalent vs. newness vs. priority; explore vs. exploit)
 
 2. Any Language
 - to make a technique widely usable must apply to modern, multi-language projects and new languages
