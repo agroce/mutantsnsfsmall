@@ -1,0 +1,80 @@
+\section{Related Work}
+
+A fundamental goal of this project is to reduce both user effort and
+the opportunity for user effort by allowing minimizing (ideally to
+one) the number of times a user must specify an aspect of system
+correctness.  The principle that important information should have a
+``single point of truth'' is widely accepted in software engineering,
+even in such foundational early advances as avoiding repeated magic
+numbers by the use of named constants.  Such a principle can be
+extended to specification and definition of test harnesses.  Early
+work emphasizing this goal of both reducing work and chance of error
+in specification and test generation included the effort by Groce and
+Joshi to use a single harness for both model-checking and random
+testing, in the verification of the Mars Science Laboratory's file
+system \cite{WODA08,CFV08,AMAI}.  In later work, Groce and Erwig
+extended this idea to propose development of a single language with a
+unified semantics for a wide variety of dynamic test generation tools
+\cite{WODACommon}; this approach is essentially realized in the
+DeepState \cite{DeepState} system.  Indeed, \framac and
+\acsl~\cite{ACSL} and DeepState are both arguably limited
+instantiations of this goal: providing a single language, interface,
+and semantics that is applied to a variety of methods (static or
+dynamic) for checking that a specification holds.  This project aims
+to further extend this goal by extending it to include a formal
+timed-automata model and to connect the primarily static approaches of
+\framac and the dynamic approaches of DeepState.
+
+Verdi~\cite{WWP2015:PLDI,WWA2016:CPP} is a framework for the
+implementation and verification of distributed systems using \Coq. The
+strength of this framework is to allow users to design and prove the
+correctness of a system without considering faults, and apply what is
+called a verification system transformer to modify the system into a
+system that handles faults.  Systems developed in this way are
+executable thanks to \Coq's extraction mechanism (to
+OCaml~\cite{MIN2011:CACM} code). Verdi could not be applied to our
+case study: time is not considered by Verdi and although it is
+possible to port variants of OCaml on
+micro-controllers~\cite{VWC2015:PADL}, there is currently no such
+variant for the micro-controllers deployed in SEGA. Using a framework
+such as Verdi would also mean writing new code using a language
+unfamiliar to SEGA's developers. This proposal instead focuses on the
+analysis of legacy code.
+
+Testing real-time systems modeled by networks of timed automata was
+investigated by the authors of the tool \uppaal
+\cite{uppaaltron2008,uppaalcover2007,uppaaltron2005} and implemented
+in the tools \uppaal-TRON\footnote{\uppaal-TRON:
+  \url{http://people.cs.aau.dk/~marius/tron/index.html}} and
+\uppaal-COVER\footnote{\uppaal-COVER:
+  \url{http://www.hessel.nu/CoVer/index.php}}.  These tools generate
+tests, either offline or online, for comformance testing of a
+real-time system with respect to its model and an environment model,
+both as timed automaton networks.  In both cases, the real-time system
+is considered a black-box with an input/output interface through which
+the test generator or monitor can change the system inputs and observe
+the system outputs.  The actual implementation code is not considered
+and is in fact hidden from the testing tools.  While this approach is
+general, it has several drawbacks.  It requires a centralized
+input/output interface accessible to the testing tools.  Such an
+interface is not always available in all systems, especially in
+large-scale distributed systems like the sensor/actuator networks
+considered in our case study.  Furthermore, by considering only the
+(timed) input/output behavior of a system, this approach may not be
+able to test internal system behaviors and therefore miss
+opportunities for a better test
+coverage.  % and for more scalable testing (by testing internal components of the system instead of the entire system).
+Finally, regardless of how thorough the tests are, generally they will
+not be able to provide a formal guarantee of the conformance between
+the implementation and the model / specifications.  On the contrary,
+if the system code is available, it is possible that our proposed
+approach using a static analysis tool like \framac can provide such
+formal guarantee.
+
+
+
+% ;;; Local Variables: ***
+% ;;; mode: latex ***
+% ;;; eval: (ispell-change-dictionary "english" nil) ***
+% ;;; eval: (flyspell-buffer) ***
+% ;;; End: ***

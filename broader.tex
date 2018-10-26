@@ -1,0 +1,47 @@
+\section{Broader Impacts}
+
+\paragraph{Improving Software System Reliability:} A key element of
+our approach is to focus on realistically deployable techniques.  Part
+of this effort is concentrated in our internal effort to apply our
+methods to the SEGA project.  However, we also plan
+to aim for early integration with NASA's FPrime~\cite{fprime,fprimerepo}
+open source
+flight software architecture and platform; PI Groce is already in
+discussion with engineers at NASA's Jet Propulsion Laboratory, and
+engaged in producing tests for the FPrime autocoder using DeepState.
+This integration will allow our
+methods to be applied to CubeSat missions (and other flight software
+systems), leading to improved reliabliity for low-budget space-based
+scientific efforts.  We expect, in the long run, that our approaches
+will lead to more reliable and robust development in many embedded and
+cyberphysical systems domains, and contribute to a more secure and
+reliable Internet of Things.  One key goal of this project is to
+increase the synergy between formal modeling, heavyweight static
+analysis, and advanced dynamic analysis using automated test
+generation tools; currently, engineers in real-world projects seldom
+use \emph{any} of these approaches.  One barrier to entry is that it
+is seldom clear, in a particular project, which of these approaches
+will provide the most benefit; formal modeling can detect design
+flaws, but seldom provides any help with the most frequent source of
+failure, implementation-level flaws; static analysis either tends to
+miss bugs, overwhelm users with false positives, or, when extended to
+proving correctness, simply fail to prove many components; and,
+finally, dynamic analysis is ad hoc and misses subtle flaws.  By
+increasing the synergy of these methods, we hope to make use of
+\emph{all three methods} in conjunction much more economical (and less
+error prone), greatly enhancing the likelyhood of a
+payoff in terms of fault detection and prevention.
+
+\paragraph{Education and Outreach:}
+The proposed research yields several opportunities for enhancing CS
+education, recruiting new CS majors, and retaining CS students,
+particularly members of underrepresented groups.  In addition to the
+activities discussed at length in the Broadening Participation in Computing plan,
+PI Groce will work with the NAU Student ACM Chapter to present a
+series of ``excursions in testing'' that introduce automated testing
+to students, using DeepState to find bugs in real world code, including code from
+media player libraries; in advanced meetings, integrating DeepState
+with \framac will be demonstrated as well.  The work of Guzdial
+\cite{Guzdial} has shown that media computation is a
+potentially effective way to both recruit and retain female and
+under-represented minority students in computer science.

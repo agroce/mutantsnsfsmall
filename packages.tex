@@ -1,0 +1,182 @@
+% To deal with space problems:
+\usepackage{enumitem}
+
+% Times font
+\usepackage{mathptmx}
+
+% Microtype does not work with fontspec:
+\usepackage[protrusion=true,expansion=true]{microtype}
+
+\usepackage{doi}
+\usepackage{xspace}
+
+%%%% Geometry (paper size, margins, etc.)
+% Change the size of body text and margins.  Refer geometry for more
+% options.
+\usepackage[top=1in,bottom=1in,left=1in,right=1in]{geometry}
+%\usepackage[body={6.4in,9in}, top=1in, left=1in]{geometry}
+% or simply use fullpage for a full page
+% \usepackage[in]{fullpage}
+
+\usepackage{parskip}
+\parskip=0mm   % Set the skip size between paragraphs
+\parindent=1em
+
+\usepackage{titlesec}
+\titlespacing\section{0pt}{8pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{8pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{8pt plus 4pt minus 4pt}{2pt plus 2pt minus 2pt}
+\titlespacing\paragraph{0pt}{6pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
+
+% The standard LaTeX font is Computer Modern. Other fonts are available.
+%
+% Other popular options are
+% - Times:     \usepackage{mathptmx}
+% - Palatino:  \usepackage{mathpazo}
+% - New Century Schoolbook: \usepackage{newcent}
+% - Another (better) Times: \usepackage{ntxtext}  % Times font
+
+%%%% Math support (AMS math packages, symbols...)
+% If you want to flush all equations to the left, or to set other
+% options of amsmath, use the following line:
+% \usepackage[fleqn]{amsmath}
+\usepackage{amsmath}
+% Uncomment line below to allow page break inside multi-line equations
+% \interdisplaylinepenalty=2500
+
+% Additional math packages
+\usepackage{amsfonts,amssymb}
+\usepackage{bm} % for bold symbols like \bm{\alpha} or {\bm \alpha\beta}
+\usepackage{mathrsfs}  % Formal math script font \mathscr
+\usepackage{cases}  % Better than amsmath's cases environment
+
+%%%% SI Unit support: should always use to typeset numeric data
+% With option per-mode=symbol: kW/s, without it: kW s^{-1}
+% Quick usage:
+%   \num{1+-2i}
+%   \num{.3e45}
+%   \SI{number}{unit} or \si{unit}
+% where unit is like:
+%   kg.m.s^{-1} or \kilogram\metre\per\second
+%   \si[per-mode=symbol]{\kilogram\metre\per\ampere\per\second} for
+%        kg m / (A s)
+\usepackage[per-mode=symbol]{siunitx}
+
+
+%%%% Graphic packages
+\usepackage{graphicx}
+\graphicspath{{figs/}}
+
+\usepackage{subfig}  % Sub-figures
+% \usepackage{color}   % Support colors
+\usepackage[svgnames, rgb]{xcolor}  % Support for color with standard names
+
+% PGF/TikZ
+\usepackage{tikz}
+\usepackage{pgfgantt}
+
+\newganttchartelement{bluebar}{
+    bluebar/.style={
+        inner sep=0pt,
+        draw=purple!44!black,
+        thick,
+        top color=white,
+        bottom color=blue!70
+    },
+    bluebar label font=\slshape,
+    bluebar left shift=.1,
+    bluebar right shift=-.1
+}
+
+%\usetikzlibrary{snakes,arrows,shapes,positioning}
+% Some other TikZ libraries
+% \usetikzlibrary{automata,calc,matrix}
+% \usetikzlibrary{circuits.logic.US,circuits.ee.IEC}
+% \usetikzlibrary{shapes.geometric,shapes.symbols,shapes.arrows}
+
+% PGFplots to plot pretty graphs of data or functions
+% \usepackage{pgfplots}
+% \usepackage{grffile}
+% \pgfplotsset{compat=newest}  % Use advanced features
+% \usetikzlibrary{plotmarks}
+% \usetikzlibrary{arrows.meta}
+% \usepgfplotslibrary{patchplots}
+
+% Define lengths for figure sizes, for PGFPlots figures exported from other tools
+% \newlength{\figheight}
+% \newlength{\figwidth}
+
+% \usepackage{wrapfig}  $ Wrap text around figures
+
+% \usepackage{vaucanson-g}  % Draw state machines
+
+
+%%%% Special typesetting
+% Algorithms
+%\usepackage[ruled]{algorithm}    % For creating floating algorithms, in the algorithms bundle
+
+% The followings are packages for creating actual algorithms
+%\usepackage{algorithmic}  % Easy to use, Pascal-like, less flexible, in the algorithms bundle
+%\usepackage{algorithm2e}  % More flexible, more like Pascal
+%\usepackage{algpseudocode}  % In the algorithmicx package, flexible, more math-like
+
+% For typesetting source code
+%\usepackage{listings}
+
+% Notes, comments
+% \usepackage{todonotes}
+% \usepackage{verbatim}   % better support for verbatims, comment environment
+
+% Review tools: Note, todo, instruction, etc.
+\usepackage[tikz]{mdframed}
+
+\global\mdfdefinestyle{instructionbox}{% 
+  backgroundcolor=black!10,
+  rightline=false,
+  topline=false,
+  bottomline=false,
+  linecolor=black,
+  linewidth=2pt}
+
+\global\mdfdefinestyle{todobox}{% 
+  backgroundcolor=orange!30,
+  rightline=false,
+  topline=false,
+  bottomline=false,
+  linecolor=orange,
+  linewidth=2pt}
+
+% Commands to create notes, todos, etc.
+\newcommand{\note}[1]{\textcolor{red}{\textbf{#1}}}
+\newcommand{\notetruong}[1]{\note{Truong: #1}}
+\newcommand{\notealex}[1]{\note{Alex: #1}}
+\newcommand{\notefred}[1]{\note{Frederic: #1}}
+\newcommand{\notepaul}[1]{\note{Paul: #1}}
+
+\newenvironment{todo}
+{\begin{mdframed}[style=todobox]}
+{\end{mdframed}}
+
+\newenvironment{instruction}
+{\begin{mdframed}[style=instructionbox]}
+{\end{mdframed}}
+
+
+%%%% Customizations
+
+% Customization of enumerate, itemize, description
+%\usepackage{enumerate}  % Customize enumerate only
+\usepackage{enumitem}   % Customize enumerate, itemize, description
+
+%\usepackage{cite}  % Fix issues with \cite handling numbers
+\usepackage[numbers]{natbib}
+\usepackage{array}  % Better tabular and array
+\usepackage{booktabs}           % More beautiful tables
+
+%%%% Set-up hyperref for hyperlinks, etc.
+%%%% This should always come last in the preamble.
+
+% The default \usepackage{hyperref} should work automatically.
+% See hyperref for more options (visual, backlinks, etc.)
+% Note that hyperref with pdftex seems fragile, especially with special symbols in section titles.
+\usepackage{hyperref}
