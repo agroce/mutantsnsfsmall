@@ -1,48 +1,38 @@
 \section{Results From Prior NSF Support}
 
-\paragraph{PI Groce:}
-The most relevant prior NSF support for PI Groce is
-CCF-1217824, ``Diversity and Feedback in Random Testing for Systems
-Software,'' with a total budget of \$491,280 from 9/2012 until 9/2015,
-a collaborative proposal with John Regehr of the University of
-Utah. {\bf Intellectual Merit:} The results of CCF-1217824 included a number of advances to practical automated generation and use of tests, a key focus of this proposal as well.  E.g., one question investigated was how to 
-``tame'' fuzzer output, in order to more effectively discover unique bugs
-\cite{PLDI13}.   A second major result was the development of a strategy for creating ``quick
-tests'' from a long-running randomized test suite by minimizing each
-test with respect to its code coverage \cite{icst2014}, which won the
-Best Paper award at the 2014 International Conference on Software
-Testing.  CCF-1217824
-produced a general set of results focused on making automated random
-testing usable by practitioners, and using symbolic execution on
-larger, realistic software, in particular understanding how code
-coverage and test content interact.  Publications resulting from this grant
-were numerous
-\cite{Onward14,PLDI13,issta14,icst2014,helphelp,DirectedSwarm,stvrcausereduce,tstlsttt,ISSTA15,ASEAdeq}. {\bf
-  Broader
-  Impact:} The results of CCF-1217824 have been used in teaching software
-engineering to undergraduates at Northern Arizona University and Oregon State University.
-Work from the project contributed to the discovery of previously
-unknown faults in multiple open source and commercial software
-systems.  The further development of the swarm testing techniques the
-proposal centered on have furthered the effort to improve
-the quality of compilers, including LLVM and GCC, and to test language
+PI Groce has received support as PI or co-PI from three NSF grants.
+The most relevant and recent is ``Diversity and Feedback in Random
+Testing for Systems Software'' (CCF-1217824,
+\$491,280, 9/2012--9/2017), a collaborative proposal with John Regehr at the
+University of Utah.
+{\bf Intellectual Merit:} 
+%CCF-1217824 
+%includes a preliminary exploration of how to
+%``tame'' fuzzer output~\cite{PLDI13fuzzing}, a problem addressible with better mutation
+%infrastructure.  
+A key result from CCF-1217824
+is the development of a strategy for creating ``quick tests''~\cite{icst2014cause}, which won the
+Best Paper award at ICST 2014 for showing tests thus
+reduced can serve as effective regression tests or seeds for
+symbolic execution~\cite{stvrcausereduce, issta14symbolic}.  Moreover, benefits do not depend on 100\%
+preservation of a property~\cite{AlipourETAL16TestReduction}.   Other results include an overview of the value of coverage in
+testing experiments~\cite{Onward14} and exploration of how individual
+test features impact the coverage and fault detection statistics of
+random tests~\cite{helphelp}.  
+%The basic swarm testing approach has
+%been extended to allow production of focused random tests targeting
+%particular code~\cite{DirectedSwarm}.  
+All of these results used
+mutation testing.  {\bf Broader Impacts:} CCF-1217824 has contributed to the discovery of previously
+unknown faults in multiple open-source and commercial software
+systems, including core compilers and system libraries.  The
+development of the central swarm testing techniques
+has furthered many efforts to improve
+the quality of compilers, including LLVM and GCC, and to test core language
 tools in
-general~\cite{ZhendongPLDI14,beginnerluck,dewey2015fuzzing,le2015randomized}.
-Tools and data sets from CCF-1217824 are available via GitHub in
-multiple repositories and projects (TSTL, Csmith, CReduce, etc.).
-
-\paragraph{Co-PI Flikkema:} Flikkema is co-PI on the Southwest Experimental Garden Array (SEGA)
-funded by an NSF development MRI
-(DEB-1126840), with a total budget of \$2,848,876 from 10/2011 until
-9/2017. {\bf Intellectual Merit:} SEGA is a facility
-distributed across a 1615m elevation gradient in Arizona that supports
-long-term research to increase understanding of and mitigate climate
-change using knowledge of genetic variation in species of concern. It
-consists an array of eleven gardens and supporting distributed
-monitoring and control cyberinfrastructure for the study of
-gene-by-environment interactions and enabling development of
-strategies to best manage for future climates. {\bf Broader
-  Impact:}  With 9 successfully completed projects to date, SEGA
-currently supports 11 experiments and has resulted in over 35
-publications and 20 conference presentations.  SEGA results are
-available online~\cite{SEGA}.
+general~\cite{ZhendongPLDI14,beginnerluck,dewey2015fuzzing,le2015randomized}. {\bf
+  Research
+Products:} Several publications resulted from this grant, including
+those cited above and numerous others ~\cite{Onward14,PLDI13fuzzing,issta14symbolic,icst2014cause,helphelp,DirectedSwarm,stvrcausereduce,tstlsttt,tstlISSTA15,AlipourETAL16TestReduction,tstlsttt,tstlNFM15},
+along with three PhD theses.  Source code~\cite{swarmtools,TSTL}  is
+available on GitHub.
