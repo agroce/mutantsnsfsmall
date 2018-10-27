@@ -16,6 +16,25 @@ address = {New York, NY, USA},
 keywords = {coverage criteria, mutation testing, statistical analysis, test suite evaluation},
 }
 
+@article{gopinath2017mutation,
+  title={Mutation reduction strategies considered harmful},
+  author={Gopinath, Rahul and Ahmed, Iftekhar and Alipour, Mohammad Amin and Jensen, Carlos and Groce, Alex},
+  journal={IEEE Transactions on Reliability},
+  volume={66},
+  number={3},
+  pages={854--874},
+  year={2017},
+  publisher={IEEE}
+}
+
+@inproceedings{papadakis2018mutation,
+  title={Are mutation scores correlated with real fault detection? a large scale empirical study on the relationship between mutants and real faults},
+  author={Papadakis, Mike and Shin, Donghwan and Yoo, Shin and Bae, Doo-Hwan},
+  booktitle={40th International Conference on Software Engineering, May 27-3 June 2018, Gothenburg, Sweden},
+  year={2018},
+  pages ={537--548}
+}
+
 @inproceedings{DeepState,
   author = "Peter Goodman and Alex Groce",
   year = 2018,
@@ -796,6 +815,14 @@ title = "Taming Compiler Fuzzers",
 booktitle = "ACM SIGPLAN Conference on Programming Language Design and Implementation",
 year = 2013,
 pages = "197--208"
+}
+
+@inproceedings{zhang2016predictive,
+  title={Predictive mutation testing},
+  author={Zhang, Jie and Wang, Ziyi and Zhang, Lingming and Hao, Dan and Zang, Lei and Cheng, Shiyang and Zhang, Lu},
+  booktitle={International Symposium on Software Testing and Analysis},
+  pages={342--353},
+  year={2016}
 }
 
 
@@ -2643,6 +2670,12 @@ booktitle = "Proceedings of the 5th NASA Langley Formal Methods  Workshop",
 year = "2000"
 }
 
+@misc{swarmtools,
+  title = "{Swarmed versions of random testing tools}",
+  author = "Alex Groce and Yang Chen and John Regehr and Chaoqiang Zhang and Amin Alipour",
+  howpublished = "{https://github.com/agroce/swarmed\_tools}"
+  }
+
 @inproceedings{MAGIC,
 author = "S. Chaki and E. Clarke and A. Groce and  S. Jha and H. Veith",
 title = "Modular Verification of Software Components in {C}",
@@ -2650,6 +2683,16 @@ booktitle = "International Conference on Software Engineering",
 year = "2003",
 pages = "385--395"
 }
+
+@InProceedings{AlipourETAL16TestReduction,
+  author =       {Mohammad Amin Alipour and August Shi and Rahul Gopinath and Darko Marinov and Alex Groce},
+  title =        {Evaluating Non-Adequate Test-Case Reduction},
+  booktitle =    "31st IEEE/ACM Conference on Automated Software Engineering",
+  pages =        {16--26},
+  month =        Sep,
+  year =         2016
+}
+
 
 @inproceedings{DynSlice,
 author = "X. Zhang and R. Gupta and Y. Zhang",
@@ -3303,7 +3346,79 @@ booktitle = "International Conference on Software Engineering",
 pages = "230--239"
 }
 
+@inproceedings{ivankovic2018industrial,
+  title={An Industrial Application of Mutation Testing: Lessons, Challenges, and Research Directions},
+  author={Ivankovi{\'c}, Goran Petrovi{\'c} Marko and Kurtz, Bob and Ammann, Paul and Just, Ren{\'e}},
+  booktitle={Proceedings of the International Workshop on Mutation Analysis (Mutation). IEEE Press, Piscataway, NJ, USA},
+  pages={47--53},
+  year={2018}
+}
 
+@inproceedings{MutGoogle,
+ author = {Petrovi\'{c}, Goran and Ivankovi\'{c}, Marko},
+ title = {State of Mutation Testing at Google},
+ booktitle = {Proceedings of the 40th International Conference on Software Engineering: Software Engineering in Practice},
+ series = {ICSE-SEIP '18},
+ year = {2018},
+ isbn = {978-1-4503-5659-6},
+ location = {Gothenburg, Sweden},
+ pages = {163--171},
+ numpages = {9},
+ url = {http://doi.acm.org/10.1145/3183519.3183521},
+ doi = {10.1145/3183519.3183521},
+ acmid = {3183521},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+} 
+
+
+@inproceedings{Cobra,
+ author = {Holzmann, Gerard J.},
+ title = {Cobra: Fast Structural Code Checking (Keynote)},
+ booktitle = {Proceedings of the 24th ACM SIGSOFT International SPIN Symposium on Model Checking of Software},
+ series = {SPIN 2017},
+ year = {2017},
+ isbn = {978-1-4503-5077-8},
+ location = {Santa Barbara, CA, USA},
+ pages = {1--8},
+ numpages = {8},
+ url = {http://doi.acm.org/10.1145/3092282.3092313},
+ doi = {10.1145/3092282.3092313},
+ acmid = {3092313},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {interactive analysis, lexical analysis, regular expressions, static source code analysis, structural code analysis, token expressions},
+} 
+
+
+@inproceedings{regexpMut,
+ author = {Groce, Alex and Holmes, Josie and Marinov, Darko and Shi, August and Zhang, Lingming},
+ title = {An Extensible, Regular-expression-based Tool for Multi-language Mutant Generation},
+ booktitle = {Proceedings of the 40th International Conference on Software Engineering: Companion Proceeedings},
+ series = {ICSE '18},
+ year = {2018},
+ isbn = {978-1-4503-5663-3},
+ location = {Gothenburg, Sweden},
+ pages = {25--28},
+ numpages = {4},
+ url = {http://doi.acm.org/10.1145/3183440.3183485},
+ doi = {10.1145/3183440.3183485},
+ acmid = {3183485},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {multi-language tools, mutation testing, regular expressions},
+} 
+
+
+@inproceedings{mutKernel,
+  author = "Iftekhar Ahmed and Carlos Jensen and Alex Groce and Paul E. McKenney",
+  title = "Applying Mutation Analysis on Kernel Test Suites: an Experience Report",
+  year = 2017,
+  month = "March",
+  pages = "110--115",
+  booktitle = "International Workshop on Mutation Analysis"
+  }
+m
 
 @techreport{CCT,
 author = "Seokhyeon Mun and Yunho Kim and Moonzoo Kim",
