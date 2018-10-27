@@ -1,6 +1,40 @@
 \section{Research Plan}
 
+\subsection{Core Research Questions}
 
-\subsection{Work Plan and Evaluation Approach}
+\subsubsection{Research Questions Related to Feedback-Driven Mutation}
+
+\begin{enumerate}
+\item How can we form a generalized, language-agnostic representation
+  of and distance metric for program mutants for use in FPF?
+\item How can we incorporate feedback from users into the
+  representation and distance metric?
+\item Is distance-based clustering plus timing information useful for quickly
+  eliminating killable mutants similar to already-killed mutants?  How
+  does this relate to Predictive Mutation Testing (PMT)?
+\item How can we balance FPF-based selection of mutants for novelty
+  with predictions of mutant equivalence, outcome, dominance, and
+  productivity?
+\item How can we identify outliers in otherwise similar groups of
+  mutants, and is such identification useful?
+\end{enumerate}
+
+\subsubsection{Research Questions Related to Any-Language Mutation}
+
+\begin{enumerate}
+\item How can we maximize the efficiency and usability of a
+  fundamentally language-agnostic regular-expression-based approach to
+  mutant generation?
+\item How can we extend the language of regular expressions to allow
+  for language-agnostic definition of mutation operators that require
+  more parsing-like analysis of code structure, without compromising
+  the usability and simplicity of the approach?
+\item Is it possible to perform on-the-fly mutant generation for very
+  large projects, and reconcile this approach with FPF (e.g., generate
+  new mutants with, possibly approximate, desired distances from
+  already evaluated mutants)?
+\end{enumerate}
+
+\subsection{Work and Evaluation Plans}
 \label{sec:workplan}
 \input{workplan}

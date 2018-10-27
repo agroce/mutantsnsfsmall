@@ -1,2 +1,31 @@
 \section{Background and Preliminary Research}
 
+\subsection{Furthest Point First and Fuzzer Taming}
+
+An unkilled mutant is, conceptually, very similar to a failing test.
+It presents information of possible relevance to a developer or test
+engineer.  The mutant or test \emph{may} indicate the presence of a
+previously unknown fault that needs to be fixed, either in the SUT or in the test suite/test
+generator.  It may indicate the presence of a previously unknown fault
+of less importance.  It may also indicate an even less interesting
+result:  an equivalent mutant or 
+a failure of an inherently flaky test.  Or, in many cases, an unkilled
+mutant or failing test may contain information that is either
+important or unimportant, but is uninteresting because \emph{it
+  duplicates information already presented for understanding.}  While
+examining an equivalent mutant is not always useless (e.g., it may indicate
+an opportunity for refactoring or improving the efficiency of code~\cite{ivankovic2018industrial,groce2018verified}), examining a mutant that is
+equivalent to or extremely similar to an already-understood mutant is almost never
+worthwhile --- even if the original mutant provided important,
+actionable information.  That information has already been
+incorporated into the development or testing process.
+
+Fuzzer taming~\cite{PLDI13} was a solution we proposed to the problem
+of triaging test failures in automated test generation.  In compiler
+testing and other fuzzing applications, a core usability issue is that
+tools tend to produce very large numbers of failing tests for a much
+smaller number of distinct bugs.  Finding the set of distinct bugs,
+and identifying important bugs that need to be fixed immediately is
+difficult, because the important bugs may be represented by only one
+or two failing tests in a set of thousands of failing tests, most of
+which are duplicates.
