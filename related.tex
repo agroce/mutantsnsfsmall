@@ -1,5 +1,35 @@
 \section{Related Work}
 
+\subsection{Bug Triage and Distance Metrics in Software Engineering}
+
+A fundamental insight of this proposal is that the problem of
+presenting mutants to a user is conceptually similar to the ``fuzzer
+taming''/crash bucketing/bug triage problem studied in automated
+testing research~\cite{PLDI13,SemCrash}.  Our approach is centered on
+the idea of computing distances between mutants.  The use of distance metrics in software engineering for a variety of
+purposes is long-standing.  To our knowledge, almost all such uses are
+essentially spectrum-based \cite{RepsSpectra} (that is, using counts
+of coverage of code entities), except for some work in model-checking
+\cite{GroceDist,ChakiLev} and some of the metrics in our recent fuzzer
+taming work \cite{PLDI13}.  Reneiris and Reiss initially proposed
+using distance between executions to localize faults
+\cite{NearNeighbor}, and Liu and Han \cite{Liu06}, among others have
+followed this line with various metrics (in their case, using the
+localization of a spectrum-based method to determine distance).
+Vangala et al. proposed using distance to cluster test cases to
+improve diversity and eliminate duplicates \cite{VangalaDist}. Methods
+for clustering to identify bugs all rely on an implicit distance
+determined by a feature set \cite{Podgurski04}.  Our own previous work
+has used distance metrics for a variety of purposes
+\cite{PLDI13,icst2014,issta14}.  Adaptive random testing uses
+distances (usually between inputs, not executions, however) to choose
+tests \cite{Chen,ARTChen,ISSTAART}.  Recently, we proposed a novel,
+causal metric for fuzzer taming and fault localization, itself based on
+mutation testing results~\cite{distMut}.
+
+
+\subsection{Mutation Testing}
+
 There is a vast body of work on mutation testing or analysis.  Mathur attributes~\cite{mathur2012foundations} the original idea for mutation analysis
 to a term paper by Richard Lipton in 1970. Foundational assumptions and
 theory were first proposed by DeMillo et al.~\cite{demillo1978hints},
@@ -29,7 +59,10 @@ Papadakis et. al~\cite{papadakis2018mutation} showed in a large scale study that
 real relationship between mutation, it is in some sense weak; indeed
 they summarize their work by stating that ``mutants provide good guidance for improving the
 fault detection of test suites, but their correlation with fault
-detection [is] weak,'' which is a foundational assumption of this proposal.
+detection [is] weak,'' which is a foundational assumption of this
+proposal.  Ahmed et al., using a very different approach, reached a similar
+conclusion about the potentially high value for suite improvement, but weak correlation of mutation
+analysis results~\cite{ahmed_testedness}.
 
 Cost of execution is often~\cite{jia2011analysis} considered 
 to be the most problematic aspect of practical mutation testing.
@@ -101,7 +134,7 @@ actually running mutation testing, a novel and promising
 
 
 
-\subsection{Practical Mutation Analysis}
+\subsubsection{Practical Mutation Analysis}
 
 The above work largely focuses on computing or at least estimating the
 total mutation score of a
@@ -118,17 +151,22 @@ previous work on using mutation to find defects in formal verification
 and automated test generation
 efforts~\cite{groce2015verified,groce2018verified,mutKernel}.
 
-A second thrust of our efforts in this paper is to simplify the
-development, maintenance, and (especially) extension of mutation
-testing tools by using an extension of regular expressions to define
-mutation operators, and separating the generation of mutants from
-language or build-environment specific techniques for pruning invalid
-mutants.  This aspect of the proposal primarily builds on our own initial work on the topic of
-regular-expression-based mutant generation~\cite{regexpMut} and
-Holzmann's work on lightweight textual code analysis with
-Cobra~\cite{Cobra}.
+Very recent work by Papadakis et al. (some unpublished in a conference
+of journal at the time this proposal was written) has 
+aimed, unusually, at predicting the ``quality'' of~\cite{MutQuality}
+or even prioritizing~\cite{FaRM} mutants, to rank fault-revealing
+mutants highly so that users can produce tests to find faults.  This
+work is highly relevant to our aims, but focuses on a single static
+pass to rank mutants by their fault-revealing potential, informed by
+(possibly cross-project)
+data on fault-revealing tests.  There is no feedback loop, or ability
+to indicate the importance of various faults in the program under
+test, and the language support issue is dodged by targeting LLVM
+bitcode.  Nonetheless, the goals, methods, and results of this work
+will inform our own approach, in particular in the utility estimation
+aspect that balances FPF-determined novelty.
 
-The single most relevant work by others to our aims is to be found in a
+The single most relevant work by others, however, is to be found in a
 report on actual techniques in use at Google for applying mutation
 testing to real-world projects~\cite{MutGoogle}.  Their approach also
 uses a notion of feedback, but this is manually handled and based on
@@ -180,3 +218,17 @@ is either ``productive'' or ``unproductive'' in an absolute sense, but
 rather the value of a mutant also depends on previous mutants a
 developer has manually examined, and the results of that examination,
 and we embody this in an FPF-centric workflow.
+
+A second thrust of our efforts in this paper is to simplify the
+development, maintenance, and (especially) extension of mutation
+testing tools by using an extension of regular expressions to define
+mutation operators, and separating the generation of mutants from
+language or build-environment specific techniques for pruning invalid
+mutants.  This aspect of the proposal primarily builds on our own initial work on the topic of
+regular-expression-based mutant generation~\cite{regexpMut} and
+Holzmann's work on lightweight textual code analysis with
+Cobra~\cite{Cobra}.  Trivial compiler equivalence~\cite{TCE} is a key
+technology for supporting effective any-language mutation; especially
+in the context of this proposal, where executing all mutants is not
+the goal, simply letting the compiler handle many validity and
+equivalence questions is a simple and effective approach.

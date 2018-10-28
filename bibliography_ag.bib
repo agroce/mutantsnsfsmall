@@ -16,6 +16,33 @@ address = {New York, NY, USA},
 keywords = {coverage criteria, mutation testing, statistical analysis, test suite evaluation},
 }
 
+@book{Popper,
+  author = "Karl Popper",
+  title = "The Logic of Scientific Discovery",
+  year = 1959,
+  publisher = "Hutchinson",
+  city = "London"
+  }
+
+
+@book{popperconjectures,
+  title={Conjectures and Refutations: The Growth of Scientific Knowledge},
+  author={Popper, Karl},
+  year = 1963
+  }
+
+@article{lakatos,
+  title={The role of crucial experiments in science},
+  author={Lakatos, Imre},
+  journal={Studies in History and Philosophy of Science Part A},
+  volume={4},
+  number={4},
+  pages={309--325},
+  year={1974},
+  publisher={Elsevier}
+}
+
+
 @article{gopinath2017mutation,
   title={Mutation reduction strategies considered harmful},
   author={Gopinath, Rahul and Ahmed, Iftekhar and Alipour, Mohammad Amin and Jensen, Carlos and Groce, Alex},
@@ -26,6 +53,59 @@ keywords = {coverage criteria, mutation testing, statistical analysis, test suit
   year={2017},
   publisher={IEEE}
 }
+
+@InProceedings{Liu06,
+  author =       "Liu, Chao and Han, Jiawei",
+  title =        "Failure proximity: a fault localization-based approach",
+  booktitle =    "Foundations of Software Engineering",
+  year =         "2006",
+  pages =        "46--56"
+} 
+
+
+@Inproceedings{VangalaDist,
+  author =       "Vangala, Vipindeep and Czerwonka, Jacek and Talluri, Phani",
+  title =        "Test case comparison and clustering using program profiles and static execution",
+  booktitle =    "ESEC/FSE",
+  year =         "2009",
+  pages =        "293--294"}
+
+
+
+@inproceedings{ChakiLev,
+  author = "Sagar Chaki and Alex Groce and Ofer Strichman",
+  title = "Explaining Abstract Counterexamples",
+  booktitle = "Foundations of Software Engineering",
+  year = 2004,
+  pages = "73--82"
+}
+
+
+@inproceedings{distMut,
+  author = "Josie Holmes and Alex Groce",
+  title = "Causal Distance-Metric-Based Assistance for Debugging After Compiler Fuzzing",
+  booktitle = "IEEE International Symposium on Software Reliability Engineering",
+  year = 2018
+  }
+
+@inproceedings{SemCrash,
+ author = {van Tonder, Rijnard and Kotheimer, John and Le Goues, Claire},
+ title = {Semantic Crash Bucketing},
+ booktitle = {Proceedings of the 33rd ACM/IEEE International Conference on Automated Software Engineering},
+ series = {ASE 2018},
+ year = {2018},
+ isbn = {978-1-4503-5937-5},
+ location = {Montpellier, France},
+ pages = {612--622},
+ numpages = {11},
+ url = {http://doi.acm.org/10.1145/3238147.3238200},
+ doi = {10.1145/3238147.3238200},
+ acmid = {3238200},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {Automated Bug Fixing, Bug Triage, Crash Bucketing, Fuzzing, Program Transformation},
+} 
+
 
 @inproceedings{papadakis2018mutation,
   title={Are mutation scores correlated with real fault detection? a large scale empirical study on the relationship between mutants and real faults},
@@ -41,6 +121,23 @@ keywords = {coverage criteria, mutation testing, statistical analysis, test suit
   title = "{DeepState}: Symbolic Unit Testing for {C} and {C++}",
   booktitle = "NDSS Workshop on Binary Analysis Research"
   }
+
+@misc{muupi,
+  title = {muupi Mutation Tool},
+  author = "Xin Liu",
+  howpublished = "{https://github.com/apepkuss/muupi}"
+  }
+
+@inproceedings{le2014mucheck,
+  title={{MuCheck}: An Extensible Tool for Mutation Testing of {Haskell} Programs},
+  author={Le, Duc and Alipour, Mohammad Amin and Gopinath, Rahul and Groce, Alex},
+  booktitle={Proceedings of the 2014 International Symposium on Software Testing and Analysis},
+  pages={429--432},
+  year={2014},
+  organization={ACM}
+}
+
+
 
 @inproceedings{DeepStateTutorial,
   author = "Peter Goodman and Gustavo Greico and Alex Groce",
@@ -420,6 +517,15 @@ year = {2007},
 pages = {417--420}
 }
 
+@inproceedings{TCE,
+ author = {Papadakis, Mike and Jia, Yue and Harman, Mark and Le Traon, Yves},
+ title = {Trivial compiler equivalence: a large scale empirical study of a simple, fast and effective equivalent mutant detection technique},
+ booktitle = {ICSE},
+ year = {2015},
+ pages = {936--946},
+}
+
+
 @inproceedings{SaiSimple,
 author = {Zhang, Sai},
 title = {Practical Semantic Test Simplification},
@@ -762,9 +868,12 @@ keywords = {automatic test generation, grammars, program verification, software 
 author = "Josie Holmes and Alex Groce and Jervis Pinto and Pranjal Mittal and Pooria Azimi and Kevin Kellar and James O'Brien",
 title = "{TSTL:} the Template Scripting Testing Language",
 journal = "International Journal on Software Tools for Technology Transfer",
-year = 2017,
-note = "Accepted for publication"
+year = 2018,
+volume = 20,
+number = 1,
+pages = "57--78"
 }
+
 
 
 @inproceedings{BERT,
@@ -3283,7 +3392,10 @@ pages = "198--207"
 title={Cause Reduction: Delta-Debugging, Even without Bugs},
 author={Groce, Alex and Alipour, Mohammad Amin and Zhang, Chaoqiang and Chen, Yang and Regehr, John},
 journal = {Journal of Software Testing, Verification, and Reliability},  
-note = {accepted for publication}
+year = 2016,
+volume = 26,
+number = 1,
+pages = {40--68}
 }
 
 @inproceedings{icst2014,
@@ -3337,6 +3449,38 @@ year = "2003",
 month = apr,
 pages = "203--232"
 }
+
+
+@article{FaRM,
+  author    = {Thierry Titcheu Chekam and
+               Mike Papadakis and
+               Tegawend{\'{e}} F. Bissyand{\'{e}} and
+               Yves Le Traon and
+               Koushik Sen},
+  title     = {Selecting Fault Revealing Mutants},
+  journal   = {CoRR},
+  volume    = {abs/1803.07901},
+  year      = {2018},
+  url       = {http://arxiv.org/abs/1803.07901},
+  archivePrefix = {arXiv},
+  eprint    = {1803.07901},
+  timestamp = {Mon, 13 Aug 2018 16:46:59 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1803-07901},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@INPROCEEDINGS{MutQuality, 
+author={M. Papadakis and T. T. Chekam and Y. Le Traon}, 
+booktitle={2018 IEEE International Conference on Software Testing, Verification and Validation Workshops (ICSTW)}, 
+title={Mutant Quality Indicators}, 
+year={2018}, 
+volume={}, 
+number={}, 
+pages={32-39}, 
+keywords={program diagnostics;program testing;software fault tolerance;mutant quality indicators;mutant type;fault classes;mutation testing;disjoint mutant sets;dominator mutant sets;distinguished mutant sets;fault revealing mutants;subsuming mutants;hard-to-kill mutants;stubborn mutants;Switches;Tools;Conferences;Fault diagnosis;Programming;Software testing;mutation testing;fault revelation}, 
+doi={10.1109/ICSTW.2018.00025}, 
+ISSN={}, 
+month={April},}
 
 @inproceedings{RyderExcept,
 author = "Chen Fu and Ryder, Barbara",
