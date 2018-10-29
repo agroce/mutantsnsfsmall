@@ -2,6 +2,56 @@
 
 \subsection{Falsification-Driven Verification and Testing}
 
+We recently proposed a novel approach to organizing and evaluating
+formal verification, automated testing, and, more generally, any
+testing efforts aiming at very-high-quality fault detection based on
+combining the insight's of Popper's falsification-based notion of
+scientific discovery~\cite{Popper,popperconjectures} with mutation
+based methods~\cite{groce2015verified,groce2018verified,mutKernel}.  That
+work resulted in the identification of previously unknown faults in
+the Linux kernel's
+RCU~\cite{MathieuDesnoyers2012URCU,DinakarGuniguntala2008IBMSysJ,McKenney:2013:SDS:2483852.2483867}
+module and the {\tt pyfakefs} Python mock file
+system~\cite{pyfakefs}, despite the existence of very-high-quality
+automated test generation efforts for these systems~\cite{rcutorture,TSTL}.  We proposed a number of algorithms and
+methods for using unkilled mutants to guide model checking efforts,
+estimate needed random testing budgets and loop-bounds in bounded model
+checking~\cite{CBMCp,BMC}, and find bugs in testing and verification
+harnesses, rather than the code under test.  At a high level, however,
+the core concept was simple:  users should examine all unkilled
+mutants of a program, and for each mutant either understand why it is
+equivalent or uninteresting, or actually construct (with automated
+help) a way to kill it.  In a sense, this simply harkens back to the
+earliest ideas about mutation testing, but with the addition of
+considerable automated support, at least for verification and
+automated testing efforts.
+
+Unfortunately, the
+methods proposed were, while useful, limited in applicability.  We
+simply assumed that the number of unkilled mutants to be examined was
+small, and focused on solving the problem of helping a developer or
+test engineer move from an unkilled mutant to an improvement of an
+already very-high-quality
+model-checking harness or  automated test generator.  Human
+attention does not scale to analyzing large numbers of 
+unkilled
+mutants without further assistance in ``triaging'' the mutants,
+however.  Our manual mutant-examination process, even aided by
+tools for handling individual mutants, was simply not feasible unless the number of
+unkilled mutants was relatively small, because the testing was already
+very high quality.  Moreover, for a sufficiently large software system, even a
+very high quality verification or testing effort may fail to kill a
+large absolute number of mutants.  Our approach simply provided no way to
+scale human efforts to such a needle-in-a-haystack setting. 
+
+This project aims to make the falsification-driven approach to verification and testing feasible for larger
+projects, or those with less effective testing or verification, and extremely easy for
+smaller projects with already-high-quality testing or verification.
+Moreover, because we no longer require small absolute numbers of
+unkilled mutants, we aim to extend the applicability of the approach
+to manual construction of tests to kill mutants, which was not in
+scope when extremely high kill-rates were required.
+
 \subsection{Furthest Point First and Fuzzer Taming}
 
 An unkilled mutant is, conceptually, very similar to a failing test.
@@ -23,11 +73,42 @@ actionable information.  That information has already been
 incorporated into the development or testing process.
 
 Fuzzer taming~\cite{PLDI13} was a solution we proposed to the problem
-of triaging test failures in automated test generation.  In compiler
+of triaging test failures in automated test generation~\cite{SemCrash}.  In compiler
 testing and other fuzzing applications, a core usability issue is that
 tools tend to produce very large numbers of failing tests for a much
 smaller number of distinct bugs.  Finding the set of distinct bugs,
 and identifying important bugs that need to be fixed immediately is
 difficult, because the important bugs may be represented by only one
 or two failing tests in a set of thousands of failing tests, most of
-which are duplicates.
+which are duplicates.  We proposed that rather than highly imprecise
+clustering, which does not work well in practice, and handles outliers
+in a way that does not match the ``power law'' distribution bugs, an
+algorithm matching the goal of ranking maximally-different test
+failures highly was appropriate.  Users do not (usually) care much
+about finding the group of all tests failing due to a fault, or the
+set of all mutants killable by the same extension to a test suite or
+generator, but about seeing \emph{many very different test failures} or \emph{many
+  different unkilled mutants} quickly, to maximize the chance of
+discovering the most important faults or holes in a testing effort.
+The \emph{furthest-point-first} (FPF) algorithm of
+Gonzalez~\cite{Gonzalez85} does precisely this.  FPF, beginning with
+any randomly chosen test (or mutant, in our setting), always ranks
+next the point in a metric-defined space that has the \emph{greatest
+  distance from the previously ranked point to which it is closest.}
+That is, for each point (test or mutant) not yet presented to the
+user, FPF finds the closest among all already-ranked points, and
+associates each unranked point with the distance to that closest
+point.  The unranked point with the largest such distance is then
+added to the ranking, and the process is repeated.  FPF can be
+computed by a greedy algorithm, and is known to approximate novel-item
+discovery for an optimal clustering~\cite{Gonzalez85}.  Our
+preliminary work on the fuzzer taming problem using FPF-based
+techniques~\cite{PLDI13,distMut} can, we believe, be directly applied
+to the similar (but operationally quite different) problem of ranking
+unkilled mutants such that novel mutants are presented to a user.  We
+discuss below, as part of our research plan (Section
+\ref{sec:fpfplan}), the key \emph{differences} between novelty ranking
+for mutants and
+the fuzzer taming problem.
+
+\subsection{Any-Language Regular-Expression Based Mutation}
