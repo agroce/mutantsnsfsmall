@@ -7,8 +7,16 @@ formal verification, automated testing, and, more generally, any
 testing efforts aiming at very-high-quality fault detection based on
 combining the insight's of Popper's falsification-based notion of
 scientific discovery~\cite{Popper,popperconjectures} with mutation
-based methods~\cite{groce2015verified,groce2018verified,mutKernel}.  That
-work resulted in the identification of previously unknown faults in
+based methods~\cite{groce2015verified,groce2018verified,mutKernel}.
+The heart of the idea is (1) the proposition that a surviving mutant that is not
+equivalent (or at least equivalent with respect to a given
+specification of correctness) \emph{falsifies} the claim that a given
+formal verification or test effort captures the full notion of
+correctness for a sytem and (2) the proposal that refining a
+verification or test effort by repeated efforts at falsification is an
+effective method for ensuring the quality of verification and testing
+efforts.  This line of work
+work resulted in the identification of multiple previously unknown faults in
 the Linux kernel's
 RCU~\cite{MathieuDesnoyers2012URCU,DinakarGuniguntala2008IBMSysJ,McKenney:2013:SDS:2483852.2483867}
 module and the {\tt pyfakefs} Python mock file
