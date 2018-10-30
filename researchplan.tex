@@ -28,7 +28,8 @@ very semantically similar.  E.g., a mutant to the parser of a compiler, to
 an I/O error-handling routine in the code generator, and to a complex
 optimization pass may all be very ``similar'' in the only meaningful
 sense if all three mutants modify logging statements that don't have
-any actual effect on the state of the compiler.  Elements of the
+any actual effect on the state of the compiler.  Figure
+\ref{fig:distances} shows the fundamental problem.  Elements of the
 distance metric must include mutant location, mutation operator, and
 some representation of the code element modified --- language
 construct, functions called, variables modified, and so forth.  This
@@ -58,21 +59,22 @@ in General}
   of and distance metric for program mutants for use in FPF?
 \item How can we incorporate feedback from users into the
   representation and distance metric?
-\item How can we set budgets for automated test generation and
-  timeouts for verification efforts to quickly estimate whether a
-  mutant is killable?
-\item How can we most effectively use already generated killing tests
-  and counterexamples to prune mutants?
-\item Is distance-based clustering plus timing information useful for quickly
-  eliminating killable mutants similar to already-killed mutants?  How
-  does this relate to Predictive Mutation Testing (PMT)?
 \item How can we balance FPF-based selection of mutants for novelty
   with predictions of mutant equivalence, outcome, dominance, and
   productivity?
 \item How can we identify outliers in otherwise similar groups of
   mutants, and is such identification useful?
-\item Can we predict whether a mutant's unkillability is due to poor test
-  generation  or due to oracle weakness?
+\item How can we set budgets for automated test generation and
+  timeouts for verification efforts to quickly estimate whether a
+  mutant is killable?
+\item Can we predict whether a mutant's unkillability is due to poor test 
+  generation  or due to oracle weakness? 
+\item How can we most effectively use already generated killing tests
+  and counterexamples to prune mutants?
+\item Is distance-based clustering plus timing information useful for quickly
+  eliminating killable mutants similar to already-killed mutants?  How
+  does this relate to Predictive Mutation Testing (PMT)?
+
 \end{enumerate}
 
 \subsubsection{Research Questions Specific to Any-Language Mutation}
