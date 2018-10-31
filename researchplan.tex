@@ -18,6 +18,16 @@ These components serve to organize our research plan.
 \subsubsection{FPF-Based Novelty Ranking}
 \label{sec:fpfplan}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\columnwidth]{distmetric}
+
+\caption{Which mutants are most similar?  If the user just added a
+  test to kill the mutant in the upper left corner, which mutant
+  should be examined next?}
+\label{fig:distances}
+\end{figure}
+
 Ranking unkilled mutants according to how much ``new'' information they might
 provide to users requires more than simply using the FPF algorithm.
 FPF requires a distance metric, and a distance metric requires a
@@ -57,11 +67,11 @@ in General}
 \begin{enumerate}
 \item How can we form a generalized, language-agnostic representation
   of and distance metric for program mutants for use in FPF?
-\item How can we incorporate feedback from users into the
-  representation and distance metric?
 \item How can we balance FPF-based selection of mutants for novelty
   with predictions of mutant equivalence, outcome, dominance, and
   productivity?
+\item How can we incorporate feedback from users into the 
+  representation and distance metric, as well as the utility prediction? 
 \item How can we identify outliers in otherwise similar groups of
   mutants, and is such identification useful?
 \item How can we set budgets for automated test generation and
