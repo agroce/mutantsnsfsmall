@@ -71,8 +71,12 @@ construct, functions called, variables modified, and so forth.  These
 static aspects may also be augmented with user feedback (as noted
 above), but also with dynamic information obtained during the process,
 such as frequency with which tests cover the mutated
-statements/modules, or the degree to which a mutant changes the
-program path from the unmutated code.
+statements/modules, or the way the mutant changes the
+program path from the unmutated code in tests.  In fact, there may
+need to be two distance metrics:  one for selecting likely candidate
+mutants to execute, that uses only static information and user
+feedback, and one that uses dynamic results from compiling and testing
+mutants to refine the notion of similarity for likely-novel mutants.
 This is therefore a quite complex problem in representation and weighting of elements of a
 representation, especially for a language- and
 project- agnostic metric, perhaps one open to tuning via feedback

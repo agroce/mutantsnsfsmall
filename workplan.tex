@@ -3,17 +3,38 @@
 For this project, a simple plan should suffice, defined by components
 of Figure \ref{fig:flow}.  In Year One, PI Groce and the graduate
 student will both focus on the FPF-Based Novelty Ranking and
-representation of mutants and test results.  In Year
+representation of mutants and test results.  This foundational work is
+required before other parts of the approach can be applied.  For work
+in the first two years, the existing mutant generation capabilities
+will likely suffice, although it is possible that some improvements
+will be discovered to provide enough benefit to merit early
+implementation.  In Year
 Two, both will focus on the Mutant Utility Predictor and Feedback
 Analysis, and how to integrate those with the FPF-Based Novelty
 Ranking.  In Year Three, the focus will shift to the Mutant Generator
-itself, and the problem of any-language mutant generation.  The third
+itself, and the problem of any-language mutant generation.  By this
+time, the demands made by the feedback-driven approach on the core
+mutation engine will be much clearer, due to the relative maturity of
+the user-facing components.  The third
 year will also emphasize integrating the entire system and performing
-more thorough evaluations.
+more thorough evaluations.  It is likely that by the middle of Year
+Two, a prototype system suitable for use by real developers and test
+engineers not part of the project will be available, and the project
+plan aims for the graduate student to work in an industrial or
+government lab setting, and try applying the process to a real system,
+during the summer of Year Two.
 
 \subsubsection{Evaluation Plan}
 
-One automated way to evaluate a novelty ranking is to use automated
+Historical testing data can partially evaluate novelty rankings.  If
+mutant X and mutant Y are both highly ranked, but killed by a very
+similar set of tests, this indicates a possible problem with the
+measure.  In real-world feedback-driven mutation testing, it is highly
+desirable not to compute the full kill matrix for all mutants, but
+for evaluation purposes, determining the extent to which kill
+bitvector similarity agrees with FPF distance metric similarity serves
+as a basic, if quite imperfect, sanity check on the novelty ranking.
+Another automated way to evaluate a novelty ranking is to use automated
 testing to generate multiple tests to kill each mutant in ranked order.  A good ranking will mean
 that each additional mutant is unlikely to be killed by the killing
 tests for any previous mutants.  A similar, but more robust, measure of mutant similarity
