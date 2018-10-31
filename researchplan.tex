@@ -169,9 +169,20 @@ to easily specify novel build environments and plugins for checking
 Trivial Compiler Equivalence~\cite{TCE} to make the entire feedback-driven
 mutation process workable.  To some extent, an efficient mutation
 generator needs to incorporate aspects of mutation execution and even
-post-mortem analysis of the results of a mutant.
+post-mortem analysis of the results of a mutant.  Finally, for
+extremely large projects, simply generating and storing all mutants
+may be inefficient, and rather than processing the entire source code
+and applying all mutation rules, a demand-driven mode that only
+produces new mutants likely to be novel and of high utility may be required.
 
 \subsection{Core Research Questions}
+
+The component-focuses sections above provide an overview of the
+research problems to be addressed by this proposal, but it is also
+useful to consider the high-level research questions to be addressed,
+some of which are cross-cutting concerns independent of any single
+component, but potentially important to the development of a
+practical, maximally efficient, feedback-driven mutation approach.
 
 \subsubsection{Research Questions for Feedback-Driven Mutation Testing
 in General}
