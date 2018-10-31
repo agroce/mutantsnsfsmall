@@ -12,3 +12,12 @@ year will also emphasize integrating the entire system and performing
 more thorough evaluations.
 
 \subsubsection{Evaluation Plan}
+
+One automated way to evaluate a novelty ranking is to use automated
+testing to generate multiple tests to kill each mutant in ranked order.  A good ranking will mean
+that each additional mutant is unlikely to be killed by the killing
+tests for any previous mutants.  A similar, but more robust, measure of mutant similarity
+is how much adding using test to kill one mutant as the seed in a
+fuzzer~\cite{aflfuzz,libfuzzer} improves time required to kill the other
+mutant, on average.  Unfortunately, these measures cannot effectively
+measure ``real distance'' if one of the mutants is equivalent.
