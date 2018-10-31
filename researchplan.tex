@@ -57,9 +57,13 @@ approaches to metric learning~\cite{scholkopf1998nonlinear,tipping1999probabilis
 
 \subsubsection{Mutant Utility Predictor}
 
+Novelty with respect to previously analyzed mutants is not the only
+important characteristic of a mutant.  
+
 \subsubsection{Feedback Analysis}
 
 \subsubsection{Mutant Generator}
+\label{sec:anylangplan}
 
 \subsection{Core Research Questions}
 
@@ -67,21 +71,21 @@ approaches to metric learning~\cite{scholkopf1998nonlinear,tipping1999probabilis
 in General}
 
 \begin{enumerate}
-\item How can we form a generalized, language-agnostic representation
+\item What is a good generalized, language-agnostic representation
   of and distance metric for program mutants for use in FPF?
-\item How can we balance FPF-based selection of mutants for novelty
-  with predictions of mutant equivalence, outcome, dominance, and
-  productivity?
-\item How can we incorporate feedback from users into the 
-  representation and distance metric, as well as the utility prediction? 
-\item How can we identify outliers in otherwise similar groups of
+\item How can FPF-based selection of mutants for novelty best incorprorate
+  predictions of mutant equivalence, outcome, dominance, and
+  productivity?  Is novelty or expected utility more important?
+\item How should feedback-driven mutation testing actually incorporate feedback from users into the 
+  ranking of mutants? 
+\item Is it possible to identify outliers in otherwise similar groups of
   mutants, and is such identification useful?
-\item How can we set budgets for automated test generation and
-  timeouts for verification efforts to quickly estimate whether a
+\item How should budgets for automated test generation and
+  timeouts for verification efforts be chosen so as to quickly estimate whether a
   mutant is killable?
-\item Can we predict whether a mutant's unkillability is due to poor test 
+\item Is it possible to predict whether a mutant's unkillability is due to poor test 
   generation  or due to oracle weakness? 
-\item How can we most effectively use already generated killing tests
+\item How can feedback-driven mutation testing most effectively use already generated killing tests
   and counterexamples to prune mutants?
 \item Is distance-based clustering plus timing information useful for quickly
   eliminating killable mutants similar to already-killed mutants?  How
@@ -92,12 +96,12 @@ in General}
 \subsubsection{Research Questions Specific to Any-Language Mutation}
 
 \begin{enumerate}
-\item How can we maximize the efficiency and usability of a
+\item What advances are required in order to maximize the efficiency and usability of a
   fundamentally language-agnostic regular-expression-based approach to
   mutant generation?
-\item How can we extend the language of regular expressions to allow
+\item How should the language of regular expressions be extended to allow
   for language-agnostic definition of mutation operators that require
-  more parsing-like analysis of code structure, without compromising
+  more parser-like analysis of code structure, without compromising
   the usability and simplicity of the approach?
 \item Is it possible to perform on-the-fly mutant generation for very
   large projects, and reconcile this approach with FPF (e.g., generate

@@ -2,7 +2,7 @@
 
 \subsection{Falsification-Driven Verification and Testing}
 
-We recently proposed a novel approach to organizing and evaluating
+PI Groce and colleagues recently proposed a novel approach to organizing and evaluating
 formal verification, automated testing, and, more generally, any
 testing efforts aiming at very-high-quality fault detection based on
 combining the insight's of Popper's falsification-based notion of
@@ -21,7 +21,9 @@ the Linux kernel's
 RCU~\cite{MathieuDesnoyers2012URCU,DinakarGuniguntala2008IBMSysJ,McKenney:2013:SDS:2483852.2483867}
 module and the {\tt pyfakefs} Python mock file
 system~\cite{pyfakefs}, despite the existence of very-high-quality
-automated test generation efforts for these systems~\cite{rcutorture,TSTL}.  We proposed a number of algorithms and
+automated test generation efforts for these
+systems~\cite{rcutorture,TSTL}.  This preliminary work on
+falsification-driven methods prposed a number of algorithms and
 methods for using unkilled mutants to guide model checking efforts,
 estimate needed random testing budgets and loop-bounds in bounded model
 checking~\cite{CBMCp,BMC}, and find bugs in testing and verification
@@ -35,8 +37,8 @@ considerable automated support, at least for verification and
 automated testing efforts.
 
 Unfortunately, the
-methods proposed were, while useful, limited in applicability.  We
-simply assumed that the number of unkilled mutants to be examined was
+methods proposed were, while useful, limited in applicability.  These
+early effort simply assumed that the number of unkilled mutants to be examined was
 small, and focused on solving the problem of helping a developer or
 test engineer move from an unkilled mutant to an improvement of an
 already very-high-quality
@@ -44,19 +46,19 @@ model-checking harness or  automated test generator.  Human
 attention does not scale to analyzing large numbers of 
 unkilled
 mutants without further assistance in ``triaging'' the mutants,
-however.  Our manual mutant-examination process, even aided by
+however.  The manual mutant-examination process, even aided by
 tools for handling individual mutants, was simply not feasible unless the number of
 unkilled mutants was relatively small, because the testing was already
 very high quality.  Moreover, for a sufficiently large software system, even a
 very high quality verification or testing effort may fail to kill a
-large absolute number of mutants.  Our approach simply provided no way to
+large absolute number of mutants.  The original approach simply provided no way to
 scale human efforts to such a needle-in-a-haystack setting. 
 
 This project aims to make the falsification-driven approach to verification and testing feasible for larger
 projects, or those with less effective testing or verification, and extremely easy for
 smaller projects with already-high-quality testing or verification.
-Moreover, because we no longer require small absolute numbers of
-unkilled mutants, we aim to extend the applicability of the approach
+Moreover, because this proposal's feedback-driven approach no longer requires small absolute numbers of
+unkilled mutants, it extends the applicability of the approach
 to manual construction of tests to kill mutants, which was not in
 scope when extremely high kill-rates were required.
 
@@ -80,7 +82,7 @@ worthwhile --- even if the original mutant provided important,
 actionable information.  That information has already been
 incorporated into the development or testing process.
 
-Fuzzer taming~\cite{PLDI13} was a solution we proposed to the problem
+Fuzzer taming~\cite{PLDI13} was a solution PI Groce and colleagues proposed to the problem
 of triaging test failures in automated test generation~\cite{SemCrash}.  In compiler
 testing and other fuzzing applications, a core usability issue is that
 tools tend to produce very large numbers of failing tests for a much
@@ -88,7 +90,7 @@ smaller number of distinct bugs.  Finding the set of distinct bugs,
 and identifying important bugs that need to be fixed immediately is
 difficult, because the important bugs may be represented by only one
 or two failing tests in a set of thousands of failing tests, most of
-which are duplicates.  We proposed that rather than highly imprecise
+which are duplicates.  The fuzzer taming work proposed that rather than highly imprecise
 clustering, which does not work well in practice, and handles outliers
 in a way that does not match the ``power law'' distribution bugs, an
 algorithm matching the goal of ranking maximally-different test
@@ -100,7 +102,7 @@ generator, but about seeing \emph{many very different test failures} or \emph{ma
 discovering the most important faults or holes in a testing effort.
 The \emph{furthest-point-first} (FPF) algorithm of
 Gonzalez~\cite{Gonzalez85} does precisely this.  FPF, beginning with
-any randomly chosen test (or mutant, in our setting), always ranks
+any randomly chosen test (or mutant, in the present setting), always ranks
 next the point in a metric-defined space that has the \emph{greatest
   distance from the previously ranked point to which it is closest.}
 That is, for each point (test or mutant) not yet presented to the
@@ -109,34 +111,34 @@ associates each unranked point with the distance to that closest
 point.  The unranked point with the largest such distance is then
 added to the ranking, and the process is repeated.  FPF can be
 computed by a greedy algorithm, and is known to approximate novel-item
-discovery for an optimal clustering~\cite{Gonzalez85}.  Our
-preliminary work on the fuzzer taming problem using FPF-based
-techniques~\cite{PLDI13,distMut} can, we believe, be directly applied
+discovery for an optimal clustering~\cite{Gonzalez85}.  Preliminary work on the fuzzer taming problem using FPF-based
+techniques~\cite{PLDI13,distMut} can be directly applied
 to the similar (but operationally quite different) problem of ranking
-unkilled mutants such that novel mutants are presented to a user.  We
-discuss below, as part of our research plan (Section
-\ref{sec:fpfplan}), the key \emph{differences} between novelty ranking
+unkilled mutants such that novel mutants are presented to a user.  The
+research plan (Section
+\ref{sec:fpfplan}), discusses the key \emph{differences} between novelty ranking
 for mutants and
 the fuzzer taming problem.
 
 \subsection{Any-Language Regular-Expression Based Mutation}
 
-As discussed in the problem statement, we have released a functional,
-regular-expression-based mutant
+As discussed in the problem statement, PI Groce and colleagues
+released a functional, regular-expression-based mutant
 generator~\cite{regexpMut,universalmutator}, and demonstrated that it
 generated numbers of mutants and kill ratios for Java code comparable
 to PIT~\cite{pittest} and Major~\cite{Major}, despite not parsing the
-Java program at all, or acting at the bytecode level.  Furthermore, we
-showed that for falsification-driven verification, it produced mutants
-of equal value to those produced by Andrews' tool~\cite{mutant} and
-Muupi~\cite{muupi} for C and Python, respectively.  As it stands, the
-{\tt universalmutator} tool is useable for real-world mutation (in
-fact, it is being considered for use by NASA/JPL engineers in testing
-the C code for upcoming CubeSat missions.  It allows easy definition
-of new rules, and supports automated analysis of mutants,
-coverage-based pruning of mutants, and (in some languages) trivial
-compiler equivalence~\cite{TCE} checks.  As it stands, the tool and
-approach form a suitable platform for generating mutants to be used in
-this project's early phases.  Below, we discuss enhancements to the
-approach and tool that will be required to better support robust,
-flexible, efficient feedback-driven mutation testing.
+Java program at all, or acting at the bytecode level.  Furthermore,
+for falsification-driven verification, the regular-expression-based
+approach produced mutants of equal value to those produced by Andrews'
+tool~\cite{mutant} and Muupi~\cite{muupi} for C and Python,
+respectively.  As it stands, the {\tt universalmutator} tool is
+useable for real-world mutation (in fact, it is being considered for
+use by NASA/JPL engineers in testing the C code for upcoming CubeSat
+missions.  It allows easy definition of new rules, and supports
+automated analysis of mutants, coverage-based pruning of mutants, and
+(in some languages) trivial compiler equivalence~\cite{TCE} checks.
+As it stands, the tool and approach form a suitable platform for
+generating mutants to be used in this project's early phases.  The
+research plan (in Section \ref{sec:anylangplan}) discusses enhancements to the approach and tool that will be required
+to better support robust, flexible, efficient feedback-driven mutation
+testing.
