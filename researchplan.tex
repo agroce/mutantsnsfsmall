@@ -12,7 +12,7 @@
 
 Figure \ref{fig:flow} shows the basic outline of a proposed workflow
 and components needed to support feedback-driven mutation testing.
-These components serve to organize our research plan.
+These components serve to organize the research plan.
 
 
 \subsubsection{FPF-Based Novelty Ranking}
@@ -46,8 +46,8 @@ distance metric must include mutant location, mutation operator, and
 some representation of the code element modified --- language
 construct, functions called, variables modified, and so forth.  This
 is a complex problem in representation and weighting of elements of a
-representation, especially if we aim at producing a language and
-project agnostic metric, perhaps one open to tuning via feedback
+representation, especially for a language- and
+project- agnostic metric, perhaps one open to tuning via feedback
 analysis.  We plan to exploit metric learning
 methods~\cite{kulis2012metric}, but are aware that to avoid over-fitting
 to even a set of good examples, the final metric may have to be

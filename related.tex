@@ -5,12 +5,12 @@
 A fundamental insight of this proposal is that the problem of
 presenting mutants to a user is conceptually similar to the ``fuzzer
 taming''/crash bucketing/bug triage problem studied in automated
-testing research~\cite{PLDI13,SemCrash}.  Our approach is centered on
+testing research~\cite{PLDI13,SemCrash}.  This proposal's approach is centered on
 the idea of computing distances between mutants.  The use of distance metrics in software engineering for a variety of
-purposes is long-standing.  To our knowledge, almost all such uses are
+purposes is long-standing.  Almost all such uses are
 essentially spectrum-based \cite{RepsSpectra} (that is, using counts
 of coverage of code entities), except for some work in model-checking
-\cite{GroceDist,ChakiLev} and some of the metrics in our recent fuzzer
+\cite{GroceDist,ChakiLev} and some of the metrics in PI Groce's recent fuzzer
 taming work \cite{PLDI13}.  Reneiris and Reiss initially proposed
 using distance between executions to localize faults
 \cite{NearNeighbor}, and Liu and Han \cite{Liu06}, among others have
@@ -19,16 +19,16 @@ localization of a spectrum-based method to determine distance).
 Vangala et al. proposed using distance to cluster test cases to
 improve diversity and eliminate duplicates \cite{VangalaDist}. Methods
 for clustering to identify bugs all rely on an implicit distance
-determined by a feature set \cite{Podgurski04}.  Our own previous work
+determined by a feature set \cite{Podgurski04}.  PI Groce's previous work
 has used distance metrics for a variety of purposes
 \cite{PLDI13,icst2014,issta14}.  Adaptive random testing uses
 distances (usually between inputs, not executions, however) to choose
-tests \cite{Chen,ARTChen,ISSTAART}.  Recently, we proposed a novel,
+tests \cite{Chen,ARTChen,ISSTAART}.  Recently, PI Groce proposed a novel,
 causal metric for fuzzer taming and fault localization, itself based on
 mutation testing results~\cite{distMut}.  More generally, work on
 presenting a few mutants to maximize human efforts to improve a
 testing or verification effort
-is related to our own work on end-user testing of machine learning
+is related to PI Groce's own work on end-user testing of machine learning
 systems~\cite{EndUserMistake,OnlyOracle}, where the limits of human
 patience are considered as a key factor in a system for presenting
 actionable information to a user.
@@ -43,9 +43,9 @@ and the approach was first implemented by Budd et al.~\cite{budd1980theoretical}
 Mutation analysis as a theory relies on two fundamental
 assumptions --- \emph{the competent programmer hypothesis},
 and \emph{the coupling effect}, both of which have been widely
-studied~\cite{wah2000atheoretical,wah2003ananalysis,gopinath2017the,offutt1989thecoupling,offutt1992investigations,langdon2010efficient,gopinath2017the,gopinath2014mutations}. In
-this project, we are more interested in the practical effectiveness of
-mutation testing than in theoretical justifications.
+studied~\cite{wah2000atheoretical,wah2003ananalysis,gopinath2017the,offutt1989thecoupling,offutt1992investigations,langdon2010efficient,gopinath2017the,gopinath2014mutations}. This
+proposal is more focused on the practical effectiveness of
+mutation testing than on theoretical justifications.
 
 It has long been argued~\cite{budd1980mutation} that mutation analysis is \emph{stronger}
 than other coverage measures. The subsumption of multiple coverage
@@ -125,7 +125,7 @@ reduction strategies~\cite{zhang2010isoperator,zhang2013operator}.
 Zhang et al.~\cite{zhang2014an} investigated the scalability of
 selective mutation by considering how well a randomly sampled set of mutants
 represent the original population. 
-In our own previous work~\cite{gopinath2016on} we showed that there is
+In previous work~\cite{gopinath2016on} PI Groce showed that there is
 an upper bound on the improvement
 in \emph{mean effectiveness} that is possible using even
 an ideal mutation reduction strategy using post-hoc oracular knowledge of mutant
@@ -150,9 +150,9 @@ test suite, a number used to say ``this is a good test suite'' or at
 least ``this is a better test suite than that test suite.''  While
 important for some real-world purposes (evaluating QA efforts) and
 certainly for software testing research, that is not the focus of this
-proposal.  Instead, we consider the problem of presenting unkilled mutations to
+proposal, which considers the problem of presenting unkilled mutations to
 a developer or test engineer in a way that facilitates the improvement
-of a test suite and the detection of faults.  This is inspired by our
+of a test suite and the detection of faults.  This is inspired by PI Groce's
 previous work on using mutation to find defects in formal verification
 and automated test generation
 efforts~\cite{groce2015verified,groce2018verified,mutKernel}.
@@ -162,14 +162,14 @@ of journal at the time this proposal was written) has
 aimed, unusually, at predicting the ``quality'' of~\cite{MutQuality}
 or even prioritizing~\cite{FaRM} mutants, to rank fault-revealing
 mutants highly so that users can produce tests to find faults.  This
-work is highly relevant to our aims, but focuses on a single static
+work is highly relevant to this proposal's aims, but focuses on a single static
 pass to rank mutants by their fault-revealing potential, informed by
 (possibly cross-project)
 data on fault-revealing tests.  There is no feedback loop, or ability
 to indicate the importance of various faults in the program under
 test, and the language support issue is dodged by targeting LLVM
 bitcode.  Nonetheless, the goals, methods, and results of this work
-will inform our own approach, in particular in the utility estimation
+will inform this proposal's approach, in particular in the utility estimation
 aspect that balances FPF-determined novelty.
 
 The single most relevant work by others, however, is to be found in a
@@ -184,7 +184,7 @@ decision to only allow one mutation (initially randomly decided) per
 line of code.  While the underlying motivation, of giving developers
 actionable information rather than computing a mutation score, is
 similar, and the idea of using some form of ``feedback'' is common,
-our approach targets the individual developing, testing, or verifying a particular software
+this approach considered in this proposal targets the individual developing, testing, or verifying a particular software
 element (either a small project, or a component of a project), and
 assumes an iterative process, where developers consider one unkilled
 mutant at a time.  The Google approach does not attempt to prioritize
@@ -199,8 +199,8 @@ verification efforts that do not have code changes.  Further, it uses
 Google-wide coding conventions and developer suggestions to fix
 heuristics such as ``avoid mutation of logging statements'' rather
 than trying to learn (with human assistance) such heuristics for
-projects that may vary widely in language and coding style.  We
-suspect that our ideas may be useful in generalizing or enhancing an
+projects that may vary widely in language and coding style.  
+The techniques used in this proposal may be useful in generalizing or enhancing an
 effort such as Google's, however, and share the focus on mutants as
 tools for focusing developer/tester attention and producing action on the
 part of humans, not computing a mutation score.  Indeed, the report
@@ -212,25 +212,25 @@ More broadly, a paper by the
 authors of the Google report and a group of academic mutation testing
 researchers~\cite{ivankovic2018industrial}, uses the Google effort to
 propose a notion of productive and unproductive mutants.  Their
-concepts are highly related to our goals, but again centered on a
+concepts are highly related to this proposal's goals, but again centered on a
 diff-focused, large-scale industrial setting, rather than an approach
 that, like TDD, may also be applied to smaller coding efforts in a more
 isolated setting, such as development of embedded software, where
 crowdsourcing is impractical.  Another key difference is that, while their
 work used EvoSuite to enhance a test suite to kill additional mutants,
 the assumption was that most suite enhancement would be due to
-developers adding manual tests.  Furthermore, we doubt that any mutant
-is either ``productive'' or ``unproductive'' in an absolute sense, but
+developers adding manual tests.  Furthermore, it is generally true that mutants
+are neither ``productive'' or ``unproductive'' in an absolute sense, but
 rather the value of a mutant also depends on previous mutants a
-developer has manually examined, and the results of that examination,
-and we embody this in an FPF-centric workflow.
+developer has manually examined, and the results of that examination;
+this project embodies this concept in the FPF-centric workflow.
 
-A second thrust of our efforts in this proposal is to simplify the
+A second thrust of the efforts in this proposal is to simplify the
 development, maintenance, and (especially) extension of mutation
 testing tools by using an extension of regular expressions to define
 mutation operators, and separating the generation of mutants from
 language or build-environment specific techniques for pruning invalid
-mutants.  This aspect of the proposal primarily builds on our own initial work on the topic of
+mutants.  This aspect of the proposal primarily builds on PI Groce's initial work on the topic of
 regular-expression-based mutant generation~\cite{regexpMut} and
 Holzmann's work on lightweight textual code analysis with
 Cobra~\cite{Cobra}.  Trivial compiler equivalence~\cite{TCE} is a key
