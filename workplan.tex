@@ -29,7 +29,34 @@ during the summer of Year Two.
 \subsection{Evaluation Plan}
 \label{sec:evalplan}
 
-Historical testing data can partially evaluate novelty rankings.  If
+Evaluation for this proposal includes both human-performed assessment
+via trying to use feedback-driven mutation for actual test improvement
+tasks and automated evaluations with more objective criteria, but a
+weaker relationship to the actual goal of helping users quickly find
+the most important unkilled mutants.  For the human portion, informal
+evaluation will be performed by the research team itself, using known
+programs with known testing weaknesses; this will help tune the
+approach and experiment with new ideas.  However, for more advanced
+assessment, expert users outside the team will be offered the chance
+to use the system once it is in suitable shape.  In the past, PI Groce
+has worked with IBM Distinguished Engineer Paul E. McKenney, a
+prominent Linux kernel developers, on using mutants to improve kernel
+test suites, and has discussed similar efforts with Richard Hipp, the
+lead developer of the SQLite database, a rather famously well-tested
+program, with some resulting improvements to both test suites.  Other
+potential users with whom PI Groce has a working relationship include NASA/JPL engineers working on upcoming CubeSat
+missions, colleagues working on the DeepState~\cite{DeepState}
+parameterized unit testing interface to fuzzers and symbolic execution
+engines, and the developers of {\tt pyfakefs}.  This type of
+evaluation is, neccessarily, somewhat qualitative.  A retrospective
+version can be applied by examining actual mutants that resulted in
+improvements to the rcutorture~\cite{rcutorture} tests for the Linux
+kernel and the {\tt pyfakefs} tests in previous
+work~\cite{groce2018verified}, and comparing the useful mutants to the
+highly ranked mutants:  could the highly ranked mutants have motivated
+the key improvements to the test suites?
+
+Historical testing data in general can also partially evaluate novelty rankings.  If
 mutant X and mutant Y are both highly ranked, but killed by a very
 similar set of tests, this indicates a possible problem with the
 measure.  In real-world feedback-driven mutation testing, it is highly
@@ -58,3 +85,14 @@ be measured by simple, traditional measures.
 
 \subsubsection{Mutation-Driven-Development Evaluation}
 \label{sec:mevalplan}
+
+The evaluation of techniques and tools developed in this proposal will
+also serve a dual purpose with respect to
+Mutation-Driven-Development.  Using an MDD approach to implement
+various small, but easy-to-get-wrong, code projects, such as binary
+search and AVL trees, will make it possible both to see how effective
+the tools for feedback-driven mutation testing are, and to see how effective an MDD approach to development is.  In
+addition, using various versions of actual TDD efforts, with the
+associated test suites for each step of development, it should be
+possible to evaluate how much additional testing power MDD would have
+required at each step of development.
