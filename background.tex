@@ -23,7 +23,7 @@ module and the {\tt pyfakefs} Python mock file
 system~\cite{pyfakefs}, despite the existence of very-high-quality
 automated test generation efforts for these
 systems~\cite{rcutorture,TSTL}.  This preliminary work on
-falsification-driven methods prposed a number of algorithms and
+falsification-driven methods proposed a number of algorithms and
 methods for using unkilled mutants to guide model checking efforts,
 estimate needed random testing budgets and loop-bounds in bounded model
 checking~\cite{CBMCp,BMC}, and find bugs in testing and verification
@@ -38,7 +38,7 @@ automated testing efforts.
 
 Unfortunately, the
 methods proposed were, while useful, limited in applicability.  These
-early effort simply assumed that the number of unkilled mutants to be examined was
+early efforts simply assumed that the number of unkilled mutants to be examined was
 small, and focused on solving the problem of helping a developer or
 test engineer move from an unkilled mutant to an improvement of an
 already very-high-quality
@@ -46,7 +46,12 @@ model-checking harness or  automated test generator.  Human
 attention does not scale to analyzing large numbers of 
 unkilled
 mutants without further assistance in ``triaging'' the mutants,
-however.  The manual mutant-examination process, even aided by
+however.  The process of manually examining mutants bears a
+resemblance to the problem of manual confirmation of results from a
+machine-learning classifier~\cite{OnlyOracle,EndUserMistake}, where even highly-motivated scientific
+users are typically unwilling to examine more than a few tens of
+potentially problematic results~\cite{Segal}.
+The manual mutant-examination process, even aided by
 tools for handling individual mutants, was simply not feasible unless the number of
 unkilled mutants was relatively small, because the testing was already
 very high quality.  Moreover, for a sufficiently large software system, even a
@@ -59,7 +64,7 @@ projects, or those with less effective testing or verification, and extremely ea
 smaller projects with already-high-quality testing or verification.
 Moreover, because this proposal's feedback-driven approach no longer requires small absolute numbers of
 unkilled mutants, it extends the applicability of the approach
-to manual construction of tests to kill mutants, which was not in
+to manual construction of tests to kill mutants, which was not usually in
 scope when extremely high kill-rates were required.
 
 \subsection{Furthest Point First and Fuzzer Taming}
@@ -71,7 +76,7 @@ previously unknown fault that needs to be fixed, either in the SUT or in the tes
 generator.  It may indicate the presence of a previously unknown fault
 of less importance.  It may also indicate an even less interesting
 result:  an equivalent mutant or 
-a failure of an inherently flaky test.  Or, in many cases, an unkilled
+a ``failure to fail'' of an inherently flaky test.  Or, in many cases, an unkilled
 mutant or failing test may contain information that is either
 important or unimportant, but is uninteresting because \emph{it
   duplicates information already presented for understanding.}  While
@@ -92,7 +97,7 @@ difficult, because the important bugs may be represented by only one
 or two failing tests in a set of thousands of failing tests, most of
 which are duplicates.  The fuzzer taming work proposed that rather than highly imprecise
 clustering, which does not work well in practice, and handles outliers
-in a way that does not match the ``power law'' distribution bugs, an
+in a way that does not match the ``power law'' distribution of bugs, an
 algorithm matching the goal of ranking maximally-different test
 failures highly was appropriate.  Users do not (usually) care much
 about finding the group of all tests failing due to a fault, or the
@@ -133,8 +138,9 @@ approach produced mutants of equal value to those produced by Andrews'
 tool~\cite{mutant} and Muupi~\cite{muupi} for C and Python,
 respectively.  As it stands, the {\tt universalmutator} tool is
 useable for real-world mutation (in fact, it is being considered for
-use by NASA/JPL engineers in testing the C code for upcoming CubeSat
-missions).  It allows easy definition of new rules, and supports
+use by NASA/JPL engineers in testing the C code for upcoming CubeSat~\cite{CubeSat}
+missions) for languages including: C, C++, Java, Python, Swift, Rust,
+Go, and the Solidity smart-contract language.  The {\tt universalmutator} allows easy definition of new rules, and supports
 automated analysis of mutants, coverage-based pruning of mutants, and
 (in some languages) trivial compiler equivalence~\cite{TCE} checks.
 As it stands, the tool and approach form a suitable platform for

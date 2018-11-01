@@ -36,8 +36,9 @@ in fuzzer taming.  The key difference is the problem of determining
 how similar two mutants are; in fuzzer taming, it is possible to
 extract a large amount of information about similarity of failing
 tests from executing the tests, and, in fact, from executing the tests
-on program mutants~\cite{PLDI13,distMut}.  There is no obvious equivalent
-``run the mutant'' for mutants, and avoiding the expense of running
+on program mutants~\cite{PLDI13,distMut}.  There is no obvious
+equivalent to
+``just run the test'' for mutants, and in fact avoiding the expense of running
 the test suite on uninteresting mutants is one of the goals of
 feedback-driven mutation testing in the first place.
 
@@ -57,7 +58,7 @@ in the same file (likely to impact the same aspects of correctness),
 another mutant with very similar code (likely to have the same kind of
 semantic impact on the local context), or another mutant with the same operator (perhaps
 likely to have some similarity, though probably of a lower importance
-than the previous two types of similarity.  Are all logging statements
+than the previous two types of similarity).  Are all logging statements
 equivalent, or are only {\tt INFO} logging calls similar, while every
 {\tt WARNING}, {\tt ERROR} or {\tt FATAL} is unique?  Some of these
 decisions are unlikely to be project-independent, and so a good metric
@@ -79,7 +80,7 @@ feedback, and one that uses dynamic results from compiling and testing
 mutants to refine the notion of similarity for likely-novel mutants.
 This is therefore a quite complex problem in representation and weighting of elements of a
 representation, especially for a language- and
-project- agnostic metric, perhaps one open to tuning via feedback
+project- agnostic metric, that is also open to tuning via feedback
 analysis.  We plan to exploit metric learning
 methods~\cite{kulis2012metric}, but are aware that to avoid over-fitting
 to even a set of good examples, the final metric may have to be largely
@@ -108,8 +109,11 @@ predicted utility of a mutant.  For example, a utility-driven ranking
 might suggest avoiding a highly novel mutant because it is likely
 equivalent; however, it may be that labeling this mutant as equivalent
 lets the FPF ranking avoid numerous other similar mutants --- e.g.,
-postponing labeling a logging statement as equivalent may not be a
-good idea.
+postponing labeling a logging statement as confirmed equivalent by the
+user may not be a
+good idea.  Also, if the mutant is \emph{not} equivalent (perhaps the
+user decides this kind of logging needs to be tested), then the
+information obtained may be high-value.
 
 \subsubsection{Feedback Analysis}
 \label{sec:feedbackplan}
@@ -135,6 +139,18 @@ about correct and incorrect novelty rankings:  if the system presents
 a mutant that is, from the user's POV, a (near-)duplicate of an
 already handled mutant, the user should be able to express this fact,
 and avoid future similar bad novelty estimates.
+
+While large-scale crowdsourcing of user feedback is likely only
+possible in some unusual industrial
+settings~\cite{MutGoogle,ivankovic2018industrial}, it may also be
+possible to apply mini-crowdsourcing techniques developed in the
+context of testing machine-learning classifiers to mutant ranking and
+analysis~\cite{Minicrowd}.  For high-visibility, high-criticality code
+such as, e.g., Linux kernel modules, this may be a very powerful
+tool.  The challenge in such a case is to allow communication between
+feedback-driven mutation efforts, splitting work both so as to
+minimize duplication and to target developers most familiar with
+different aspects of the code base.
 
 \subsubsection{Mutant Generator}
 \label{sec:anylangplan}
@@ -209,6 +225,7 @@ in General}
   productivity?  Is novelty or expected utility more important?
 \item How should feedback-driven mutation testing actually incorporate feedback from users into the 
   ranking of mutants? 
+\item Can mini-crowds be effectively leveraged to enhance the utility of user feedback?
 \item Is it possible to identify outliers in otherwise similar groups of
   mutants, and is such identification useful?
 \item How should budgets for automated test generation and
