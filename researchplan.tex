@@ -150,7 +150,8 @@ such as, e.g., Linux kernel modules, this may be a very powerful
 tool.  The challenge in such a case is to allow communication between
 feedback-driven mutation efforts, splitting work both so as to
 minimize duplication and to target developers most familiar with
-different aspects of the code base.
+different aspects of the code base, as done in automated assignment of
+issues~\cite{bhattacharya2012automated}.
 
 \subsubsection{Mutant Generator}
 \label{sec:anylangplan}
@@ -163,7 +164,7 @@ language or DSL, with minimal additional effort.  The {\tt
   universalmutator} provides an initial source of mutants that
 satisfies this requirement for initial experimentation, but for
 long-term effectiveness is both inefficient and inexpressive.  The
-current implementation avoid parsing to such an extent that it
+current implementation avoids parsing to such an extent that it
 generates numerous useless mutants embedded in code comments, or that
 are obviously syntactically invalid.  While avoiding a parser-based
 approach, simple additonal constraints could avoid this, without
@@ -207,7 +208,7 @@ thrust, as discussed in the Evaluation Plan (Section \ref{sec:mevalplan}).
 
 \subsection{Core Research Questions}
 
-The component-focuses sections above provide an overview of the
+The component-focused sections above provide an overview of the
 research problems to be addressed by this proposal, but it is also
 useful to consider the high-level research questions to be addressed,
 some of which are cross-cutting concerns independent of any single
