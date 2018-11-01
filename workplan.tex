@@ -56,7 +56,12 @@ work~\cite{groce2018verified}, and comparing the useful mutants to the
 highly ranked mutants:  could the highly ranked mutants have motivated
 the key improvements to the test suites?
 
-Historical testing data in general can also partially evaluate novelty rankings.  If
+Just computing a mutant kill matrix for a good test suite can also
+partially evaluate novelty rankings, if by ranking
+killed, rather than unkilled mutants; the experiment even
+realistically represents an early stage of test suite construction by
+feedback-driven mutation testing, especially if the mutants are only
+killed by a relatively small set of tests.  If
 mutant X and mutant Y are both highly ranked, but killed by a very
 similar set of tests, this indicates a possible problem with the
 measure.  In real-world feedback-driven mutation testing, it is highly
