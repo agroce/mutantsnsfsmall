@@ -219,6 +219,7 @@ practical, maximally efficient, feedback-driven mutation approach.
 \subsubsection{Research Questions for Feedback-Driven Mutation Testing
 in General}
 
+%\begin{framed}
 \begin{enumerate}
 \item What is a good generalized, language-agnostic representation
   of and distance metric for program mutants for use in FPF?
@@ -226,15 +227,17 @@ in General}
   predictions of mutant equivalence, outcome, dominance, and
   productivity?  Is novelty or expected utility more important?
 \item How should feedback-driven mutation testing actually incorporate feedback from users into the 
-  ranking of mutants? 
+  ranking of mutants?   What feedback should users be able to express,
+  and how strongly should it be weighted?
 \item Can mini-crowds be effectively leveraged to enhance the utility of user feedback?
 \item Is it possible to identify outliers in otherwise similar groups of
-  mutants, and is such identification useful?
+  mutants, (e.g. one killed mutant in a cluser of unkilled mutants) and is such identification useful to users?
 \item How should budgets for automated test generation and
   timeouts for verification efforts be chosen so as to quickly estimate whether a
   mutant is killable?
 \item Is it possible to predict whether a mutant's unkillability is due to poor test 
-  generation  or due to oracle weakness? 
+  generation (hard to reach error states), oracle weakness
+  (unidentified error states), or likely real semantic equivalence? 
 \item How can feedback-driven mutation testing most effectively use already generated killing tests
   and counterexamples to prune mutants?
 \item Is distance-based clustering plus timing information useful for quickly
@@ -242,9 +245,11 @@ in General}
   does this relate to Predictive Mutation Testing (PMT)?
 
 \end{enumerate}
+%\end{framed}
 
 \subsubsection{Research Questions Specific to Any-Language Mutation}
 
+%\begin{framed}
 \begin{enumerate}
 \item What advances are required in order to maximize the efficiency and usability of a
   fundamentally language-agnostic regular-expression-based approach to
@@ -258,5 +263,6 @@ in General}
   new mutants with, possibly approximate, desired distances from
   already evaluated mutants)?
 \end{enumerate}
+%\end{framed}
 
 \input{workplan}
