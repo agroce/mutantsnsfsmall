@@ -81,8 +81,9 @@ mutants to refine the notion of similarity for likely-novel mutants.
 This is therefore a quite complex problem in representation and weighting of elements of a
 representation, especially for a language- and
 project- agnostic metric, that is also open to tuning via feedback
-analysis.  We plan to exploit metric learning
-methods~\cite{kulis2012metric}, but are aware that to avoid over-fitting
+analysis.  One approach to the problem is to exploit metric learning
+methods~\cite{kulis2012metric}, which was used in some of PI Groce's
+previous work~\cite{SoftMining}, but in order to avoid over-fitting
 to even a set of good examples, the final metric may have to be largely
 hand-tuned, and designed to incorporate feedback and dynamically
 extracted information, which is not easily handled with learned metrics.  In part this is due to the difficulty of establishing
@@ -151,13 +152,13 @@ tool.  The challenge in such a case is to allow communication between
 feedback-driven mutation efforts, splitting work both so as to
 minimize duplication and to target developers most familiar with
 different aspects of the code base, as done in automated assignment of
-issues~\cite{bhattacharya2012automated}.
+bug reports~\cite{bhattacharya2012automated,jonsson2016automated}.
 
 \subsubsection{Mutant Generator}
 \label{sec:anylangplan}
 
 The source of all mutants to be presented to the user is the mutant
-generator, and in order to maximize the effectivenes of the approach,
+generator, and in order to maximize the effectiveness of the approach,
 this proposal aims to allow effective generation of mutants for any
 programming 
 language or DSL, with minimal additional effort.  The {\tt
@@ -167,7 +168,7 @@ long-term effectiveness is both inefficient and inexpressive.  The
 current implementation avoids parsing to such an extent that it
 generates numerous useless mutants embedded in code comments, or that
 are obviously syntactically invalid.  While avoiding a parser-based
-approach, simple additonal constraints could avoid this, without
+approach, simple additional constraints could avoid this, without
 adding burden on users, such as allowing the definition of a
 language's comment mechanisms, and not producing mutants inside
 comments.  More generally, a mechanism for disabling mutation in
@@ -186,7 +187,7 @@ example of the kind of approach desired, though the language itself
 must be different, since transformation,
 not just detection, is the expressive content of a mutation operator.
 Moreover, the generator will also need to be improved to allow users
-to easily specify novel build environments and plugins for checking
+to easily specify novel build environments and plug-ins for checking
 Trivial Compiler Equivalence~\cite{TCE} to make the entire feedback-driven
 mutation process workable.  To some extent, an efficient mutation
 generator needs to incorporate aspects of mutation execution and even
@@ -221,7 +222,7 @@ in General}
 \begin{enumerate}
 \item What is a good generalized, language-agnostic representation
   of and distance metric for program mutants for use in FPF?
-\item How can FPF-based selection of mutants for novelty best incorprorate
+\item How can FPF-based selection of mutants for novelty best incorporate
   predictions of mutant equivalence, outcome, dominance, and
   productivity?  Is novelty or expected utility more important?
 \item How should feedback-driven mutation testing actually incorporate feedback from users into the 
