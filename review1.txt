@@ -1,0 +1,351 @@
+Panel Summary
+Panel Summary 
+
+SUMMARY OF PROPOSED RESEARCH ACTIVITY 
+
+This proposal concerns the use of mutation-driven testing as an 
+interactive approach for improving software and its tests. The 
+proposal argues that to better support this use case, it is important 
+to be able to automatically select which currently-unkilled mutants 
+would be most helpful to present to a developer, taking into account 
+those that have been presented before and developer feedback. As 
+another improvement to make mutation-driven testing more practical, 
+the PI proposes to further develop a cross-language mutant generation 
+approach that is based on source-level textual mutations, with the aim 
+of making it easier to build mutation tools for less-popular or 
+domain-specific languages. 
+
+INTELLECTUAL MERIT 
+
+The panelists agreed that the current state of mutation tools present 
+too many mutants that are impractical for developers to consider. 
+However they disagreed as to whether this limitation is a good 
+motivation for the proposed work, or whether it is an obstacle that 
+this proposed work will be unable to overcome. Some panelists felt 
+that the use of feedback from users is interesting and a major novelty 
+of the proposal over previous work on mutation. However other 
+panelists felt that despite ranking and feedback there will still be 
+too many mutations be practical, that the ideas for incorporating 
+feedback are not concrete enough and that the technical challenges for 
+incorporating feedback are not clearly presented. Some panelists found 
+the any-language mutation approach raised interesting technical 
+challenges, but others felt that there was not much left to do beyond 
+the reported preliminary work. 
+
+BROADER IMPACTS 
+
+The PI's industrial experience helps with understanding how the 
+research can apply to practical problems of developers. By reducing 
+the cost of mutation analysis this proposal could help make mutation 
+analysis more practical. If successful, the resulting tool could be 
+particularly useful in testing mission-critical software, as 
+illustrated by the potential interaction with NASA. 
+
+SUGGESTIONS FOR IMPROVEMENT 
+
+The proposal should better describe how it will overcome the 
+evaluation challenges of a system that depends on user feedback. For 
+instance, how would bad feedback from users be distinguished from a 
+failure of the tool? This should be addressed in the evaluation plan. 
+
+SUMMARY STATEMENT 
+
+Existing approaches to mutation testing produce too many mutants for 
+developers to practically analyze. The proposal presents an approach 
+to using user interaction guiding the search to address this 
+challenge. There was some concern that a more fundamentally innovative 
+approach might be required to solve it. 
+
+The recommendation of the panel is that the proposal is Competitive. 
+
+The summary was read by/to the panel and the panel concurred that the 
+summary accurately reflects the panel discussion.
+PANEL RECOMMENDATION: Competitive
+
+
+
+
+Review 1
+Rating:
+
+Very Good
+
+Review:
+Summary
+
+In the context of the five review elements, please 
+evaluate the strengths and weaknesses of the proposal with respect to intellectual merit. 
+
+I found this to be an intellectually strong proposal, which proposes a 
+novel direction but also has a clear technical plan for achieving its 
+goals. Though mutation analysis is well known in software engineering 
+academia as an evaluation tool in testing research, I think the 
+proposal is correct to point out that it has potential, as yet mostly 
+untapped, as a technique real developers can use to improve their 
+software and testing/validation. The proposal identifies that mutation 
+faces usability challenges, similar to those that are faced by 
+test-case generation and static bug-finding, in presenting voluminous 
+results to developers in a way that maximizes their limited 
+attention. The proposal builds on the PI's previous experience with 
+the similar reporting problem that arises with fuzzing, but it points 
+out several factors that affect how useful a mutant is to a developer, 
+and particularly argues that an interactive feedback between the 
+developer and tool would be best. In sum the proposal has a vision for 
+how developers can use mutations to support rigorous development in a 
+way they currently rarely do, and it describes research to bridge the 
+gap of making that functionality practical. 
+
+The proposal's related direction of building a mostly 
+language-agnostic mutation tool is logically connected to the 
+proposal's main thrust, and strikes me as technically interesting, 
+though I do not find it to be as well-motivated as the proposal's 
+core. Many mutation tools already exist, but as the first part of the 
+proposal lays out, the existence of tools is not the main obstacle 
+preventing mutation from being useful to developers. If the primary 
+goal of this project is to make mutation useful, it would seem to me 
+more logical to start by working with a few languages that are widely 
+used and for which good mutation tools already exist; even if this 
+project needs to develop a new mutation tool, a tool specialized to a 
+language can work better for that language with less development 
+effort, other things equal. If language-agnostic mutation ends up 
+being "good enough", I can see it becoming the standard over time, if 
+the amount of development invested in a language-agnostic tool 
+surpasses the state of any individual language-specific one. But since 
+the usability of any mutation tool by typical developers still needs 
+to be demonstrated, that feels like a kind of evolution that is more 
+likely to occur beyond the time-frame of this project. That said, the 
+technical issues raised in this research area do seem interesting, in 
+particular choosing the right level of partial structure (e.g., 
+tokenizing or best-effort parsing) that can be specific with minimal 
+effort across many languages but can avoid most faulty mutants. 
+
+
+In the context of the five review elements, please 
+evaluate the strengths and weaknesses of the proposal with respect to broader impacts. 
+
+Tools like this one this proposal will develop to inform developers 
+about relevant unkilled mutants of their software have a clear 
+potential to help developers, particularly ones aiming for rigorous 
+development and comprehensive testing. I like that the PI proposes to 
+continue the practice of evaluating research tools with high-profile 
+open-source systems, since not only does their scale reflect 
+positively on the practicality of the research techniques, making 
+important software more robust has broader benefits to the community. 
+
+The short paragraph describing educational and outreach activities in 
+the proposal points in some reasonable directions, but feels a bit 
+light on specifics. It feels to me like a bit of a stretch to assert 
+that mutation driven development of media player libraries will feel 
+enough different from development of other software to make a 
+noticeable difference in recruiting and retaining women and 
+under-represented minorities, but it would be great if it could: 
+perhaps some supporting examples could have made this idea feel more 
+real. 
+
+
+Please evaluate the strengths and 
+weaknesses of the proposal with respect to any additional solicitation-specific review criteria, if 
+applicable 
+
+Collaboration Plan: This is not a collaborative proposal, so as such 
+it does not include a collaboration plan. 
+
+Data Management Plan: The data management plan, though relatively 
+short, covers the key questions I might have, given that the data 
+management needs of a project like this are not very intensive. From 
+the long-term preservation perspective the proposal seems mostly 
+reliant on GitHub; though it currently seems positioned to stay in 
+operation for a long time, preservation is not the core of its mission 
+so it might be worth considering some other services as well. 
+
+
+Summary Statement 
+
+This proposal's direction of making mutation tools more useful to 
+developers is novel, and it has a well-laid-out technical plan for 
+achieving the goal. The development of language-agnostic mutation 
+tools is less well motivated, but still technically interesting.
+
+Review 2
+Rating:
+
+Good
+
+Review:
+Summary
+
+In the context of the five review elements, please 
+evaluate the strengths and weaknesses of the proposal with respect to intellectual merit. 
+
+
+Summary: The PI proposes new analysis techniques to improve the quality and usability of program mutation testing. The core novelty of the approach is the use of developers feedback (e.g., marking a mutant as a non-interesting or highly-impactful) to steer mutation testing toward more interesting mutants, in a way that is independent of the underlying programming language. 
+
+Strengths: 
+
+* The proposal aims to make mutation more practical by opportunistically selecting useful mutants, guided by developer's feedback. This can significantly reduce the state-of-the-art mutant generation that produces many incorrect and uninteresting mutants. More fine-grained control over the mutant generation promises to reduce the cost of mutation testing significantly. 
+
+* Since many domain-specific languages do not have dedicated mutation frameworks, building new ones that are operating on the level of the source code and are language-agnostic can result in more rapid testing of the frameworks that operate on these domain-specific languages. 
+
+
+Weaknesses: 
+
+* While the proposal implies that it targets fundamental issues in software engineering and program semantics, I did not see sufficient evidence for this claim. The feedback-directed program analysis is novel, but the emerging area and some recent techniques have recently presented promising results in this avenue. E.g., Raghothaman et al. PLDI 2018 for reducing false alarms in static analysis; an approach like that, which relies on Bayesian reasoning, would likely provide a kind of ranking functions and a feedback-scheme also useful for mutation testing. Comparing to these related approaches would probably better elucidate the planned contribution. 
+
+* The two key topics of this proposal, feedback-driven mutation and any-language mutation could have been better coupled. While I could see the usefulness of a developer (or compiler, when the mutated program is illegal) steering the mutation toward more interesting programs, it was not clear that the effort would be much higher than providing syntactic information about the underlying language. 
+
+* The proposal does not discuss preliminary work and it is hard to assess the initial concrete steps that the PI plans to perform to answer some of the research questions posed in Section 3.3.1. It is also unclear whether the solutions to the majority of posed research questions can be generalized beyond the realm of mutation testing. 
+
+
+
+
+
+
+
+
+
+
+
+In the context of the five review elements, please 
+evaluate the strengths and weaknesses of the proposal with respect to broader impacts. 
+
+If successful, the proposed work has the potential to improve the applicability of mutation testing in the academic and industrial setting and ultimately improve the test suite quality and reliability of software products. However, it is unclear how the proposed approach would generalize beyond mutation testing. The PI plans to include the parts of this research as demos for undergraduate and under-represented students. 
+
+Please evaluate the strengths and 
+weaknesses of the proposal with respect to any additional solicitation-specific review criteria, if 
+applicable 
+
+
+
+Summary Statement 
+
+The proposal discusses approaches for improving mutation testing, including developers feedback to select more promising mutants and developing frameworks that are agnostic of the underlying programming languages. The PI is an expert in mutation testing and is well-qualified to perform the proposed work.
+
+Review 3
+Rating:
+
+Very Good
+
+Review:
+Summary
+
+In the context of the five review elements, please 
+evaluate the strengths and weaknesses of the proposal with respect to intellectual merit. 
+
+The proposes addresses the problem of making mutation testing more 
+practical. The key idea is to introduce an approach for 
+mutation-driven development (MDD), which allows user-feedback to play 
+a key role in the overall mutation testing process. The proposed 
+techniques are in the setting of "any language" mutation testing where 
+certain mutation operators can be applied without the need for parsing 
+the program. 
+
+Mutation testing is a mature research area that is of high importance. 
+While the basics of mutation testing have been well-understood for 
+quite some time, its use in practice is only now seeing an increase. 
+The project is thus quite timely as the improvements resulting from it 
+will be very timely in advancing the use of a key testing technique in 
+the real-world. 
+
+I like the basic ideas presented in this proposal for making mutation 
+testing more practical. The idea of feedback-driven mutation testing 
+where user actions guide the mutation testing process and the 
+generalization to mutation-driven development are very promising in my 
+opinion. The proposed approach not only can make mutation testing 
+more effective but also easier for developers to adapt and integrate 
+in their workflow. 
+
+The PI has a track record of successful projects on testing and 
+verification and is expected to continue to create innovative results. 
+The PIs industrial experience and contacts can play a key 
+role in making the outcomes of the project more valuable and 
+practical. 
+
+Adequate resources are available to the PI to carry out the proposed 
+activities. 
+
+
+In the context of the five review elements, please 
+evaluate the strengths and weaknesses of the proposal with respect to broader impacts. 
+
+The broader impacts of the project are strong. Improved mutation 
+testing can lead to a significant increase in quality of software 
+systems, especially in key domains, e.g., security. The proposed work 
+can bring the power of mutation testing to many languages and systems. 
+The integration of user-feedback in the mutation testing process can 
+help educate the developers how to better engineer the code and tests 
+they write. The PIs experience with mission-critical software will 
+likely enable the project outcomes to impact this important domain. 
+The PI has plans to integrate research outcomes in educational 
+activities. 
+
+
+Please evaluate the strengths and 
+weaknesses of the proposal with respect to any additional solicitation-specific review criteria, if 
+applicable 
+
+
+
+Summary Statement 
+
+The proposal addresses an important problem in software testing and 
+introduces a promising approach that can make mutation testing more 
+effective and practical, especially in view of the PIs past work, and 
+industrial experience and contacts. Furthermore, the broader impacts 
+of the proposal are strong.
+
+Review 4
+Rating:
+
+Fair
+
+Review:
+Summary
+
+In the context of the five review elements, please 
+evaluate the strengths and weaknesses of the proposal with respect to intellectual merit. 
+
++ The overall goal, i.e., making mutation testing useful in a 
+non-research setting, is good 
+
++ The idea of using feedback to improve mutation is reasonable 
+
++ PI's expertise on the subject topic and experience on testing 
+real-life systems 
+
+- Limited novelty in the proposed ideas 
+
+- Challenges in evaluation of the proposed approach 
+
+
+In the context of the five review elements, please 
+evaluate the strengths and weaknesses of the proposal with respect to broader impacts. 
+
++ The proposed work could increase quality of software 
+
+- Education and outreach plan is at a very high level 
+
+
+Please evaluate the strengths and 
+weaknesses of the proposal with respect to any additional solicitation-specific review criteria, if 
+applicable 
+
+Data management plan is reasonable 
+
+Summary Statement 
+
+The proposal aims to make mutation testing useful in non-research 
+settings. This goal is commendable, as mutation testing has mainly 
+been regarded as an approach to evaluating quality of tests, which 
+often takes place in an academic setting. However, the proposed work 
+has limited novelty, i.e., the ideas of ranking mutants in terms of 
+novelty and utility, and the notion of using user feedback to improve 
+the test process. The idea of any language mutant generator based on 
+regular expression-defined transformation is questionable, due to the 
+inherent limitation of regular expressions. 
+
+Further, there are unique challenges in evaluating any approach that 
+incorporates user feedback, e.g. how to control the quality of user 
+feedback as well as its potential impact on the evaluation results. 
+The evaluation plan would be strengthened with more discussion on 
+issues such as how to control variations in user expertise, how to 
+avoid prior knowlege in user feedback, and others.
