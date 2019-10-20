@@ -7,89 +7,73 @@ formal verification and automated testing
 combining Karl Popper's falsification-based notion of
 scientific discovery~\cite{Popper,popperconjectures} with mutation
 testing~\cite{groce2015verified,groce2018verified,mutKernel}.
-The heart of the idea is (1) the proposition that a surviving mutant that is not
-equivalent (or at least equivalent with respect to a given
-specification of correctness) \emph{falsifies} the claim that a given
-formal verification or test effort captures the full notion of
-correctness for a system and (2) the proposal that refining a
-verification or test effort by repeated efforts at falsification is an
+The heart of the idea is (1) a surviving non-equivalent mutant 
+\emph{falsifies} the claim that a given
+formal verification or test effort captures a full notion of
+correctness and (2) refining a
+verification or testing effort by repeated efforts at falsification is an
 effective method for ensuring the quality of verification and testing
-efforts.  This line of work
+efforts.  This
 work resulted in the identification of multiple previously unknown faults in
 the Linux kernel's
 RCU~\cite{MathieuDesnoyers2012URCU,DinakarGuniguntala2008IBMSysJ,McKenney:2013:SDS:2483852.2483867}
 module and the {\tt pyfakefs} Python mock file
 system~\cite{pyfakefs}, despite the existence of very-high-quality
 automated test generation efforts for these
-systems~\cite{rcutorture,TSTL}.  This preliminary work on
+systems~\cite{rcutorture,TSTL}.  Out preliminary work on
 falsification-driven methods proposed a number of algorithms and
-methods for using unkilled mutants to guide model checking efforts,
-estimate needed random testing budgets and loop-bounds in bounded model
-checking~\cite{CBMCp,BMC}, and find bugs in testing and verification
+methods for finding bugs in testing and verification
 harnesses, rather than the code under test.  At a high level, however,
 the core concept was simple:  users should examine all unkilled
 mutants of a program, and for each mutant either understand why it is
-equivalent or uninteresting, or actually construct (with automated
-help) a way to kill it.  In a sense, this simply harkens back to the
-earliest ideas about mutation testing, but with the addition of
-considerable automated support, at least for verification and
-automated testing efforts.
+equivalent or uninteresting, or actually construct a way to kill it.  In a sense, this actually harkens back to the
+earliest ideas about mutation testing, but with 
+much more automated support. 
 
 Unfortunately, the
-methods proposed were, while useful, limited in applicability.  These
-early efforts simply assumed that the number of unkilled mutants to be examined was
+methods proposed were, while useful, limited in applicability.  They simply assumed that the number of unkilled mutants was
 small, and focused on solving the problem of helping a developer or
-test engineer move from an unkilled mutant to an improvement of an
-already very-high-quality
-model-checking harness or  automated test generator.  Human
+test engineer move from an unkilled mutant to killing it.
+In practice, however, human
 attention does not scale to analyzing large numbers of 
-unkilled
-mutants without further assistance in ``triaging'' the mutants,
-however.  The process of manually examining mutants bears a
+unkilled mutants without further assistance in ``triaging'' the mutants.  The process of manually examining mutants bears a
 resemblance to the problem of manual confirmation of results from a
 machine-learning classifier~\cite{OnlyOracle,EndUserMistake}, where even highly-motivated scientific
 users are typically unwilling to examine more than a few tens of
 potentially problematic results~\cite{Segal}.
-The manual mutant-examination process, even aided by
-tools for handling individual mutants, was simply not feasible unless the number of
+The manual mutant-examination process was simply not feasible unless the number of
 unkilled mutants was relatively small, because the testing was already
-very high quality.  Moreover, for a sufficiently large software system, even a
-very high quality verification or testing effort may fail to kill a
+very high quality.  For sufficiently large software systems, even a
+very high quality testing effort may fail to kill a
 large absolute number of mutants.  The original approach simply provided no way to
 scale human efforts to such a needle-in-a-haystack setting. 
 
 This project aims to make the falsification-driven approach to verification and testing feasible for larger
-projects, or those with less effective testing or verification, and extremely easy for
-smaller projects with already-high-quality testing or verification.
+projects, or those with less effective testing or verification.
 Moreover, because this proposal's feedback-driven approach no longer requires small absolute numbers of
 unkilled mutants, it extends the applicability of the approach
-to manual construction of tests to kill mutants, which was not usually in
+to using manual tests to kill mutants, which was not in
 scope when extremely high kill-rates were required.
 
 \subsection{Furthest Point First and Fuzzer Taming}
 
 An unkilled mutant is, conceptually, very similar to a failing test.
-It presents information of possible relevance to a developer or test
-engineer.  The mutant or test \emph{may} indicate the presence of a
-previously unknown fault that needs to be fixed, either in the SUT or in the test suite/test
-generator.  It may indicate the presence of a previously unknown fault
+It presents information of possible relevance to a developer.  The mutant or test \emph{may} indicate the presence of a
+previously unknown fault that needs to be fixed, either in the SUT or in testing.  It may indicate the presence of a previously unknown fault
 of less importance.  It may also indicate an even less interesting
 result:  an equivalent mutant or 
-a ``failure to fail'' of an inherently flaky test.  Or, in many cases, an unkilled
-mutant or failing test may contain information that is either
-important or unimportant, but is uninteresting because \emph{it
-  duplicates information already presented for understanding.}  While
+an inherently flaky test.  Additionally, an unkilled
+mutant or failing test may contain information that is uninteresting because \emph{it
+  duplicates information already examined.}  While
 examining an equivalent mutant is not always useless (e.g., it may indicate
 an opportunity for refactoring or improving the efficiency of code~\cite{ivankovic2018industrial,groce2018verified}), examining a mutant that is
-equivalent to or extremely similar to an already-understood mutant is almost never
-worthwhile --- even if the original mutant provided important,
-actionable information.  That information has already been
-incorporated into the development or testing process.
+equivalent to, or extremely similar to, an already-understood mutant is almost never
+worthwhile.  %That information has already been
+%incorporated into the development or testing process.
 
 Fuzzer taming~\cite{PLDI13} was a solution PI Groce and colleagues proposed to the problem
-of triaging test failures in automated test generation~\cite{SemCrash}.  In compiler
-testing and other fuzzing applications, a core usability issue is that
-tools tend to produce very large numbers of failing tests for a much
+of triaging test failures in automated test generation~\cite{SemCrash}.  
+Fuzzers tend to produce very large numbers of failing tests for a much
 smaller number of distinct bugs.  Finding the set of distinct bugs,
 and identifying important bugs that need to be fixed immediately is
 difficult, because the important bugs may be represented by only one
@@ -117,12 +101,12 @@ added to the ranking, and the process is repeated.  FPF can be
 computed by a greedy algorithm, and is known to approximate novel-item
 discovery for an optimal clustering~\cite{Gonzalez85}.  Preliminary work on the fuzzer taming problem using FPF-based
 techniques~\cite{PLDI13,distMut} can be directly applied
-to the similar (but operationally quite different) problem of ranking
-unkilled mutants such that novel mutants are presented to a user.  The
-research plan (Section
-\ref{sec:fpfplan}), discusses the key \emph{differences} between novelty ranking
-for mutants and
-the fuzzer taming problem.
+to the different problem of ranking
+unkilled mutants such that novel mutants are presented first.  %The
+%research plan (Section
+%\ref{sec:fpfplan}), discusses the key \emph{differences} between novelty ranking
+%for mutants and
+%the fuzzer taming problem.
 
 \subsection{Any-Language Regular-Expression Based Mutation}
 
