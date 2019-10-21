@@ -13,39 +13,34 @@ of coverage of code entities), except for some work in model-checking
 \cite{GroceDist,ChakiLev} and some of the metrics in PI Groce's recent fuzzer
 taming work \cite{PLDI13}.  Reneiris and Reiss initially proposed
 using distance between executions to localize faults
-\cite{NearNeighbor}, and Liu and Han \cite{Liu06}, among others have
-followed this line with various metrics (in their case, using the
-localization of a spectrum-based method to determine distance).
-Vangala et al. proposed using distance to cluster test cases to
-improve diversity and eliminate duplicates \cite{VangalaDist}. Methods
-for clustering to identify bugs all rely on an implicit distance
-determined by a feature set \cite{Podgurski04}.  PI Groce's previous work
+\cite{NearNeighbor}, and Liu and Han \cite{Liu06}, Vangala \cite{VangalaDist}, and others have
+followed this line with various metrics. %(in their case, using the
+%localization of a spectrum-based method to determine distance).
+%Vangala et al. proposed using distance to cluster test cases to
+%improve diversity and eliminate duplicates \cite{VangalaDist}.
+Methods for clustering to identify bugs all rely on a distance \cite{Podgurski04}.  PI Groce's previous work
 has used distance metrics for a variety of purposes
-\cite{PLDI13,icst2014,issta14}.  Adaptive random testing uses
-distances (usually between inputs, not executions, however) to choose
-tests \cite{Chen,ARTChen,ISSTAART}.  Recently, PI Groce proposed a novel,
+\cite{PLDI13,icst2014,issta14}.  Recently, PI Groce proposed a novel,
 causal metric for fuzzer taming and fault localization, itself based on
-mutation testing results~\cite{distMut}.  More generally, work on
-presenting a few mutants to maximize human efforts to improve a
-testing or verification effort
-is related to PI Groce's own work on end-user testing of machine learning
-systems~\cite{EndUserMistake,OnlyOracle}, where the limits of human
-patience are considered as a key factor in a system for presenting
-actionable information to a user.
+mutation testing results \cite{distMut}.  Work on
+presenting a few well-chosen mutants
+is also related to PI Groce's own work on end-user testing of machine learning
+systems \cite{EndUserMistake,OnlyOracle}, where the limits of human
+patience are a key factor.
 
 
 \subsection{Mutation Testing}
 
 There is a vast body of work on mutation testing or analysis.  Mathur attributes~\cite{mathur2012foundations} the original idea for mutation analysis
-to a term paper by Richard Lipton in 1970. Foundational assumptions and
+to Lipton. Foundational assumptions and
 theory were first proposed by DeMillo et al.~\cite{demillo1978hints},
-and the approach was first implemented by Budd et al.~\cite{budd1980theoretical} in 1980.
-Mutation analysis as a theory relies on two fundamental
-assumptions --- \emph{the competent programmer hypothesis},
-and \emph{the coupling effect}, both of which have been widely
-studied~\cite{wah2000atheoretical,wah2003ananalysis,gopinath2017the,offutt1989thecoupling,offutt1992investigations,langdon2010efficient,gopinath2017the,gopinath2014mutations}. This
-proposal is more focused on the practical effectiveness of
-mutation testing than on theoretical justifications.
+and the approach was first implemented by Budd et al.~\cite{budd1980theoretical}.
+%Mutation analysis as a theory relies on two fundamental
+%assumptions --- \emph{the competent programmer hypothesis},
+%and \emph{the coupling effect}, both of which have been widely
+%studied~\cite{wah2000atheoretical,wah2003ananalysis,gopinath2017the,offutt1989thecoupling,offutt1992investigations,langdon2010efficient,gopinath2017the,gopinath2014mutations}. This
+%proposal is more focused on the practical effectiveness of
+%mutation testing than on theoretical justifications.
 
 It has long been argued~\cite{budd1980mutation} that mutation analysis is \emph{stronger}
 than other coverage measures. The subsumption of multiple coverage
@@ -61,8 +56,7 @@ Recent research by Just et al.~\cite{just2014mutants} using 357 real faults
 showed that in 75\% of cases, mutation score and test case
 effectiveness improved together, which is a strong relationship
 compared to the same coupling for coverage (46\%).  More recently,
-Papadakis et. al~\cite{papadakis2018mutation} showed in a large scale study that while there is a
-real relationship between mutation, it is in some sense weak; indeed
+Papadakis et. al~\cite{papadakis2018mutation} showed in a large scale study that the relation is also in some sense weak; indeed
 they summarize their work by stating that ``mutants provide good guidance for improving the
 fault detection of test suites, but their correlation with fault
 detection [is] weak,'' which is a foundational assumption of this
@@ -83,39 +77,38 @@ Similarly, \textit{do faster} approaches seek to
 reduce the time taken for evaluation of a single mutant, and include
 mutant schema generation, code patching, and other methods.
 
-The \emph{do fewer} approaches, especially simple random sampling,
-debuted with the initial research in mutation
-analysis~\cite{budd1980mutation,acree1980mutation}, where it was noticed that
-even a 10\% random sample of mutants can on average be almost as effective (99\%)
-as the complete set of mutants..
-Sampling was further investigated by Mathur~\cite{mathur1991performance}, Wong et
-al.~\cite{wong1993mutation,wong1995reducing}, and Offutt et al.~\cite{offutt1993experimental}.
+%The \emph{do fewer} approaches, especially simple random sampling,
+%debuted with the initial research in mutation
+%analysis~\cite{budd1980mutation,acree1980mutation}, where it was noticed that
+%even a 10\% random sample of mutants can on average be almost as effective (99\%)
+%as the complete set of mutants..
+%Sampling was further investigated by Mathur~\cite{mathur1991performance}, Wong et
+%al.~\cite{wong1993mutation,wong1995reducing}, and Offutt et al.~\cite{offutt1993experimental}.
 
 Determining relative merits of selective mutation strategies such as operator
 selection and random sampling has long been an active field of research~\cite{wong1995reducing,mresa1999efficiency,zhang2010isoperator} 
-Skew in fault representativeness among mutants was initially noticed by Budd et
-al.~\cite{budd1980mutation} who found that particular types of mutants are
-representative for particular kinds of faults. Constrained mutation was
-pioneered by Mathur~\cite{mathur1991performance,mathur1993evaluation}
-and was further investigated by Wong et al.~\cite{wong1994constrained}.
-An extension of this approach called $n$-selection was suggested by
-Offutt et al.~\cite{offutt1993experimental} where the most numerous
-mutation operators were removed one at a time. A set of guidelines for operator selection
-was identified and evaluated by Barbosa et al.\cite{barbosa2001toward}.
+%Skew in fault representativeness among mutants was initially noticed by Budd et
+%al.~\cite{budd1980mutation} who found that particular types of mutants are
+%representative for particular kinds of faults. Constrained mutation was
+%pioneered by Mathur~\cite{mathur1991performance,mathur1993evaluation}
+%and was further investigated by Wong et al.~\cite{wong1994constrained}.
+%An extension of this approach called $n$-selection was suggested by
+%Offutt et al.~\cite{offutt1993experimental} where the most numerous
+%mutation operators were removed one at a time. A set of guidelines for operator selection
+%was identified and evaluated by Barbosa et al.\cite{barbosa2001toward}.
 Namin et al.~\cite{namin2006finding,namin2008sufficient} formulated the
 concept of \emph{sufficient mutation operators}, and
 Untch~\cite{untch2009onreduced} even proposed simply using statement
 deletion as ``the'' mutation operator.  Deng et al.~\cite{deng2013empirical} extended the deletion operator for diverse
 language elements, and obtained an effectiveness of 92\% while reducing the
 number of mutants by 80\%.
-
 The subsumption of individual mutants and mutation operators is also an active
 area of research~\cite{gopinath2016measuring,shin2016theoretical,lindstrom2015redundant}.
-Higher order mutants (HOM) aim to improve the quality of
-mutants by combining simpler mutants into more complex mutants. Jia et
-al.~\cite{jia2009higher,jia2008constructing}, found that the number of mutants
-can be reduced by 50\% by making use of subsumption of simpler mutants
-by higher order mutants.
+%Higher order mutants (HOM) aim to improve the quality of
+%mutants by combining simpler mutants into more complex mutants. Jia et
+%al.~\cite{jia2009higher,jia2008constructing}, found that the number of mutants
+%can be reduced by 50\% by making use of subsumption of simpler mutants
+%by higher order mutants.
 Mutation clustering\cite{derezinska2015toward,strug2012machine,hussain2008mutation} is another \emph{do-fewer}
 approach where similar mutants are identified based on various
 properties.
@@ -147,10 +140,10 @@ total mutation score of a
 test suite, efficiently.  The assumption is that mutation testing is
 meant to be, like a coverage metric, a kind of ``evaluation'' of a
 test suite, a number used to say ``this is a good test suite'' or at
-least ``this is a better test suite than that test suite.''  While
-important for some real-world purposes (evaluating QA efforts) and
-certainly for software testing research, that is not the focus of this
-proposal, which considers the problem of presenting unkilled mutations to
+least ``this is a better test suite than that test suite.''  In contrast,
+%important for some real-world purposes (evaluating QA efforts) and
+%certainly for software testing research, that is not the focus of 
+this proposal considers the problem of presenting unkilled mutations to
 a developer or test engineer in a way that facilitates the improvement
 of a test suite and the detection of faults.  This is inspired by PI Groce's
 previous work on using mutation to find defects in formal verification
@@ -172,7 +165,7 @@ bitcode.  Nonetheless, the goals, methods, and results of this work
 will inform this proposal's approach, in particular in the utility estimation
 aspect that balances FPF-determined novelty.
 
-The single most relevant work by others, however, is to be found in a
+The single most relevant work by others is to be found in a
 report on actual techniques in use at Google for applying mutation
 testing to real-world projects~\cite{MutGoogle}.  Their approach also
 uses a notion of feedback, but this is manually handled and based on
@@ -188,14 +181,14 @@ this approach considered in this proposal targets the individual developing, tes
 element (either a small project, or a component of a project), and
 assumes an iterative process, where developers consider one unkilled
 mutant at a time.  The Google approach does not attempt to prioritize
-between the unkilled mutants it surfaces, or support custom mutation
+the unkilled mutants it surfaces, or support custom mutation
 operators, or learn an individual testing effort's characteristics.
-It is, instead, for obvious reasons, more an attempt to select mutants
-in an industrial scale code review setting than an effort to propose a
+It is an attempt to select mutants
+in an industrial scale code review setting, not an effort to propose a
 new way to construct or enhance test suites; e.g., it only even
 proposes mutants of code in a diff with a previous version of the
 code, which makes it completely unusable in after-the-fact testing and
-verification efforts that do not have code changes.  Further, it uses
+verification efforts.  Further, it uses
 Google-wide coding conventions and developer suggestions to fix
 heuristics such as ``avoid mutation of logging statements'' rather
 than trying to learn (with human assistance) such heuristics for
@@ -219,7 +212,7 @@ isolated setting, such as development of embedded software, where
 crowdsourcing is impractical.  Another key difference is that, while their
 work used EvoSuite to enhance a test suite to kill additional mutants,
 the assumption was that most suite enhancement would be due to
-developers adding manual tests.  Furthermore, it is generally true that mutants
+developers adding manual tests.  Furthermore, we argue mutants
 are neither ``productive'' or ``unproductive'' in an absolute sense, but
 rather the value of a mutant also depends on previous mutants a
 developer has manually examined, and the results of that examination;
@@ -232,9 +225,8 @@ mutation operators, and separating the generation of mutants from
 language or build-environment specific techniques for pruning invalid
 mutants.  This aspect of the proposal primarily builds on PI Groce's initial work on the topic of
 regular-expression-based mutant generation~\cite{regexpMut} and
-Holzmann's work on lightweight textual code analysis with
-Cobra~\cite{Cobra}.  Trivial compiler equivalence~\cite{TCE} is a key
-technology for supporting effective any-language mutation; especially
-in the context of this proposal, where executing all mutants is not
-the goal, simply letting the compiler handle many validity and
-equivalence questions is a simple and effective approach.
+{\bf DISCUSS COMBY}.  %Trivial compiler equivalence~\cite{TCE} is a key
+%technology for supporting effective any-language mutation; especially
+%in the context of this proposal, where executing all mutants is not
+%the goal, simply letting the compiler handle many validity and
+%equivalence questions is a simple and effective approach.
