@@ -12,24 +12,22 @@ University of Utah.
 %``tame'' fuzzer output~\cite{PLDI13fuzzing}, a problem addressable with better mutation
 %infrastructure.  
 The results of CCF-1217824 included a preliminary exploration of how to
-``tame'' fuzzer output, a problem also central to this proposal
-\cite{PLDI13}.  In previous work, the goal was to find an algorithm
-for using hand-chosen distance metrics to identify bugs in tests; in
-this proposal, other methods for taming fuzzers are addressed.
-A key result from CCF-1217824
-is the development of a strategy for creating ``quick tests''~\cite{icst2014}, which won the
-Best Paper award at ICST 2014 for showing tests thus
-reduced can serve as effective regression tests or seeds for
-symbolic execution~\cite{stvrcausereduce, issta14}.  Moreover, benefits do not depend on 100\%
-preservation of a property~\cite{AlipourETAL16TestReduction}.   Other results include an overview of the value of coverage in
-testing experiments~\cite{Onward14} and exploration of how individual
-test features impact the coverage and fault detection statistics of
-random tests~\cite{helphelp}.  
+``tame'' fuzzer output, a problem also central to this proposal~\cite{PLDI13}.  In previous work, the goal was to find an algorithm
+for using hand-chosen distance metrics to identify bugs in tests.
+%A key result from CCF-1217824
+%is the development of a strategy for creating ``quick tests''~\cite{icst2014}, which won the
+%Best Paper award at ICST 2014 for showing tests thus
+%reduced can serve as effective regression tests or seeds for
+%symbolic execution~\cite{stvrcausereduce, issta14}.  Moreover, benefits do not depend on 100\%
+%preservation of a property~\cite{AlipourETAL16TestReduction}.   Other results include an overview of the value of coverage in
+%testing experiments~\cite{Onward14} and exploration of how individual
+%test features impact the coverage and fault detection statistics of
+%random tests~\cite{helphelp}.  
 %The basic swarm testing approach has
 %been extended to allow production of focused random tests targeting
 %particular code~\cite{DirectedSwarm}.  
-All of these results used
-mutation testing. 
+Many other key results~\cite{DirectedSwarm,issta14,helphelp,Onward14} used mutation testing as an
+evaluation method.
 {\bf Broader Impacts:} 
 %\subsection{Broader Impacts}
 CCF-1217824 has contributed to the discovery of previously
@@ -41,9 +39,10 @@ the quality of compilers, including LLVM and GCC, and to test core language
 tools in
 general~\cite{ZhendongPLDI14,beginnerluck,dewey2015fuzzing,le2015randomized}. 
 {\bf Research Products:}
-%\subsection{Research Products}
-Several publications resulted from this grant, including
-those cited above and numerous others ~\cite{Onward14,PLDI13,issta14,icst2014,helphelp,DirectedSwarm,stvrcausereduce,tstlsttt,ISSTA15,AlipourETAL16TestReduction,tstlsttt,NFM15},
+% \subsection{Research Products}
+Publications resulting from CCF-1217824 were numerous~\cite{Onward14,PLDI13,issta14,icst2014,helphelp,DirectedSwarm,stvrcausereduce,tstlsttt,ISSTA15,AlipourETAL16TestReduction,tstlsttt,NFM15},
 along with three PhD theses.  Source code for software systems
 developed or enhanced during CCF-1217824~\cite{swarmtools,TSTL}  is
 available on GitHub.
+
+{\bf CLG:  NEED YOUR NSF PRIOR}

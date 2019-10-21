@@ -182,30 +182,32 @@ as blocks and nested delimiters.  A key goal in this project is to
 enhance the regular-expression language (without losing its simplicity
 for ``normal'' operators) with the ability to express, in a
 language-independent, syntactic form, such context-dependent aspects
-of code; the Cobra code-checking tool's language~\cite{Cobra} is an
-example of the kind of approach desired, though the language itself
-must be different, since transformation,
-not just detection, is the expressive content of a mutation operator.
+of code.
+
+{\bf CLG: COMBY HERE}
+
+%the Cobra code-checking tool's language~\cite{Cobra} is an
+%example of the kind of approach desired, though the language itself
+%must be different, since transformation,
+%not just detection, is the expressive content of a mutation operator.
 Moreover, the generator will also need to be improved to allow users
 to easily specify novel build environments and plug-ins for checking
-Trivial Compiler Equivalence~\cite{TCE} to make the entire feedback-driven
-mutation process workable.  To some extent, an efficient mutation
-generator needs to incorporate aspects of mutation execution and even
-post-mortem analysis of the results of a mutant.  Finally, for
-extremely large projects, simply generating and storing all mutants
-may be inefficient, and rather than processing the entire source code
-and applying all mutation rules, a demand-driven mode that only
-produces new mutants likely to be novel and of high utility may be required.
+Trivial Compiler Equivalence~\cite{TCE} to make the entire
+feedback-driven mutation process workable.  Because some distance
+metrics may require compiling mutants, which is costly, a specialized
+projection of the distance only requiring textual analysis will need
+to be developed, to allow generation, compilation, and execution of
+only high-priority mutants for very large projects.
 
 \subsection{Mutation-Driven-Development}
 
 Rather than a separate research focus, the idea of
-mutation-driven-development will be a goal that informs the other
-research topics covered in this proposal.  In particular, once tools
+mutation-driven-development will inform the other
+research topics.  In particular, once tools
 reach sufficient maturity, they will be used to conduct preliminary
-experiments in MDD as a methodology.  In a sense, MDD is more central
-to the evaluation of this proposal's results than a separate research
-thrust, as discussed in the Evaluation Plan (Section \ref{sec:mevalplan}).
+experiments in MDD as a methodology.  %In a sense, MDD is more central
+%to the evaluation of this proposal's results than a separate research
+%thrust, as discussed in the Evaluation Plan (Section \ref{sec:mevalplan}).
 
 \subsection{Core Research Questions}
 
@@ -213,16 +215,15 @@ The component-focused sections above provide an overview of the
 research problems to be addressed by this proposal, but it is also
 useful to consider the high-level research questions to be addressed,
 some of which are cross-cutting concerns independent of any single
-component, but potentially important to the development of a
-practical, maximally efficient, feedback-driven mutation approach.
+component.
 
-\subsubsection{Research Questions for Feedback-Driven Mutation Testing
-in General}
+\subsubsection{Feedback-Driven Mutation Testing
+Research Questions}
 
 %\begin{framed}
 \begin{enumerate}
-\item What is a good generalized, language-agnostic representation
-  of and distance metric for program mutants for use in FPF?
+\item What is a good generalized, language-agnostic mutant representation
+  and distance metric?
 \item How can FPF-based selection of mutants for novelty best incorporate
   predictions of mutant equivalence, outcome, dominance, and
   productivity?  Is novelty or expected utility more important?
@@ -232,13 +233,12 @@ in General}
 \item Can mini-crowds be effectively leveraged to enhance the utility of user feedback?
 \item Is it possible to identify outliers in otherwise similar groups of
   mutants, (e.g. one killed mutant in a cluser of unkilled mutants) and is such identification useful to users?
-\item How should budgets for automated test generation and
-  timeouts for verification efforts be chosen so as to quickly estimate whether a
+\item How can we quickly estimate whether a
   mutant is killable?
 \item Is it possible to predict whether a mutant's unkillability is due to poor test 
   generation (hard to reach error states), oracle weakness
-  (unidentified error states), or likely real semantic equivalence? 
-\item How can feedback-driven mutation testing most effectively use already generated killing tests
+  (unidentified error states), or actual semantic equivalence? 
+\item How can  we most effectively use already generated killing tests
   and counterexamples to prune mutants?
 \item Is distance-based clustering plus timing information useful for quickly
   eliminating killable mutants similar to already-killed mutants?  How
@@ -247,12 +247,12 @@ in General}
 \end{enumerate}
 %\end{framed}
 
-\subsubsection{Research Questions Specific to Any-Language Mutation}
+\subsubsection{Any-Language Mutation Research Questions}
 
 %\begin{framed}
 \begin{enumerate}
 \item What advances are required in order to maximize the efficiency and usability of a
-  fundamentally language-agnostic regular-expression-based approach to
+  fundamentally language-agnostic approach to
   mutant generation?
 \item How should the language of regular expressions be extended to allow
   for language-agnostic definition of mutation operators that require

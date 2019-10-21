@@ -49,8 +49,8 @@ large absolute number of mutants.  The original approach simply provided no way 
 scale human efforts to such a needle-in-a-haystack setting. 
 
 This project aims to make the falsification-driven approach to verification and testing feasible for larger
-projects, or those with less effective testing or verification.
-Moreover, because this proposal's feedback-driven approach no longer requires small absolute numbers of
+projects, and those with lower mutation scores.
+Because this proposal's feedback-driven approach no longer requires small absolute numbers of
 unkilled mutants, it extends the applicability of the approach
 to using manual tests to kill mutants, which was not in
 scope when extremely high kill-rates were required.
@@ -128,8 +128,40 @@ As it stands, the tool and approach form a suitable platform for
 generating mutants to be used in this project's early phases.  The
 research plan (in Section \ref{sec:anylangplan}) discusses enhancements to the approach and tool that will be required
 to better support robust, flexible, efficient feedback-driven mutation
-testing.  We also implemented a prototype version of mutant priorization, without feedback, in the tool, and the promising (but limited) effectiveness in helping analyze a set of over 45,000 mutants of on-blockchain smart contracts, discussed below in more detail, were highly encouraging.
+testing.
 
-{\bf TALK ABOUT COMBY HERE.}
+{\bf CLG: TALK ABOUT COMBY HERE.}
+
+\subsection{Preliminary Use of FPF-Based Mutant Ranking}
+
+In collaboration with security analysts at Trail of Bits, PI Groce
+implemented a prototype version of mutant priorization, without
+feedback, using a manually constructed distance metric tailored to
+Solidity smart contracts.  This was an essential step in an effort to
+use mutation analysis to compare three static analysis tools for smart
+contracts~\cite{slitherpaper,sc:smartcheck,securify}.  The comparison of three such tools over 100 random contracts
+from the Ethereum blockchain~\cite{buterin2013whitepaper,wood2014yellow} required analysis of 46,769 mutants, with
+46,752 of these not killed by at least one static analysis tool.
+Sorting through the surviving mutants to understand weaknesses of the
+tools was simply not possible without using a simple version of the
+FPF ranking algorithm, combined with an \emph{ad hoc} distance
+metric.  With even this rudimentary, untuned version of our approach,
+PI Groce and Trail of Bits engineers identified three significant new
+detectors, which were implemented and added to the Slither static
+analysis tool~\cite{slitherpaper}.  These are currently in use by Trail of Bits for
+security audits, and will be released to the public after tuning.  Without the FPF ranking, finding these three
+opportunities for improving Slither would not have been feasible.  To
+our knowledge, the use of mutation to compare and improve static
+analysis tools, rather than test suites, is novel, and we believe that
+feedback-driven approaches are essential in this setting, since kill
+rates will obviously always be relatively low for purely static
+analysis without a specification.  The preliminary results from the
+Solidity mutation analysis are available at
+\url{https://github.com/agroce/slithermutate}, with a publication to
+follow once the same technique has been applied to other languages.
+
+
+
+
 
 

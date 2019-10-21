@@ -47,36 +47,35 @@ than other coverage measures. The subsumption of multiple coverage
 measures by mutation analysis, including all the basic coverage measures~\cite{myer1979art}
 was shown by Offutt~\cite{offutt1996subsumption}, and data flow
 subsumption was demonstrated by Mathur~\cite{mathur1994empirical}.
-Daran et al.~\cite{daran1996software} found that mutation analysis produces
-faults that are similar to actual faults in terms of the error traces produced. Andrews et
-al.~\cite{andrews2005mutation,andrews2006using} found that ease of detection
-of mutants was similar to that of real faults when compared to manually
-generated faults (in that manually generated faults were harder to find).
+%Daran et al.~\cite{daran1996software} found that mutation analysis produces
+%faults that are similar to actual faults in terms of the error traces
+%produced.
+Andrews et al.~\cite{andrews2005mutation,andrews2006using} found that ease of detection
+of mutants was similar to that of real faults.
 Recent research by Just et al.~\cite{just2014mutants} using 357 real faults
 showed that in 75\% of cases, mutation score and test case
 effectiveness improved together, which is a strong relationship
-compared to the same coupling for coverage (46\%).  More recently,
+compared to that for coverage (46\%).  More recently,
 Papadakis et. al~\cite{papadakis2018mutation} showed in a large scale study that the relation is also in some sense weak; indeed
 they summarize their work by stating that ``mutants provide good guidance for improving the
 fault detection of test suites, but their correlation with fault
 detection [is] weak,'' which is a foundational assumption of this
-proposal.  Ahmed et al., using a very different approach, reached a similar
+proposal.  Ahmed et al. reached a similar
 conclusion about the potentially high value for suite improvement, but weak correlation of mutation
 analysis results~\cite{ahmed_testedness}.
 
-Cost of execution is often~\cite{jia2011analysis} considered 
-to be the most problematic aspect of practical mutation testing.
-Numerous approaches exist, that seek to reduce the cost of mutation
+%Cost of execution is often~\cite{jia2011analysis} considered 
+%to be the most problematic aspect of practical mutation testing.
+Numerous approaches seek to reduce the cost~\cite{jia2011analysis} of mutation
 analysis. Offutt and Untch~\cite{offutt2001mutation} categorize these,
 as: do \textit{fewer}, do \textit{smarter}, and do \textit{faster} approaches.
 Operator selection, mutant sampling, and mutant clustering fall under
 \textit{do fewer} --- approaches that seek to reduce the number of mutants
-evaluated.  The \emph{do smarter} approaches seek to reduce the time taken
-for the entire mutation analysis by intelligently managing the various phases.
-Similarly, \textit{do faster} approaches seek to
-reduce the time taken for evaluation of a single mutant, and include
-mutant schema generation, code patching, and other methods.
-
+evaluated.  \emph{Do smarter} approaches seek to reduce the time taken
+for the entire mutation analysis by intelligent organization.
+\textit{Do faster} approaches seek to
+reduce the time taken for evaluation of a single mutant.%, and include
+%mutant schema generation, code patching, and other methods.
 %The \emph{do fewer} approaches, especially simple random sampling,
 %debuted with the initial research in mutation
 %analysis~\cite{budd1980mutation,acree1980mutation}, where it was noticed that
@@ -84,7 +83,6 @@ mutant schema generation, code patching, and other methods.
 %as the complete set of mutants..
 %Sampling was further investigated by Mathur~\cite{mathur1991performance}, Wong et
 %al.~\cite{wong1993mutation,wong1995reducing}, and Offutt et al.~\cite{offutt1993experimental}.
-
 Determining relative merits of selective mutation strategies such as operator
 selection and random sampling has long been an active field of research~\cite{wong1995reducing,mresa1999efficiency,zhang2010isoperator} 
 %Skew in fault representativeness among mutants was initially noticed by Budd et
@@ -98,10 +96,10 @@ selection and random sampling has long been an active field of research~\cite{wo
 %was identified and evaluated by Barbosa et al.\cite{barbosa2001toward}.
 Namin et al.~\cite{namin2006finding,namin2008sufficient} formulated the
 concept of \emph{sufficient mutation operators}, and
-Untch~\cite{untch2009onreduced} even proposed simply using statement
-deletion as ``the'' mutation operator.  Deng et al.~\cite{deng2013empirical} extended the deletion operator for diverse
-language elements, and obtained an effectiveness of 92\% while reducing the
-number of mutants by 80\%.
+others~\cite{untch2009onreduced, deng2013empirical} even proposed simply using statement
+deletion as ``the'' mutation operator.  %Deng et al.~\cite{deng2013empirical} extended the deletion operator for diverse
+%language elements, and obtained an effectiveness of 92\% while reducing the
+%number of mutants by 80\%.
 The subsumption of individual mutants and mutation operators is also an active
 area of research~\cite{gopinath2016measuring,shin2016theoretical,lindstrom2015redundant}.
 %Higher order mutants (HOM) aim to improve the quality of
@@ -116,28 +114,24 @@ properties.
 There has been extensive work on comparison of mutation
 reduction strategies~\cite{zhang2010isoperator,zhang2013operator}.
 Zhang et al.~\cite{zhang2014an} investigated the scalability of
-selective mutation by considering how well a randomly sampled set of mutants
-represent the original population. 
+selective mutation. 
 In previous work~\cite{gopinath2016on} PI Groce showed that there is
 an upper bound on the improvement
 in \emph{mean effectiveness} that is possible using even
 an ideal mutation reduction strategy using post-hoc oracular knowledge of mutant
-kills. We later extended that result by evaluating the actual improvement
+kills, and later evaluated the actual improvement
 achieved by extant mutation reduction strategies, when they do not
-unrealistically have access to the
-mutant kills achieved~\cite{gopinath2017mutation}.  Recent work on Predictive 
+unrealistically have access to 
+mutant kills~\cite{gopinath2017mutation}.  Recent work on Predictive 
 Mutation Testing (PMT)~\cite{zhang2016predictive} applies machine 
 learning to build a model that can predict mutation results without 
-actually running mutation testing, a novel and promising
-\emph{do-smarter} approach.
-
-
+actually running mutation testing.
 
 \subsubsection{Practical Mutation Analysis}
 
 The above work largely focuses on computing or at least estimating the
 total mutation score of a
-test suite, efficiently.  The assumption is that mutation testing is
+test suite.  The assumption is that mutation testing is
 meant to be, like a coverage metric, a kind of ``evaluation'' of a
 test suite, a number used to say ``this is a good test suite'' or at
 least ``this is a better test suite than that test suite.''  In contrast,
@@ -225,7 +219,7 @@ mutation operators, and separating the generation of mutants from
 language or build-environment specific techniques for pruning invalid
 mutants.  This aspect of the proposal primarily builds on PI Groce's initial work on the topic of
 regular-expression-based mutant generation~\cite{regexpMut} and
-{\bf DISCUSS COMBY}.  %Trivial compiler equivalence~\cite{TCE} is a key
+{\bf CLG: DISCUSS COMBY}.  %Trivial compiler equivalence~\cite{TCE} is a key
 %technology for supporting effective any-language mutation; especially
 %in the context of this proposal, where executing all mutants is not
 %the goal, simply letting the compiler handle many validity and
