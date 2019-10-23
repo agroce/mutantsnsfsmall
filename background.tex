@@ -125,12 +125,32 @@ Go, and the Solidity smart-contract language.  The {\tt universalmutator} allows
 automated analysis of mutants, coverage-based pruning of mutants, and
 (in some languages) trivial compiler equivalence~\cite{TCE} checks.
 As it stands, the tool and approach form a suitable platform for
-generating mutants to be used in this project's early phases.  The
+generating mutants to be used in this project's early phases.
+
+{\bf CLG: TALK ABOUT COMBY HERE.}
+Recent work by PI CLG \& co. develops a new representation to declaratively
+transform richer syntactic structures in programs across multiple
+languages~\cite{rvt-ppc}. This work demonstrates practical utility by
+performing lightweight refactors in more than 10 languages (including those
+targetted by {\tt universalmutator}). The associated tool, {\tt
+comby}~\cite{comby-github}, enables a new language-general way of expressing
+transformations that regular expressions cannot typically recognize (e.g.,
+nested code blocks). Current mutation testing approaches largely rely on either
+sophisticated language-specific tools that fail to generalize to other
+languages~\cite{?} or rudimentary textual manipulation~\cite{?} that miss the
+addressable test surface. Coupling declarative syntax manipulation with
+mutation testing promises to yield greater effectiveness by (a) targetting more
+sophisticated properties of programs, and (b) delivering more user-accessible
+tools for developing mutation transformations. Such a midway is
+largely unexplored in current solutions. However, recent advances in respective
+real-world tooling (i.e., in {\tt universalmutator} and {\tt comby}) suggest that
+this midway is imminently feasible.
+
+The
 research plan (in Section \ref{sec:anylangplan}) discusses enhancements to the approach and tool that will be required
 to better support robust, flexible, efficient feedback-driven mutation
 testing.
 
-{\bf CLG: TALK ABOUT COMBY HERE.}
 
 \subsection{Preliminary Use of FPF-Based Mutant Ranking}
 
