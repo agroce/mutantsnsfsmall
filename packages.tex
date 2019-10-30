@@ -69,7 +69,9 @@
 \usepackage{graphicx}
 \graphicspath{{figs/}}
 
-\usepackage{subfig}  % Sub-figures
+% \usepackage{subfig}  % Sub-figures
+\usepackage{caption}
+\usepackage{subcaption}
 % \usepackage{color}   % Support colors
 \usepackage[svgnames, rgb]{xcolor}  % Support for color with standard names
 
@@ -124,6 +126,8 @@
 
 % For typesetting source code
 %\usepackage{listings}
+\usepackage{fancyvrb}
+
 
 % Notes, comments
 % \usepackage{todonotes}
@@ -132,7 +136,7 @@
 % Review tools: Note, todo, instruction, etc.
 \usepackage[tikz]{mdframed}
 
-\global\mdfdefinestyle{instructionbox}{% 
+\global\mdfdefinestyle{instructionbox}{%
   backgroundcolor=black!10,
   rightline=false,
   topline=false,
@@ -140,7 +144,7 @@
   linecolor=black,
   linewidth=2pt}
 
-\global\mdfdefinestyle{todobox}{% 
+\global\mdfdefinestyle{todobox}{%
   backgroundcolor=orange!30,
   rightline=false,
   topline=false,
