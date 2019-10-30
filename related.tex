@@ -64,7 +64,7 @@ proposal.  Ahmed et al. reached a similar
 conclusion about the potentially high value for suite improvement, but weak correlation of mutation
 analysis results~\cite{ahmed_testedness}.
 
-%Cost of execution is often~\cite{jia2011analysis} considered 
+%Cost of execution is often~\cite{jia2011analysis} considered
 %to be the most problematic aspect of practical mutation testing.
 Numerous approaches seek to reduce the cost~\cite{jia2011analysis} of mutation
 analysis. Offutt and Untch~\cite{offutt2001mutation} categorize these,
@@ -84,7 +84,7 @@ reduce the time taken for evaluation of a single mutant.%, and include
 %Sampling was further investigated by Mathur~\cite{mathur1991performance}, Wong et
 %al.~\cite{wong1993mutation,wong1995reducing}, and Offutt et al.~\cite{offutt1993experimental}.
 Determining relative merits of selective mutation strategies such as operator
-selection and random sampling has long been an active field of research~\cite{wong1995reducing,mresa1999efficiency,zhang2010isoperator} 
+selection and random sampling has long been an active field of research~\cite{wong1995reducing,mresa1999efficiency,zhang2010isoperator}
 %Skew in fault representativeness among mutants was initially noticed by Budd et
 %al.~\cite{budd1980mutation} who found that particular types of mutants are
 %representative for particular kinds of faults. Constrained mutation was
@@ -114,17 +114,17 @@ properties.
 There has been extensive work on comparison of mutation
 reduction strategies~\cite{zhang2010isoperator,zhang2013operator}.
 Zhang et al.~\cite{zhang2014an} investigated the scalability of
-selective mutation. 
+selective mutation.
 In previous work~\cite{gopinath2016on} PI Groce showed that there is
 an upper bound on the improvement
 in \emph{mean effectiveness} that is possible using even
 an ideal mutation reduction strategy using post-hoc oracular knowledge of mutant
 kills, and later evaluated the actual improvement
 achieved by extant mutation reduction strategies, when they do not
-unrealistically have access to 
-mutant kills~\cite{gopinath2017mutation}.  Recent work on Predictive 
-Mutation Testing (PMT)~\cite{zhang2016predictive} applies machine 
-learning to build a model that can predict mutation results without 
+unrealistically have access to
+mutant kills~\cite{gopinath2017mutation}.  Recent work on Predictive
+Mutation Testing (PMT)~\cite{zhang2016predictive} applies machine
+learning to build a model that can predict mutation results without
 actually running mutation testing.
 
 \subsubsection{Practical Mutation Analysis}
@@ -136,7 +136,7 @@ meant to be, like a coverage metric, a kind of ``evaluation'' of a
 test suite, a number used to say ``this is a good test suite'' or at
 least ``this is a better test suite than that test suite.''  In contrast,
 %important for some real-world purposes (evaluating QA efforts) and
-%certainly for software testing research, that is not the focus of 
+%certainly for software testing research, that is not the focus of
 this proposal considers the problem of presenting unkilled mutations to
 a developer or test engineer in a way that facilitates the improvement
 of a test suite and the detection of faults.  This is inspired by PI Groce's
@@ -145,7 +145,7 @@ and automated test generation
 efforts~\cite{groce2015verified,groce2018verified,mutKernel}.
 
 Very recent work by Papadakis et al. (some unpublished in a conference
-of journal at the time this proposal was written) has 
+of journal at the time this proposal was written) has
 aimed, unusually, at predicting the ``quality'' of~\cite{MutQuality}
 or even prioritizing~\cite{FaRM} mutants, to rank fault-revealing
 mutants highly so that users can produce tests to find faults.  This
@@ -186,7 +186,7 @@ verification efforts.  Further, it uses
 Google-wide coding conventions and developer suggestions to fix
 heuristics such as ``avoid mutation of logging statements'' rather
 than trying to learn (with human assistance) such heuristics for
-projects that may vary widely in language and coding style.  
+projects that may vary widely in language and coding style.
 The techniques used in this proposal may be useful in generalizing or enhancing an
 effort such as Google's, however, and share the focus on mutants as
 tools for focusing developer/tester attention and producing action on the
@@ -214,12 +214,15 @@ this project embodies this concept in the FPF-centric workflow.
 
 A second thrust of the efforts in this proposal is to simplify the
 development, maintenance, and (especially) extension of mutation
-testing tools by using an extension of regular expressions to define
-mutation operators, and separating the generation of mutants from
+testing tools by
+expanding the expressive power for
+% using an extension of regular expressions to define
+mutation operators through domain-specific templates, and separating the generation of mutants from
 language or build-environment specific techniques for pruning invalid
 mutants.  This aspect of the proposal primarily builds on PI Groce's initial work on the topic of
 regular-expression-based mutant generation~\cite{regexpMut} and
-{\bf CLG: DISCUSS COMBY}.  %Trivial compiler equivalence~\cite{TCE} is a key
+PI Le Goues's work on declarative transformation for multiple languages~\cite{rvt-ppc}.
+% {\bf CLG: DISCUSS COMBY}.  %Trivial compiler equivalence~\cite{TCE} is a key
 %technology for supporting effective any-language mutation; especially
 %in the context of this proposal, where executing all mutants is not
 %the goal, simply letting the compiler handle many validity and
