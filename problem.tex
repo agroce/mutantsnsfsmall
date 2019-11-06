@@ -24,23 +24,11 @@ using mutants to drive formal verification and automated
 testing~\cite{groce2015verified,groce2018verified,mutKernel}.
 
 
-\begin{figure}
-\centering
-\includegraphics[width=0.8\columnwidth]{TestFlow}
-
-\caption{Basic flow of feedback-driven mutation testing. FIXME: unify caption
-  phrasing with ``just enough mutation testing'' while still talking about
-  feedback-driven mutation.}
-\label{fig:flow}
-\end{figure}
-
-Our goal is to enable \emph{Just Enough Mutation Testing}.  We propose a
-mutation testing framework that identifies and presents a few, very different,
-ranked mutants, and then works with the user to use those mutants to effectively
-improve the program, the test suite, or both.  Figure~\ref{fig:flow}
- shows the basic outline of a proposed workflow
-and components needed to support this agenda.  These components serve to
-organize our research plan, which requires several fundamental novelties:
+Our goal is to enable \emph{Just Enough Mutation Testing}: We propose a mutation
+testing framework that identifies and interactively presents a few, very
+different, ranked mutants, and then works with the user to use those mutants to
+effectively improve the program, the test suite, or both.  Our proposal requires
+several fundamental novelties:
 \begin{itemize}
 \item \textbf{Efficient, any-language mutation testing.}  The most widely used
   mutation testing tool in the real world is PIT~\cite{pittest}, which targets
@@ -137,23 +125,27 @@ of mutants to inspect based on expected utility or payoff for the user.
 
 \subsection{Problem Statement}
 
-This project aims to make the use of program mutants practical in non-research settings, in a way that meets developers' actual needs: to make it possible for someone creating or enhancing a test suite to (1) use ``just enough'' mutation testing for their needs, maximizing benefit gained in exchange for work performed, and to (2) work in any programming language without worrying about the quality of tool support provided for mutation testing, and without sacrificing the ease of understanding of source-based mutants, while easily adding custom mutation operators that target their specific software development task.  This project also aims to make use of the insights of Test-Driven-Development (TDD), and proposes using mutation testing to move beyond a paradigm where developers build a series of tests narrowly tailored to steps in development, and use Mutation-Driven-Development (MDD) to build automated test generators or verification harnesses that handle not only anticipated problems imagined during development, but problems not anticipated by developers.  In addition to traditional manual testing, this proposal targets property-driven testing and full formal verification of software components, in order to be practical in the future, when software systems will often be so safety- or mission- critical that even ``good'' manual testing is simply not an acceptable approach.
+Overall, this project aims to make the use of program mutants practical in
+non-research settings, in a way that meets developers' actual needs: to make it
+possible for someone creating or enhancing a test suite to (1) use ``just
+enough'' mutation testing for their needs, maximizing benefit gained in exchange
+for work performed, and to (2) work in any programming language without worrying
+about the quality of tool support, and while providing intuitive source-based
+mutants and easy customization.  This project also aims to make use of the insights of
+Test-Driven-Development (TDD), and proposes using mutation testing to move
+beyond a paradigm where developers build a series of tests narrowly tailored to
+steps in development, and use Mutation-Driven-Development (MDD) to build
+automated test generators or verification harnesses that handle not only
+anticipated problems imagined during development, but problems not anticipated
+by developers.  In addition to traditional manual testing, this proposal targets
+property-driven testing and full formal verification of software components, in
+order to be practical in the future, when software systems will often be so
+safety- or mission- critical that even ``good'' manual testing is simply not an
+acceptable approach. 
 
-\subsubsection{Just Enough Mutation Testing: Feedback-Driven Mutation Testing}
 
 
-What a user really wants is a tool that presents a few, very different, ranked,
-mutants, all likely to be of interest, and revises the presented mutants and
-their ranking based on actions taken by the user --- adding tests, fixing
-faults, marking certain mutants as equivalent or uninteresting, and perhaps
-assigning a priority and severity to both killed or dismissed mutants and any
-remaining un-handled mutants. 
 
-
-Many mutants will be
-pruned as part of an uninteresting category before they are ever executed, and
-others will be omitted because they are ranked too low for the user to ever
-consider. 
 
 \begin{framed}
 {\bf Problem:}  Develop highly automated methods and tools that allow the
@@ -163,68 +155,40 @@ minimizing user effort and maximizing the ability to quickly find the most
 important weaknesses of testing or verification. 
 \end{framed}
 
-\subsubsection{Any-Language Mutation Testing}
-
-One ongoing limitation of mutation testing is that tools are often research
-projects, and eventually become unusable due to lack of support, even in
-mainstream languages such as Java and C~\cite{MutChoice}.
-
-This is because mutation tools that parse a language and guarantee generation of
-valid programs in the source language are complex, hard-to-maintain-and-extend
-systems; language complexity makes such a tool for C++, for example, an
-extremely daunting task.   
-
-The problem with bytecode-level mutation is that while it
-
-, and C and C+++ developers certainly do not generally understand LLVM IR; test
-engineers are even less likely to appreciate such low-level descriptions.  
-
-Even when possible, translation may not help: a bytecode-level mutation may not
-have a source-level equivalent that is conceptually simple, especially if the
-bytecode has been optimized, and some obvious source-level mutations (such as
-statement deletion) are known to be difficult to implement in bytecode.
-Moreover, targeting bytecode only helps with languages that compile to Java
-bytecode or LLVM IR, which leaves out 
-
-, and some obvious source-level mutations (such as
-statement deletion) are known to be difficult to implement in bytecode.
-Moreover, targeting bytecode only helps with languages that compile to Java
-bytecode or LLVM IR, which leaves out 
-
-  Finally, at the bytecode level, features that help identify mutants with similar semantic effects are obscured.  Even if the mutant is, for example, a constant replacement in one case and an arithmetic operator replacement in another, the fact that both take place inside an argument to a logging function with an {\tt INFO} argument may be enough to predict that their effects are redundant.
-
-\begin{figure}
-\begin{tabularx}{0.75\textwidth}{XXX}
-\verb|\+ ==> -| & \verb|== ==> !=| & \verb|(\D)(\d+)(\D) ==> \1(\2+1)\3|\\
-\verb|\+ ==> *| & \verb|== ==> <| & \verb|(\D)(\d+)(\D) ==> \1(\2-1)\3|\\
-\verb|\+ ==> /| & \verb|== ==> >| & \verb|(\D)(\d+)(\D) ==> \g<1>0\3|\\
-\verb|".+" ==> ""| & \verb|while ==> if| & \verb|(^\s*)(\S+.*)\n ==> \1\2\n\1break;\n|\\
-%{\tt \\+ ==> *} & {\tt != ==> <=} & {\tt (\D)(\\d+)(\D) ==> \\1\\2-1\\3}\\
-%{\tt \\+ ==> /} & {\tt != ==> >=} & {\tt ".+" ==> ""}\\
-%{\tt \\+ ==> \%} & {\tt != ==> >=} & {\tt (^\\s*)(\\S+.*)\\n ==> \\1\\2\\n\\1break;\\n}\\
-\end{tabularx}
-\caption{Some universal mutation rules}
-\label{fig:rules}
-\end{figure}
-
-PI Groce recently proposed~\cite{regexpMut} an approach to mutant generation that does not attempt to parse source code, but simply defines mutation operators by a set of regular-expression-defined text transformations.  These are organized into a hierarchy, so that if a program is, e.g., written in Swift, the ``universal'' mutation operators that apply to all programming languages are first applied, then operators for ``C-like'' languages, and finally a set of Swift-specific rules are applied.  Figure \ref{fig:rules} shows some of the current set of ``universal'' rules applied to all languages.  Adding a new language, even a custom DSL, or a new set of project-specific rules for an existing language, in this approach, simply requires writing a new rule file and defining where it lies in the language hierarchy.  In our feedback-driven setting, the problem of generating ``too many'' mutants is irrelevant: only a small set of highly diverse and likely-actionable mutants is ever presented to the user. %, and a novelty-estimator helps a user stop examining new mutants when the payoff is likely to be low.
-
-There are significant limitations to this approach, however.  Because the source code is not parsed, and applies the regular expressions to lines of code, not larger blocks, the technique generates many mutants that are not valid programs, and cannot be compiled, or that are trivially equivalent because they, e.g., mutate ``source code'' in a large comment block.  Integrating mutation generation with execution is currently supported, but extending it to new languages or build systems is hard for users, requiring writing considerable Python code or complex shell scripts.  It is currently impossible to define mutation operators that apply to blocks of code rather than text within a single line, and standard regular expressions are not really suited to describing code constructs such as blocks, functions, classes, or structs.  Natural formatting of, e.g., an s-expression in a LISP-family language can hide opportunities for mutation, such as switching argument orders.  Finally, regular expressions are only occasionally a natural notation for expressing source-level mutation; source in all languages differs from arbitrary unstructured strings.
-
 \begin{framed}
 {\bf Problem:}  Provide high-quality user-friendly mutation generation methods to be used in a flexible but efficient mutation testing framework that can be applied to any source language, with support for easily adding custom operators or mutating DSLs.
 \end{framed}
 
-\subsubsection{Mutation-Driven-Development}
-
-The primary focus of this project is to develop feedback-driven mutation testing.  However, the ideas of Test-Driven Development (TDD)~\cite{TDD,TDDFuture}, which repeatedly turns requirements into specific test cases, then implements just enough functionality to pass the current tests, can be generalized into a mutation-driven form.  A potential weakness (and, of course, an actual goal) of TDD is that the code will be narrowly tailored to the requirements, which produce the tests, which means that missing requirements will almost always be omitted both from the tests and the code.  For ``shall'' type behaviors~\cite{INCOSE}, this is not a key problem.  But for security and safety, ``shall not'' requirements that are omitted can be disastrous.  Mutation-Driven-Development (MDD) in its simplest form would require an application of feedback-driven mutation to the test suite at each development step, to ensure that code not only does what the tests require, but that the tests also sufficiently constrain the code to capture many implicit shall-nots.  Since such a process implemented by modifying TDD-driven tests would likely break the clean and appealing mapping between tests and requirements, and manual tests are inherently weak, for high-criticality systems, MDD should focus on augmenting TDD-driven tests with falsification-driven formal verification and automated testing.  One way to do this would be to ``elaborate'' TDD-produced unit tests into parameterized unit tests~\cite{UnitMeister,ParamUnit}, perhaps using a tool like DeepState~\cite{DeepState} for C/C++.  In such a process, weakness exposed by feedback-driven mutation testing would be addressed by taking an existing unit test and generalizing some parameters and assertions to kill the relevant mutants, letting AFL~\cite{aflfuzz}, libFuzzer~\cite{libfuzzer}, or a symbolic execution tool~\cite{angr1,angr2,manticore} identify specific inputs.  The focus of the MDD process would be on producing a test harness~\cite{WODACommon,tstlsttt} that allows an automated tool to kill interesting mutants.  More radically, MDD could be implemented via a radical departure from normal TDD, with a single testing or model checking harness iteratively enhanced with assertions and checks drawn from more requirements, always requiring the ability to kill (most) mutants of the current implementation.  This would not produce the usual large set of TDD tests, but instead produce a single high-powered test generator and formal specification.
 
 \subsection{PI Qualifications}
 
-PI Groce has been a user of, and contributor to, mutation testing tools for many years.  He combines a long research track record in software testing, including mutation testing, with actual experience testing critical software systems at NASA's Jet Propulsion Laboratory.  PI Groce's long-running interest in improving mutation testing arises from frustration in his efforts to apply mutation to the  Mars Science Laboratory's flight software, in particular to the file system~\cite{ICSEDiff,CFV08,AMAI}.  This practical orientation informs his recent work on using mutation testing in a falsification-driven approach to improving verification and automated testing efforts~\cite{groce2015verified,groce2018verified,mutKernel}.  PI Groce has extensive experience in developing mutation tools for new languages~\cite{le2014mucheck,muupi,regexpMut}, including the first reliable tools for mutation of Haskell, Python, and Swift, as well as in user-facing (vs. researcher-oriented) automated software testing tools~\cite{tstlsttt,DeepState}.  He additionally has expertise in driving testing of machine learning systems through user interaction~\cite{EndUserMistake,OnlyOracle}.
+PI Groce has been a user of, and contributor to, mutation testing tools for many
+years.  He combines a long research track record in software testing, including
+mutation testing, with actual experience testing critical software systems at
+NASA's Jet Propulsion Laboratory.  PI Groce's long-running interest in improving
+mutation testing arises from frustration in his efforts to apply mutation to the
+Mars Science Laboratory's flight software, in particular to the file
+system~\cite{ICSEDiff,CFV08,AMAI}.  This practical orientation informs his
+recent work on using mutation testing in a falsification-driven approach to
+improving verification and automated testing
+efforts~\cite{groce2015verified,groce2018verified,mutKernel}.  PI Groce has
+extensive experience in developing mutation tools for new
+languages~\cite{le2014mucheck,muupi,regexpMut}, including the first reliable
+tools for mutation of Haskell, Python, and Swift, as well as in user-facing
+(vs. researcher-oriented) automated software testing
+tools~\cite{tstlsttt,DeepState}.  He additionally has expertise in driving
+testing of machine learning systems through user
+interaction~\cite{EndUserMistake,OnlyOracle}. 
 
 PI Le Goues is an expert in applied program analysis, program transformation,
 and testing, most relevantly through her pioneering work in automated program
-repair (both heuristic and semantic).  To this end, she has significant
-experience with testing, mutation testing for fault localization and program
-repair particularly, and the challenges of syntactic program modification. 
+repair (including heuristic~\cite{genprog1,another-genprog} and
+semantic~\cite{s3,searchrepair} dynamic approaches, and approaches guided by
+static analysis~\cite{footpatch}).  She has significant experience
+with testing, mutation testing for fault localization and program repair
+particularly~\cite{ssbse,faultloc}, and the challenges of syntactic program
+modification and transformation.  In particular, her recent work has developed
+novel mechanisms for efficient and expressive language-agnostic syntactic
+program transformation~\cite{rvt-ppc}, with applications for, e.g., program
+repair~\cite{footpatch}, fuzz test triage~\cite{scb}, and static analysis
+customization~\cite{icse-underreview}.  
