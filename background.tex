@@ -82,10 +82,15 @@ which are duplicates.  The fuzzer taming work proposed that rather than highly i
 clustering, which does not work well in practice, and handles outliers
 in a way that does not match the ``power law'' distribution of bugs, an
 algorithm matching the goal of ranking maximally-different test
-failures highly was appropriate.  Users do not (usually) care much
+failures highly was appropriate. 
+
+ Users do not (usually) care much
 about finding the group of all tests failing due to a fault, or the
 set of all mutants killable by the same extension to a test suite or
-generator, but about seeing \emph{many very different test failures} or \emph{many
+generator, but about seeing \emph{many very different test failures} 
+
+
+or \emph{many
   different unkilled mutants} quickly, to maximize the chance of
 discovering the most important faults or holes in a testing effort.
 The \emph{furthest-point-first} (FPF) algorithm of
