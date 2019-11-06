@@ -2,35 +2,14 @@
 \subsection{Evaluation Plan}
 \label{sec:evalplan}
 
-{\bf CLG: I SUSPECT YOU CAN MAKE THIS ACTUALLY SOUND CONVINCING}
+We propose a multi-prong evaluation strategy, including (1) proxy metrics
+suitable for evaluating program transformation and mutation testing, and the
+individual components of the overall research program, (2) a series of lab
+studies on tool usability and mutation-driven development as a paradigm
+generally, and (3) qualitative experiences using and evaluating the tool,
+ideally in collaboration with industrial partners.
 
-Evaluation for this proposal includes both human-performed assessment
-via trying to use feedback-driven mutation for actual test improvement
-tasks and automated evaluations with more objective criteria, but a
-weaker relationship to the actual goal of helping users quickly find
-the most important unkilled mutants.  For the human portion, informal
-evaluation will be performed by the research team itself, using known
-programs with known testing weaknesses; this will help tune the
-approach and experiment with new ideas.  However, for more advanced
-assessment, expert users outside the team will be offered the chance
-to use the system once it is in suitable shape.  In the past, PI Groce
-has worked with IBM Distinguished Engineer Paul E. McKenney, a
-prominent Linux kernel developer, on using mutants to improve kernel
-test suites, and has discussed similar efforts with Richard Hipp, the
-lead developer of the SQLite database, a rather famously well-tested
-program, with some resulting improvements to both test suites.  Other
-potential users with whom PI Groce has a working relationship include  NASA/JPL engineers working on upcoming CubeSat
-missions, colleagues working on the DeepState~\cite{DeepState}
-parameterized unit testing interface to fuzzers and symbolic execution
-engines, and the developers of {\tt pyfakefs}.  This type of
-evaluation is, of necessity, somewhat qualitative.  A more unbiased retrospective
-version that retains the core element of human rating of the value of mutants can be performed by examining actual mutants that resulted in
-improvements to the rcutorture~\cite{rcutorture} tests for the Linux
-kernel and the {\tt pyfakefs} tests in previous
-work~\cite{groce2018verified}, and comparing the useful mutants to the
-highly ranked mutants:  could the highly ranked mutants have motivated
-the key improvements to the test suites?
-
+\paragraph{Proxy metrics for individual research components.}
 Just computing a mutant kill matrix for a good test suite can also
 partially evaluate novelty rankings, by ranking
 killed, rather than unkilled mutants; the experiment even
@@ -62,10 +41,81 @@ suggestions of multiple previous papers on detecting faults via
 mutation~\cite{just2014mutants,gopinath2017mutation}.  Efficiency
 gains (e.g., removal of invalid or equivalent-by-construction mutants) can
 be measured by simple, traditional measures.
+\textbf{FIXME: RVT, please add metrics/experiments for the type stuff?}
 
-\subsubsection{Mutation-Driven-Development Evaluation}
-\label{sec:mevalplan}
+\paragraph{Lab studies.}  
+We will conduct pilot and lab studies to evaluate tool design
+and usability. 
+These studies will generally involve asking programmers to perform a set of
+constructed software testing, bug finding/fixing, or maintenance tasks, with or
+without a tool.  The results of such studies can be evaluated using both
+quantitative measures (like time and success rate on the provided tasks) as well
+as qualitative coding~\cite{something} and theory-building techniques to surface
+important challenges or benefits to the tooling or underlying Mutation-Driven
+Development methodology.  We can enhance external validity by basing the
+programming tasks on common forum postings, as we have done previously for
+studies of debugging challenges in particular
+contexts~\cite{frameworkDebugging}; other researchers have demonstrated this
+type of methodology useful for tool pilot studies~\cite{sunshineDocumentation}.
+We may also construct implementation tasks around small, but easy-to-get-wrong
+code problems like binary search and AVL trees, especially when evaluating the
+potential benefits or challenges to an MDD approach to programming.  
 
+We may make use of ``dummy'' or ``Wizard of Oz'' versions of elements of the
+framework to isolate the effects of specific features, like the FPF-based
+novelty metric, or various choices for feedback elicitation or analysis. 
+We will use
+% verbal reports as data
+think-aloud protocols~\cite{thinkaloud}, in which participants are instructed to
+continuously verbalize what they are thinking/attempting. This method helps the
+examiners determine why participants behave in particular ways, and to identify
+and isolate sources of confusion.  These barriers can then be used to improve
+the undelrying research technique.  To mitigate the risk of highly varying
+programmer skill, we will use a counterbalanced, within-subjects design,
+exposing each participant to both experimental and control conditions.  The
+design just outlined has been profitably used in many
+experiments about programming tools and
+methodology~\cite{Endrikat2014,Stylos07}.  PI Le Goues has experience in both
+lab studies involving think aloud protocols~\cite{frameworkDebugging} as well as
+qualitative analysis generally~\cite{testingUnderReview}, and will lead the
+design and execution of these lab studies at CMU.
+% Stefan Endrikat, Stefan Hanenberg, Romain Robbes, and Andreas Stefik. How do
+% api documentation and static typing affect api usability? In International
+% Conference on Software Engineering (ICSE), 2014. 
+% Jeffrey Stylos and Steven Clarke. Usability implications of requiring
+% parameters in object’s constructors. In International Conference on Software
+% Engineering (ICSE), 2007. 
+
+\paragraph{Experiential, qualitative evaluations.}
+Evaluation for this proposal includes both human-performed assessment
+via trying to use feedback-driven mutation for actual test improvement
+tasks and automated evaluations with more objective criteria, but a
+weaker relationship to the actual goal of helping users quickly find
+the most important unkilled mutants.  For the human portion, informal
+evaluation will be performed by the research team itself, using known
+programs with known testing weaknesses; this will help tune the
+approach and experiment with new ideas.  However, for more advanced
+assessment, expert users outside the team will be offered the chance
+to use the system once it is in suitable shape.  In the past, PI Groce
+has worked with IBM Distinguished Engineer Paul E. McKenney, a
+prominent Linux kernel developer, on using mutants to improve kernel
+test suites, and has discussed similar efforts with Richard Hipp, the
+lead developer of the SQLite database, a rather famously well-tested
+program, with some resulting improvements to both test suites.  Other
+potential users with whom PI Groce has a working relationship include  NASA/JPL engineers working on upcoming CubeSat
+missions, colleagues working on the DeepState~\cite{DeepState}
+parameterized unit testing interface to fuzzers and symbolic execution
+engines, and the developers of {\tt pyfakefs}.  This type of
+evaluation is, of necessity, somewhat qualitative.  A more unbiased retrospective
+version that retains the core element of human rating of the value of mutants can be performed by examining actual mutants that resulted in
+improvements to the rcutorture~\cite{rcutorture} tests for the Linux
+kernel and the {\tt pyfakefs} tests in previous
+work~\cite{groce2018verified}, and comparing the useful mutants to the
+highly ranked mutants:  could the highly ranked mutants have motivated
+the key improvements to the test suites?
+
+
+\paragraph{Mutation-Driven Development.}
 The evaluation of techniques and tools developed in this proposal will
 also serve a dual purpose with respect to
 Mutation-Driven-Development.  Using an MDD approach to implement
