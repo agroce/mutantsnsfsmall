@@ -1,15 +1,13 @@
 \section{Research Plan}
 
-\subsection{Overview}
-
-
 \begin{figure}
 \centering
 \includegraphics[width=0.8\columnwidth]{TestFlow}
 
 \caption{Basic flow of feedback-driven mutation testing. FIXME: unify caption
   phrasing with ``just enough mutation testing'' while still talking about
-  feedback-driven mutation.}
+  feedback-driven mutation. FIXME: possibly reorder the figure to match the fact
+  that I moved mutant generation up. }
 \label{fig:flow}
 \end{figure}
 
@@ -17,6 +15,265 @@ Figure \ref{fig:flow} shows the basic outline of a proposed workflow
 and components needed to support feedback-driven mutation testing.
 These components serve to organize the research plan.
 
+\subsection{Mutant Generator}
+\label{sec:anylangplan}
+
+The {\tt mutant generator} is the source of all mutants to be presented to the
+user.  Our goal of user-interactive mutation testing, integrated directly into
+the development and test process, imposes several requirements on this
+component. 
+
+First, to be practically effective, mutations must be presented at the source
+level, rather than at the level of an intermediate representation like Java
+bytecode or LLVM.  Bytecode-level mutation is highly effective for computing
+mutation scores~\cite{pittest,HaririLLVM}.  However, developers or test
+engineers can reason more naturally about a mutant's implications when mutations
+are presented in the source language in question.  That is, Java developers
+think in terms of Java, not compiled bytecode; C and C+++ developers certainly
+do not generally understand LLVM IR; test engineers are even less likely to
+appreciate such low-level descriptions.  Bytecode-level modifications can be
+difficult to translate to source level, especially when optimized.  Moreover,
+many mutations that are natural or conceptually at teh source level (such as
+statement deletion) are known to be difficult to implement in bytecode.
+Bytecode-level modifications can also be more difficult to reason about in terms
+of similar semantic effects: two very different operator replacements may be
+very related, if they are both applied to the arguments to the same method. 
+
+This motivates both mutation generation and presentation at the program source
+level.  Note, however, that the vast majority of software projects are written
+in multiple languages~\cite{Ray2014}, motivating polyglot analysis and testing
+infrastructure.  This further motivates that the {\tt mutant generator} be
+language agnostic, and applicable to languages beyond those supported by a
+particular IR, or even customizable project-specific DSLs.
+
+
+\subsubsection{Background and preliminary work}
+
+\begin{figure}
+\begin{tabularx}{0.75\textwidth}{XXX}
+\verb|\+ ==> -| & \verb|== ==> !=| & \verb|(\D)(\d+)(\D) ==> \1(\2+1)\3|\\
+\verb|\+ ==> *| & \verb|== ==> <| & \verb|(\D)(\d+)(\D) ==> \1(\2-1)\3|\\
+\verb|\+ ==> /| & \verb|== ==> >| & \verb|(\D)(\d+)(\D) ==> \g<1>0\3|\\
+\verb|".+" ==> ""| & \verb|while ==> if| & \verb|(^\s*)(\S+.*)\n ==> \1\2\n\1break;\n|\\
+%{\tt \\+ ==> *} & {\tt != ==> <=} & {\tt (\D)(\\d+)(\D) ==> \\1\\2-1\\3}\\
+%{\tt \\+ ==> /} & {\tt != ==> >=} & {\tt ".+" ==> ""}\\
+%{\tt \\+ ==> \%} & {\tt != ==> >=} & {\tt (^\\s*)(\\S+.*)\\n ==> \\1\\2\\n\\1break;\\n}\\
+\end{tabularx}
+\caption{Some universal mutation rules}
+\label{fig:rules}
+\end{figure}
+
+The PI's combined prior work provides two important pieces of evidence for the
+feasibility of Any-Language mutation.  
+
+\paragraph{The universalmutator.} First, PI Groce and colleagues
+released a functional, regular-expression-based mutant
+generator~\cite{regexpMut,universalmutator}.
+This {\tt universalmutator} 
+does not attempt to parse source code, but simply defines mutation
+operators by a set of regular-expression-defined text transformations.  These
+are organized into a hierarchy, so that if a program is, e.g., written in Swift,
+the ``universal'' mutation operators that apply to all programming languages are
+first applied, then operators for ``C-like'' languages, and finally a set of
+Swift-specific rules are applied.  Figure \ref{fig:rules} shows some of the
+current set of ``universal'' rules applied to all languages.  Adding a new
+language, even a custom DSL, or a new set of project-specific rules for an
+existing language, in this approach, simply requires writing a new rule file and
+defining where it lies in the language hierarchy.  In our feedback-driven
+setting, the problem of generating ``too many'' mutants is irrelevant: only a
+small set of highly diverse and likely-actionable mutants is ever presented to
+the
+user. %, and a novelty-estimator helps a user stop examining new mutants when the payoff is likely to be low.
+
+Critically, PI Groce demonstrated that the {\tt universalmutator} tool generated
+numbers of mutants and kill ratios for Java code comparable to
+PIT~\cite{pittest} and Major~\cite{Major}.  For falsification-driven
+verification, the regular-expression-based approach produced mutants of equal
+value to those produced by Andrews' tool~\cite{mutant} and Muupi~\cite{muupi}
+for C and Python, respectively.  As it stands, the {\tt universalmutator} tool
+is usable for real-world mutation (in fact, it is being considered for use by
+NASA/JPL engineers in testing the C code for upcoming CubeSat~\cite{CubeSat}
+missions) for languages including: C, C++, Java, Python, Swift, Rust, Go, and
+the Solidity smart-contract language.  The {\tt universalmutator} allows easy
+definition of new rules, and supports automated analysis of mutants,
+coverage-based pruning of mutants, and (in some languages) trivial compiler
+equivalence~\cite{TCE} checks.
+
+% TODO: probably cut back on this stuff.
+This preliminary work demonstrates that multi-language source-level mutation is
+feasible and, indeed, effective, producing results competitive with
+state-of-the-art single-language mutation tools.  It therefore forms a suitable
+platform for generating mutants to be used in this project's early phases.  
+However, it has significant limitations for long-term utility, motivating the
+propsoed research below: Because the source
+code is not parsed, and applies the regular expressions to lines of code, not
+larger blocks, the technique generates many mutants that are not valid programs,
+and cannot be compiled, or that are trivially equivalent because they, e.g.,
+mutate ``source code'' in a large comment block.  Integrating mutation
+generation with execution is currently supported, but extending it to new
+languages or build systems is hard for users, requiring writing considerable
+Python code or complex shell scripts.  It is currently impossible to define
+mutation operators that apply to blocks of code rather than text within a single
+line, and standard regular expressions are not really suited to describing code
+constructs such as blocks, functions, classes, or structs.  Natural formatting
+of, e.g., an s-expression in a LISP-family language can hide opportunities for
+mutation, such as switching argument orders.  Finally, regular expressions are
+only occasionally a natural notation for expressing source-level mutation;
+source in all languages differs from arbitrary unstructured strings.
+
+
+\paragraph{Comby: Declarative, any-language transformation.} Recent work by PI
+Le Goues and collaborators introduced a powerful new representation to
+declaratively 
+transform richer syntactic structures in programs across multiple
+languages~\cite{rvt-ppc}. \textbf{FIXME: 2--3 sentences on how it works: what's
+  the key magic?  Words like ``parser combinators'' would be useful; the idea is
+to talk about how we get parsing without needing a parse tree.}  This work has
+already shown its practical utility by
+performing lightweight refactors in more than 10 languages (including those
+targeted by {\tt universalmutator}). The associated tool, {\tt
+comby}~\cite{comby-github}, enables a new language-general way of expressing
+transformations that regular expressions cannot typically recognize (e.g.,
+nested code blocks). \textbf{FIXME: 2--3 sentences summarizing results (esp efficient,
+  expressive power)} 
+%Current mutation testing approaches largely rely on either
+%sophisticated language-specific tools that fail to generalize to other
+%languages~\cite{Major} or rudimentary textual manipulation~\cite{mutant} that is
+%fundamentally limited in effectiveness.
+Coupling declarative syntax manipulation that goes beyond the limits
+of regular expressions with
+mutation testing promises to yield greater effectiveness by (a) targeting more
+sophisticated properties of programs, and (b) delivering more user-accessible
+tools for developing mutation transformations. Our already achieved advances in 
+real-world tooling (i.e., in {\tt universalmutator} and {\tt comby}) suggest that
+this goal is imminently feasible.  At heart, this line of work
+represents the conviction of the PIs that mutation testing (like
+automated program repair) is simply
+an instance of the general field of automated program transformation~\cite{Ptransform}.
+
+\subsubsection{Proposed work: Any language mutation}
+% FIXME: integrate me in here somewhere, as a benefit.
+One ongoing limitation of mutation testing is that tools are often research
+projects, and eventually become unusable due to lack of support, even in
+mainstream languages such as Java and C~\cite{MutChoice}.
+This is because mutation tools that parse a language and guarantee generation of
+valid programs in the source language are complex, hard-to-maintain-and-extend
+systems; language complexity makes such a tool for C++, for example, an
+extremely daunting task.   
+
+The source of all mutants to be presented to the user is the mutant
+generator, and in order to maximize the effectiveness of the approach,
+this proposal aims to allow effective generation of mutants for any
+programming
+language or DSL, with minimal additional effort.  The {\tt
+  universalmutator} provides an initial source of mutants that
+satisfies this requirement for initial experimentation, but for
+long-term effectiveness is both inefficient and inexpressive.  The
+current implementation avoids parsing to such an extent that it
+generates numerous useless mutants embedded in code comments, or that
+are obviously syntactically invalid.  While avoiding a parser-based
+approach, simple additional constraints could avoid this, without
+adding burden on users, such as allowing the definition of a
+language's comment mechanisms, and not producing mutants inside
+comments.  More generally, a mechanism for disabling mutation in
+contexts defined in the same way as mutation operators would handle
+other, even project-specific, constraints (e.g., never mutate inline
+assembly in C/C++).  A problem with the current representation of
+mutation operators and such contexts is that regular expressions are
+currently applied only at the line level, and in any case are not
+effective for defining such fundamentally non-regular aspects of code
+as blocks and nested delimiters.  A key goal in this project is to greatly
+enhance
+% the regular-expression language (without losing its simplicity
+%for ``normal'' operators) with the ability to express, in a
+%language-independent, syntactic form, such context-dependent aspects
+%of code.
+the expressity of transformations (e.g., operators for multi-line, context-dependent program fragments) while retaining the simplicity of specifying usual % or "normal" operators as above, but I'm not sure what normal is? Is Fig. 1 representative?
+operators.
+
+We propose to use {\tt comby}~\cite{comby-github, rvt-ppc} for specifying
+transformations and generating mutants. {\tt Comby} uses
+declarative templates that describe before/after changes for program fragments. For example, the following transformation swaps the first two arguments of the function {\tt memcpy}:
+
+\begin{figure}[!h]
+\centering
+\begin{BVerbatim}[commandchars=\\\{\}]
+memcpy(\textcolor{blue}{:[1]}, \textcolor{ForestGreen}{:[2]}, :[3]) ==> memcpy(\textcolor{ForestGreen}{:[2]}, \textcolor{blue}{:[1]}, :[3])
+\end{BVerbatim}
+\end{figure}
+
+Hole syntax \verb|:[1]| binds syntax to a variable. A unique property of {\tt
+  comby} templates is that variables
+\emph{only} bind to syntax that occurs
+inside well-balanced delimiters (like parentheses), whitespace is handled intelligently, %(i.e., a space indicates any whitespace, including newlines)
+and syntax otherwise matches literally. % (i.e., with minimal metasyntax).
+Concretely, this means that the template above seamlessly transforms syntax structure in complex fragments as in the following:
+
+\begin{figure}[!h]
+\footnotesize
+\begin{subfigure}[t]{.47\textwidth}
+\centering
+\begin{Verbatim}[commandchars=\\\{\}]
+memcpy(\textcolor{blue}{*stream->main_data + stream->md_len},
+       \textcolor{ForestGreen}{mad_bit_nextbyte(&stream->ptr)},
+       frame_used = md_len - si.main_data_begin);
+\end{Verbatim}
+\end{subfigure}%
+\begin{subfigure}[t]{.04\textwidth}
+\begin{verbatim}
+
+==>
+
+\end{verbatim}
+\end{subfigure}%
+\begin{subfigure}[t]{.47\textwidth}
+\begin{Verbatim}[commandchars=\\\{\}]
+memcpy(\textcolor{ForestGreen}{mad_bit_nextbyte(&stream->ptr)},
+       \textcolor{blue}{*stream->foo_data + stream->md_len},
+       frame_used = md_len - si.foo_data_begin);
+\end{Verbatim}
+\end{subfigure}
+\normalsize
+\end{figure}
+% The above fragment comes from real example: https://sourcegraph.com/github.com/markjeee/libmad/-/blob/layer3.c#L2637
+% The above example of in a live example here: bit.ly/2Nmh3v2
+
+At a high-level, {\tt comby} performs
+% actual
+context-free
+parsing of syntactic structures that typically correspond to nested expressions and blocks in the underlying AST.\footnote{Regular expressions are not powerful enough to recognize such program terms in the general case.} Templates offer a \emph{declarative} description for matching and rewriting these structures in a way that is syntactically close to the source code.
+In addition, {\tt comby} can distinguish between code, strings, and comments. Templates contextually matches or ignores these dimensions of a program. % (which are common to virtually all languages)
+% Compared to regular-expressions, {\tt comby} can match on nested structures, can discriminate between code, data (strings), and comments on a language-aware basis.
+{\tt Comby} is language-aware in the sense that small language definitions describe whether syntax should be balanced (e.g., parentheses or braces) or delineate strings or comments. These definitions describe a coarse structural decomposition of programs (as typically understood by compilers) rather than just a sequence of characters (as treated by regex). Language definitions already exist for 20+ languages, and supports a simple extension mechanism for new languages (e.g., Solidity) or custom DSLs.\footnote{\url{https://comby.dev/\#faq-language-support}}
+
+We believe that accessible structural syntax manipulation can achieve a leap in
+expressivity and effectiveness for mutation testing. % a cite to substantiate "based on what" would be nice
+For one, targeted structural and contextual changes are
+more likely to produce a well-formed syntactic programs
+% compared to the regex counterpart
+that exercise interesting paths in a test suite.
+We propose to extend {\tt universalmutator}
+to generate mutants from {\tt comby} templates, and to evaluate the efficacy of
+% truly
+multi-language mutation testing with structural code changes. % for the first time, no?
+\textbf{FIXME: propose the LSP work to pull in type/static information.  A
+  reviewer who knows our work might say ``what's the new research, here?''
+  (indeed, a reviewer did say that about universalmutator).  Sometimes it's fine
+  to just be like, there is no new research, but we'll use this thing for this
+  part...but given that we HAVE new research to do, it's worth proposing it.}
+
+%the Cobra code-checking tool's language~\cite{Cobra} is an
+%example of the kind of approach desired, though the language itself
+%must be different, since transformation,
+%not just detection, is the expressive content of a mutation operator.
+The generator will also need to be improved to allow users
+to easily specify novel build environments and plug-ins for checking
+Trivial Compiler Equivalence~\cite{TCE} to make the entire
+feedback-driven mutation process workable.  Because some distance
+metrics may require compiling mutants, which is costly, a specialized
+projection of the distance only requiring textual analysis will need
+to be developed, to allow generation, compilation, and execution of
+only high-priority mutants for very large projects.
 
 \subsubsection{FPF-Based Novelty Ranking}
 \label{sec:fpfplan}
@@ -157,118 +414,6 @@ minimize duplication and to target developers most familiar with
 different aspects of the code base, as done in automated assignment of
 bug reports~\cite{bhattacharya2012automated,jonsson2016automated}.
 
-\subsubsection{Mutant Generator}
-\label{sec:anylangplan}
-
-The source of all mutants to be presented to the user is the mutant
-generator, and in order to maximize the effectiveness of the approach,
-this proposal aims to allow effective generation of mutants for any
-programming
-language or DSL, with minimal additional effort.  The {\tt
-  universalmutator} provides an initial source of mutants that
-satisfies this requirement for initial experimentation, but for
-long-term effectiveness is both inefficient and inexpressive.  The
-current implementation avoids parsing to such an extent that it
-generates numerous useless mutants embedded in code comments, or that
-are obviously syntactically invalid.  While avoiding a parser-based
-approach, simple additional constraints could avoid this, without
-adding burden on users, such as allowing the definition of a
-language's comment mechanisms, and not producing mutants inside
-comments.  More generally, a mechanism for disabling mutation in
-contexts defined in the same way as mutation operators would handle
-other, even project-specific, constraints (e.g., never mutate inline
-assembly in C/C++).  A problem with the current representation of
-mutation operators and such contexts is that regular expressions are
-currently applied only at the line level, and in any case are not
-effective for defining such fundamentally non-regular aspects of code
-as blocks and nested delimiters.  A key goal in this project is to greatly
-enhance
-% the regular-expression language (without losing its simplicity
-%for ``normal'' operators) with the ability to express, in a
-%language-independent, syntactic form, such context-dependent aspects
-%of code.
-the expressity of transformations (e.g., operators for multi-line, context-dependent program fragments) while retaining the simplicity of specifying usual % or "normal" operators as above, but I'm not sure what normal is? Is Fig. 1 representative?
-operators.
-
-% {\bf CLG: COMBY HERE}
-We propose to use {\tt comby}~\cite{comby-github, rvt-ppc} for specifying
-transformations and generating mutants. {\tt Comby} uses
-declarative templates that describe before/after changes for program fragments. For example, the following transformation swaps the first two arguments of the function {\tt memcpy}:
-
-\begin{figure}[!h]
-\centering
-\begin{BVerbatim}[commandchars=\\\{\}]
-memcpy(\textcolor{blue}{:[1]}, \textcolor{ForestGreen}{:[2]}, :[3]) ==> memcpy(\textcolor{ForestGreen}{:[2]}, \textcolor{blue}{:[1]}, :[3])
-\end{BVerbatim}
-\end{figure}
-
-Hole syntax \verb|:[1]| binds syntax to a variable. A unique property of {\tt
-  comby} templates is that variables
-\emph{only} bind to syntax that occurs
-inside well-balanced delimiters (like parentheses), whitespace is handled intelligently, %(i.e., a space indicates any whitespace, including newlines)
-and syntax otherwise matches literally. % (i.e., with minimal metasyntax).
-Concretely, this means that the template above seamlessly transforms syntax structure in complex fragments as in the following:
-
-\begin{figure}[!h]
-\footnotesize
-\begin{subfigure}[t]{.47\textwidth}
-\centering
-\begin{Verbatim}[commandchars=\\\{\}]
-memcpy(\textcolor{blue}{*stream->main_data + stream->md_len},
-       \textcolor{ForestGreen}{mad_bit_nextbyte(&stream->ptr)},
-       frame_used = md_len - si.main_data_begin);
-\end{Verbatim}
-\end{subfigure}%
-\begin{subfigure}[t]{.04\textwidth}
-\begin{verbatim}
-
-==>
-
-\end{verbatim}
-\end{subfigure}%
-\begin{subfigure}[t]{.47\textwidth}
-\begin{Verbatim}[commandchars=\\\{\}]
-memcpy(\textcolor{ForestGreen}{mad_bit_nextbyte(&stream->ptr)},
-       \textcolor{blue}{*stream->foo_data + stream->md_len},
-       frame_used = md_len - si.foo_data_begin);
-\end{Verbatim}
-\end{subfigure}
-\normalsize
-\end{figure}
-% The above fragment comes from real example: https://sourcegraph.com/github.com/markjeee/libmad/-/blob/layer3.c#L2637
-% The above example of in a live example here: bit.ly/2Nmh3v2
-
-At a high-level, {\tt comby} performs
-% actual
-context-free
-parsing of syntactic structures that typically correspond to nested expressions and blocks in the underlying AST.\footnote{Regular expressions are not powerful enough to recognize such program terms in the general case.} Templates offer a \emph{declarative} description for matching and rewriting these structures in a way that is syntactically close to the source code.
-In addition, {\tt comby} can distinguish between code, strings, and comments. Templates contextually matches or ignores these dimensions of a program. % (which are common to virtually all languages)
-% Compared to regular-expressions, {\tt comby} can match on nested structures, can discriminate between code, data (strings), and comments on a language-aware basis.
-{\tt Comby} is language-aware in the sense that small language definitions describe whether syntax should be balanced (e.g., parentheses or braces) or delineate strings or comments. These definitions describe a coarse structural decomposition of programs (as typically understood by compilers) rather than just a sequence of characters (as treated by regex). Language definitions already exist for 20+ languages, and supports a simple extension mechanism for new languages (e.g., Solidity) or custom DSLs.\footnote{\url{https://comby.dev/\#faq-language-support}}
-
-We believe that accessible structural syntax manipulation can achieve a leap in
-expressivity and effectiveness for mutation testing. % a cite to substantiate "based on what" would be nice
-For one, targeted structural and contextual changes are
-more likely to produce a well-formed syntactic programs
-% compared to the regex counterpart
-that exercise interesting paths in a test suite.
-We propose to extend {\tt universalmutator}
-to generate mutants from {\tt comby} templates, and to evaluate the efficacy of
-% truly
-multi-language mutation testing with structural code changes. % for the first time, no?
-
-%the Cobra code-checking tool's language~\cite{Cobra} is an
-%example of the kind of approach desired, though the language itself
-%must be different, since transformation,
-%not just detection, is the expressive content of a mutation operator.
-The generator will also need to be improved to allow users
-to easily specify novel build environments and plug-ins for checking
-Trivial Compiler Equivalence~\cite{TCE} to make the entire
-feedback-driven mutation process workable.  Because some distance
-metrics may require compiling mutants, which is costly, a specialized
-projection of the distance only requiring textual analysis will need
-to be developed, to allow generation, compilation, and execution of
-only high-priority mutants for very large projects.
 
 \subsection{Mutation-Driven-Development}
 

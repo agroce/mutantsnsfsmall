@@ -113,54 +113,6 @@ unkilled mutants such that novel mutants are presented first.  %The
 %for mutants and
 %the fuzzer taming problem.
 
-\subsection{Any-Language Mutation}
-
-PI Groce and colleagues
-released a functional, regular-expression-based mutant
-generator~\cite{regexpMut,universalmutator}, and demonstrated that it
-generated numbers of mutants and kill ratios for Java code comparable
-to PIT~\cite{pittest} and Major~\cite{Major}.  For falsification-driven verification, the regular-expression-based
-approach produced mutants of equal value to those produced by Andrews'
-tool~\cite{mutant} and Muupi~\cite{muupi} for C and Python,
-respectively.  As it stands, the {\tt universalmutator} tool is
-usable for real-world mutation (in fact, it is being considered for
-use by NASA/JPL engineers in testing the C code for upcoming CubeSat~\cite{CubeSat}
-missions) for languages including: C, C++, Java, Python, Swift, Rust,
-Go, and the Solidity smart-contract language.  The {\tt universalmutator} allows easy definition of new rules, and supports
-automated analysis of mutants, coverage-based pruning of mutants, and
-(in some languages) trivial compiler equivalence~\cite{TCE} checks.
-As it stands, the tool and approach form a suitable platform for
-generating mutants to be used in this project's early phases.
-
-%{\bf CLG: TALK ABOUT COMBY HERE.}
-Recent work by PI Le Goues and collaborators introduced a powerful new representation to declaratively
-transform richer syntactic structures in programs across multiple
-languages~\cite{rvt-ppc}. This work has already shown its practical utility by
-performing lightweight refactors in more than 10 languages (including those
-targeted by {\tt universalmutator}). The associated tool, {\tt
-comby}~\cite{comby-github}, enables a new language-general way of expressing
-transformations that regular expressions cannot typically recognize (e.g.,
-nested code blocks).
-%Current mutation testing approaches largely rely on either
-%sophisticated language-specific tools that fail to generalize to other
-%languages~\cite{Major} or rudimentary textual manipulation~\cite{mutant} that is
-%fundamentally limited in effectiveness.
-Coupling declarative syntax manipulation that goes beyond the limits
-of regular expressions with
-mutation testing promises to yield greater effectiveness by (a) targeting more
-sophisticated properties of programs, and (b) delivering more user-accessible
-tools for developing mutation transformations. Our already achieved advances in 
-real-world tooling (i.e., in {\tt universalmutator} and {\tt comby}) suggest that
-this goal is imminently feasible.  At heart, this line of work
-represents the conviction of the PIs that mutation testing (like
-automated program repair) is simply
-an instance of the general field of automated program transformation~\cite{Ptransform}.
-
-The
-research plan (in Section \ref{sec:anylangplan}) discusses enhancements to the approach and tool that will be required
-to better support robust, flexible, efficient feedback-driven mutation
-testing.
-
 
 \subsection{Preliminary Use of FPF-Based Mutant Ranking}
 
