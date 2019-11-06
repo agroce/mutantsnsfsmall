@@ -1,26 +1,56 @@
-\subsection{Work Plan}
+\subsection{Work and Collaboration Plan}
 \label{sec:workplan}
 
-For this project, a simple plan should suffice, defined by components
-of Figure \ref{fig:flow}.  In Year One, PI Groce and the graduate
-student will both focus on the FPF-Based Novelty Ranking and
-representation of mutants and test results.  This foundational work is
-required before other parts of the approach can be applied.  For work
-in the first two years, the existing mutant generation capabilities
-will likely suffice, although it is possible that some improvements
-will be discovered to provide enough benefit to merit early
-implementation.  In Year
-Two, both will focus on the Mutant Utility Predictor and Feedback
-Analysis, and how to integrate those with the FPF-Based Novelty
-Ranking.  In Year Three, the focus will shift to the Mutant Generator
-itself, and the problem of any-language mutant generation.  By this
-time, the demands made by the feedback-driven approach on the core
-mutation engine will be much clearer, due to the relative maturity of
-the user-facing components.  The third
-year will also emphasize integrating the entire system and performing
-more thorough evaluations, including of (and using) Mutation-Driven-Development.  It is likely that by the middle of Year
-Two, a prototype system suitable for use by real developers and test
-engineers not part of the project will be available, and the project
-plan aims for the graduate student to work in an industrial or
-government lab setting, and try applying the process to a real system,
-during the summer of Year Two.
+The work plan for this project is guided by the components in Figure
+\ref{fig:flow}.  It allows for both parallel independent progress, as well as
+well-defined points of collaboration.
+
+In Year One, PI Groce and his graduate student will both focus on the FPF-Based
+Novelty Ranking and representation of mutants and test results.  This
+foundational work is required before other parts of the approach can be applied.
+PI Le Goues and her graduate student will focus on extending Comby with type
+reasoning and LSP integration.   
+
+For the initial work on novelty ranking and utility prediction, PI Groce's the
+existing mutant generation capabilities will serve as a suitable starting
+point, until Comby fully replaces {\tt universalmutator} in the toolchain.  The
+PIs will initial this integration task eary, and use it to establish
+the technical and social norms for collaboration between the NAU and CMU teams;
+we expect to have it completed no later than mid-Year Two, to support initial
+labe studies (see below).  
+However, it is not a blocker for the other independent research.  
+We will also use the integration of Comby into the mutation testing toolchain as
+an opportunity to identify and any improvements that might merit early
+implementation.
+
+In Year Two, PI Groce and his student will focus on the Mutant Utility Predictor
+and Feedback Analysis, and how to integrate those with the FPF-Based Novelty
+Ranking.  PI Le Goues and her student will focus on multi-language
+transformation and customization, and on developing additional possible
+diversity metrics for Novelty Ranking, drawing on their expertise in program
+repair.
+
+In Year Three, the demands made by the feedback-driven approach on the core
+mutation engine will be much clearer, due to the relative maturity of the
+user-facing components; we will improve the system accordingly.  The third year
+will therefore emphasize integrating the entire system and performing thorough
+evaluations, including the most comprehensive of the proposed user studies and
+of (and using) Mutation-Driven-Development.
+In the interest of risk mitigation and timely completion, however, we expect to
+begin initial user studies earlier in the project timeline, making use of the
+prototype developed no later than mid-Year Two for in-lab studies on students or
+other convenience participants.  These will be primarily conducted at CMU, where
+PI Le Goues and her group has support and experience in designing human
+studies. 
+
+It is likely that
+by the middle of Year Two, a prototype system suitable for use real
+developers and test engineers not part of the project will be available, and the
+project plan aims for the graduate student to work in an industrial or
+government lab setting, and try applying the process to a real system, during
+the summer of Year Two.
+
+The PIs will establish regular meetings and communication mechanisms (like a
+dedicated Slack channel) for collaboration on this project.  Although this is a
+new collaboration for the PIs, they are both experienced in successful
+cross-institutional collaborations.
