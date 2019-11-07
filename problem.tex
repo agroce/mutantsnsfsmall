@@ -17,18 +17,124 @@ undifferentiated list of unkilled mutants contains many uninteresting or
 redundant mutants, and a much smaller number of actionable mutants that are
 maximally useful in guiding test improvement.  Thus, examining all unkilled
 mutants is only practical for formal verification efforts or critical software
-systems with high-powered test suites.  But even in these settings, examining
+systems with high-powered test suites. 
+
+But even in these settings, examining
 surviving mutants produced by modern mutation testing campaigns is
-time-comsuming and unpleasant, as PI Groce and co-authors noted in prior work on
+time-consuming and unpleasant, as PI Groce and co-authors noted in prior work on
 using mutants to drive formal verification and automated
 testing~\cite{groce2015verified,groce2018verified,mutKernel}.
+%
+This work proposes a novel approach to
+formal verification and automated testing 
+combining Karl Popper's falsification-based notion of
+scientific discovery~\cite{Popper,popperconjectures} with mutation
+testing~\cite{groce2015verified,groce2018verified,mutKernel}.
+The heart of the idea is (1) a surviving non-equivalent mutant 
+\emph{falsifies} the claim that a given
+formal verification or test effort captures a full notion of
+correctness and (2) refining a
+verification or testing effort by repeated efforts at falsification is an
+effective method for ensuring the quality of verification and testing
+efforts.  This
+work resulted in the identification of multiple previously unknown faults in
+the Linux kernel's
+RCU~\cite{MathieuDesnoyers2012URCU,DinakarGuniguntala2008IBMSysJ,McKenney:2013:SDS:2483852.2483867}
+module and the {\tt pyfakefs} Python mock file
+system~\cite{pyfakefs}, despite the existence of very-high-quality
+automated test generation efforts for these
+systems~\cite{rcutorture,TSTL}.  Out preliminary work on
+falsification-driven methods proposed a number of algorithms and
+methods for finding bugs in testing and verification
+harnesses, rather than the code under test.  At a high level, however,
+the core concept was simple:  users should examine all unkilled
+mutants of a program, and for each mutant either understand why it is
+equivalent or uninteresting, or actually construct a way to kill it.  In a sense, this actually harkens back to the
+earliest ideas about mutation testing, but with 
+much more automated support. 
 
+Unfortunately, the
+methods proposed were, while useful, limited in applicability.  They simply assumed that the number of unkilled mutants was
+small, and focused on solving the problem of helping a developer or
+test engineer move from an unkilled mutant to killing it.
+In practice, however, human
+attention does not scale to analyzing large numbers of 
+unkilled mutants without further assistance in ``triaging'' the mutants.  The process of manually examining mutants bears a
+resemblance to the problem of manual confirmation of results from a
+machine-learning classifier~\cite{OnlyOracle,EndUserMistake}, where even highly-motivated scientific
+users are typically unwilling to examine more than a few tens of
+potentially problematic results~\cite{Segal}.
+The manual mutant-examination process was simply not feasible unless the number of
+unkilled mutants was relatively small, because the testing was already
+very high quality.  For sufficiently large software systems, even a
+very high quality testing effort may fail to kill a
+large absolute number of mutants.  The original approach simply provided no way to
+scale human efforts to such a needle-in-a-haystack setting. 
 
+This project aims to make the falsification-driven approach to verification and testing feasible for larger
+projects, and those with lower mutation scores.
 Our goal is to enable \emph{Just Enough Mutation Testing}: We propose a mutation
 testing framework that identifies and interactively presents a few, very
 different, ranked mutants, and then works with the user to use those mutants to
-effectively improve the program, the test suite, or both.  Our proposal requires
-several fundamental novelties:
+effectively improve the program, the test suite, or both. 
+
+Figure \ref{fig:flow} shows the basic outline of a proposed workflow.  
+%
+An unkilled mutant is, conceptually, very similar to a failing test.
+With a larger number of unkilled
+mutants, the problem becomes one very much like the bug triage or ``fuzzer
+taming'' problem in random testing/fuzzing~\cite{PLDI13,SemCrash,vantonder-ase18}:  a user wants
+to quickly find mutants that indicate the most important ``holes'' in a testing
+or verification effort, and act on those most-critical gaps, possibly revealing
+faults in the System Under Test (SUT). 
+Fuzzers tend to produce very large numbers of failing tests for a much
+smaller number of distinct bugs.  Finding the set of distinct bugs,
+and identifying important bugs that need to be fixed immediately is
+difficult, because the important bugs may be represented by only one
+or two failing tests in a set of thousands of failing tests, most of
+which are duplicates. 
+Users do not (usually) care much
+about finding the group of all tests failing due to a fault, or the
+set of all mutants killable by the same extension to a test suite or
+generator, but about seeing \emph{many very different test failures}
+or \emph{many
+  different unkilled mutants} quickly, to maximize the chance of
+discovering the most important faults or holes in a testing effort.
+Thus, our proposed 
+mutation framework aims to generate a small, diverse set of
+mutants that are characterized by their novelty to present to the developer or test engineer.  
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\columnwidth]{TestFlow}
+
+\caption{Basic flow of feedback-driven mutation testing. FIXME: unify caption
+  phrasing with ``just enough mutation testing'' while still talking about
+  feedback-driven mutation. FIXME: possibly reorder the figure to match the fact
+  that I moved mutant generation up. }
+\label{fig:flow}
+\end{figure}
+
+The proposed framework then works \emph{with} the test engineer to improve the SUT or
+the underlying tests, and incorporate user feedback into which mutants are
+interesting or useful (or not).  This results in a constantly-updated ranking of mutants,
+based on actions and feedback from the engineer. 
+This provides a stopping rule other than patience, time available, or
+``every last mutant'':  since mutants are ranked by likely payoff, once a user
+has examined several mutants in a row without benefit, or mutants are highly
+similar in behavior to other mutants, a user may reasonably stop, knowing that
+the low-hanging fruit have probably all been picked.  
+ It also enables a new way to improve the efficiency of
+mutation testing:  even for a very large project, it only has to build and
+execute a small set of mutants, because it only runs the test suite on mutants
+currently predicted to be of likely interest to the user.  
+
+Because our proposed feedback-driven approach no longer requires small absolute
+numbers of unkilled mutants, it extends the applicability of the approach to
+using manual tests to kill mutants, which was not in scope when extremely high
+kill-rates were required.
+
+Overall, our approach requires several fundamental research novelties:
 \begin{itemize}
 \item \textbf{Efficient, any-language mutation testing.}  The most widely used
   mutation testing tool in the real world is PIT~\cite{pittest}, which targets
@@ -57,27 +163,7 @@ several fundamental novelties:
   technique operate at the source level and produces mutants and mutations that
   are easy for developers to understand. 
 \item \textbf{Mutant prioritization and selection by predicted payoff.}
-An unkilled mutant is, conceptually, very similar to a failing test.
-With a larger number of unkilled
-mutants, the problem becomes one very much like the bug triage or ``fuzzer
-taming'' problem in random testing/fuzzing~\cite{PLDI13,SemCrash,vantonder-ase18}:  a user wants
-to quickly find mutants that indicate the most important ``holes'' in a testing
-or verification effort, and act on those most-critical gaps, possibly revealing
-faults in the System Under Test (SUT). 
-Fuzzers tend to produce very large numbers of failing tests for a much
-smaller number of distinct bugs.  Finding the set of distinct bugs,
-and identifying important bugs that need to be fixed immediately is
-difficult, because the important bugs may be represented by only one
-or two failing tests in a set of thousands of failing tests, most of
-which are duplicates. 
-Users do not (usually) care much
-about finding the group of all tests failing due to a fault, or the
-set of all mutants killable by the same extension to a test suite or
-generator, but about seeing \emph{many very different test failures}
-or \emph{many
-  different unkilled mutants} quickly, to maximize the chance of
-discovering the most important faults or holes in a testing effort.
-However, current mutation testing approaches make
+Current mutation testing approaches make
 no real effort, with few exceptions~\cite{MutGoogle,FaRM} to prioritize mutants,
 and none are based on a user-centered feedback loop, where the user and mutation
 testing framework interact to improve a test suite, automated test generator, or
@@ -107,16 +193,6 @@ part of the same ``equivalence class.''  This is a tedious and error-prone
 process, and only even possible once a ``kind'' of unkilled mutant is
 discovered, largely by ad hoc scanning of the list of unkilled, uncategorized,
 mutants.  
-A constantly-updated ranking of mutants likely to be useful to examine
-also helps provide a stopping rule other than patience, time available, or
-``every last mutant'':  since mutants are ranked by likely payoff, once a user
-has examined several mutants in a row without benefit, or mutants are highly
-similar in behavior to other mutants, a user may reasonably stop, knowing that
-the low-hanging fruit have probably all been picked.  Finally, a feedback-driven
-mutation testing approach provides a new way to improve the efficiency of
-mutation testing:  even for a very large project, it only has to build and
-execute a small set of mutants, because it only runs the test suite on mutants
-currently predicted to be of likely interest to the user.  
 We propose ``feedback-driven'' mutation analysis that elicits and incorporates
 user input on mutants, tests, and the SUT, supporting a concise, updating list
 of mutants to inspect based on expected utility or payoff for the user.
@@ -189,3 +265,6 @@ novel mechanisms for efficient and expressive language-agnostic syntactic
 program transformation~\cite{rvt-ppc}, with applications for, e.g., program
 repair~\cite{footpatch}, fuzz test triage~\cite{vantonder-ase18}, and static analysis
 customization~\cite{icse-underreview}.  
+
+The PIs provide a detailed work and collaboration plan in the Collaboration Plan
+supplementary document.
