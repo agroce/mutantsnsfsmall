@@ -1,80 +1,49 @@
-\section{Related Work}
+\section{Closely-Related Work}
 
-\subsection{Bug Triage and Distance Metrics in Software Engineering}
-
-A fundamental insight of this proposal is that the problem of
-presenting mutants to a user is conceptually similar to the ``fuzzer
-taming''/crash bucketing/bug triage problem studied in automated
-testing research~\cite{PLDI13,SemCrash}.  This proposal's approach is centered on
-the idea of computing distances between mutants.  The use of distance metrics in software engineering for a variety of
-purposes is long-standing.  Almost all such uses are
-essentially spectrum-based \cite{RepsSpectra} (that is, using counts
-of coverage of code entities), except for some work in model-checking
-\cite{GroceDist,ChakiLev} and some of the metrics in PI Groce's recent fuzzer
-taming work \cite{PLDI13}.  Reneiris and Reiss initially proposed
-using distance between executions to localize faults
-\cite{NearNeighbor}, and Liu and Han \cite{Liu06}, Vangala \cite{VangalaDist}, and others have
-followed this line with various metrics. %(in their case, using the
-%localization of a spectrum-based method to determine distance).
-%Vangala et al. proposed using distance to cluster test cases to
-%improve diversity and eliminate duplicates \cite{VangalaDist}.
-Methods for clustering to identify bugs all rely on a distance \cite{Podgurski04}.  PI Groce's previous work
-has used distance metrics for a variety of purposes
-\cite{PLDI13,icst2014,issta14}.  Recently, PI Groce proposed a novel,
-causal metric for fuzzer taming and fault localization, itself based on
-mutation testing results \cite{distMut}.  Work on
-presenting a few well-chosen mutants
-is also related to PI Groce's own work on end-user testing of machine learning
-systems \cite{EndUserMistake,OnlyOracle}, where the limits of human
-patience are a key factor.
-
-
-\subsection{Mutation Testing}
-
-There is a vast body of work on mutation testing or analysis.  Mathur attributes~\cite{mathur2012foundations} the original idea for mutation analysis
-to Lipton. Foundational assumptions and
-theory were first proposed by DeMillo et al.~\cite{demillo1978hints},
-and the approach was first implemented by Budd et al.~\cite{budd1980theoretical}.
-%Mutation analysis as a theory relies on two fundamental
-%assumptions --- \emph{the competent programmer hypothesis},
-%and \emph{the coupling effect}, both of which have been widely
-%studied~\cite{wah2000atheoretical,wah2003ananalysis,gopinath2017the,offutt1989thecoupling,offutt1992investigations,langdon2010efficient,gopinath2017the,gopinath2014mutations}. This
-%proposal is more focused on the practical effectiveness of
-%mutation testing than on theoretical justifications.
-
-It has long been argued~\cite{budd1980mutation} that mutation analysis is \emph{stronger}
-than other coverage measures. The subsumption of multiple coverage
-measures by mutation analysis, including all the basic coverage measures~\cite{myer1979art}
-was shown by Offutt~\cite{offutt1996subsumption}, and data flow
-subsumption was demonstrated by Mathur~\cite{mathur1994empirical}.
+\noindent\textbf{Mutation Testing.}
+%
+There is a vast body of work on mutation testing or analysis, an area whose foundations date
+to the late 70's~\cite{demillo1978hints,budd1980theoretical}.  
+%Mathur
+%attributes~\cite{mathur2012foundations} the original idea for mutation analysis 
+%to Lipton. 
+%
+%It has long been argued~\cite{budd1980mutation} that mutation analysis is \emph{stronger}
+%than other coverage measures. 
+Mutation analysis has been shown to subsume multiple coverage measures,
+including all the basic coverage
+measures~\cite{myer1979art,offutt1996subsumption} and data flow
+subsumption measures~\cite{mathur1994empirical}.  
+Andrews et al.~\cite{andrews2005mutation,andrews2006using} found that ease of detection
+of mutants was similar to that of real faults.
+The relationship between
+mutation score and test case effectiveness is sometimes empirically stronger
+than 
+coverage~\cite{just2014mutants}. However, Papadakis et
+al.~\cite{papadakis2018mutation} recently 
+showed in a large scale study that this relationship is sometimes weak: ``mutants provide good guidance for improving the
+fault detection of test suites, but their correlation with fault
+detection [is] weak.''  Ahmed et al. reached similar
+conclusions~\cite{ahmed_testedness}.  This is a foundational assumption of this proposal.  
 %Daran et al.~\cite{daran1996software} found that mutation analysis produces
 %faults that are similar to actual faults in terms of the error traces
 %produced.
-Andrews et al.~\cite{andrews2005mutation,andrews2006using} found that ease of detection
-of mutants was similar to that of real faults.
-Recent research by Just et al.~\cite{just2014mutants} using 357 real faults
-showed that in 75\% of cases, mutation score and test case
-effectiveness improved together, which is a strong relationship
-compared to that for coverage (46\%).  More recently,
-Papadakis et. al~\cite{papadakis2018mutation} showed in a large scale study that the relation is also in some sense weak; indeed
-they summarize their work by stating that ``mutants provide good guidance for improving the
-fault detection of test suites, but their correlation with fault
-detection [is] weak,'' which is a foundational assumption of this
-proposal.  Ahmed et al. reached a similar
-conclusion about the potentially high value for suite improvement, but weak correlation of mutation
-analysis results~\cite{ahmed_testedness}.
 
 %Cost of execution is often~\cite{jia2011analysis} considered
 %to be the most problematic aspect of practical mutation testing.
 Numerous approaches seek to reduce the cost~\cite{jia2011analysis} of mutation
 analysis. Offutt and Untch~\cite{offutt2001mutation} categorize these,
-as: do \textit{fewer}, do \textit{smarter}, and do \textit{faster} approaches.
-Operator selection, mutant sampling, and mutant clustering fall under
-\textit{do fewer} --- approaches that seek to reduce the number of mutants
-evaluated.  \emph{Do smarter} approaches seek to reduce the time taken
-for the entire mutation analysis by intelligent organization.
-\textit{Do faster} approaches seek to
-reduce the time taken for evaluation of a single mutant.%, and include
+as: do \textit{fewer} (e.g., operator selection, mutant sampling or clustering),
+do \textit{smarter} (i.e., intelligent organization to reduce time taken for the
+entire analysis), and do \textit{faster} (i.e., in terms of single mutant
+evaluation time) approaches. 
+%Operator selection, mutant sampling, and mutant clustering fall under
+%\textit{do fewer} --- approaches that seek to reduce the number of mutants
+%evaluated.  
+%\emph{Do smarter} approaches seek to reduce the time taken
+%for the entire mutation analysis by intelligent organization.
+%\textit{Do faster} approaches seek to
+%reduce the time taken for evaluation of a single mutant.%, and include
 %mutant schema generation, code patching, and other methods.
 %The \emph{do fewer} approaches, especially simple random sampling,
 %debuted with the initial research in mutation
@@ -84,7 +53,8 @@ reduce the time taken for evaluation of a single mutant.%, and include
 %Sampling was further investigated by Mathur~\cite{mathur1991performance}, Wong et
 %al.~\cite{wong1993mutation,wong1995reducing}, and Offutt et al.~\cite{offutt1993experimental}.
 Determining relative merits of selective mutation strategies such as operator
-selection and random sampling has long been an active field of research~\cite{wong1995reducing,mresa1999efficiency,zhang2010isoperator}
+selection and random sampling has long been an active field of
+research~\cite{wong1995reducing,mresa1999efficiency,zhang2010isoperator} 
 %Skew in fault representativeness among mutants was initially noticed by Budd et
 %al.~\cite{budd1980mutation} who found that particular types of mutants are
 %representative for particular kinds of faults. Constrained mutation was
@@ -97,7 +67,8 @@ selection and random sampling has long been an active field of research~\cite{wo
 Namin et al.~\cite{namin2006finding,namin2008sufficient} formulated the
 concept of \emph{sufficient mutation operators}, and
 others~\cite{untch2009onreduced, deng2013empirical} even proposed simply using statement
-deletion as ``the'' mutation operator.  %Deng et al.~\cite{deng2013empirical} extended the deletion operator for diverse
+deletion as ``the'' mutation operator.  
+%Deng et al.~\cite{deng2013empirical} extended the deletion operator for diverse
 %language elements, and obtained an effectiveness of 92\% while reducing the
 %number of mutants by 80\%.
 The subsumption of individual mutants and mutation operators is also an active
@@ -107,28 +78,34 @@ area of research~\cite{gopinath2016measuring,shin2016theoretical,lindstrom2015re
 %al.~\cite{jia2009higher,jia2008constructing}, found that the number of mutants
 %can be reduced by 50\% by making use of subsumption of simpler mutants
 %by higher order mutants.
-Mutation clustering\cite{derezinska2015toward,strug2012machine,hussain2008mutation} is another \emph{do-fewer}
-approach where similar mutants are identified based on various
-properties.
+Mutation
+clustering\cite{derezinska2015toward,strug2012machine,hussain2008mutation} is
+another \emph{do-fewer} approach where similar mutants are identified based on
+various properties. \textbf{FIXME: maybe 1-2 sentences on how we're different,
+  given that we have a totally different focus in this proposal, in lieu of the
+  paragraph that I cut (still in comments).}
 
-There has been extensive work on comparison of mutation
-reduction strategies~\cite{zhang2010isoperator,zhang2013operator}.
-Zhang et al.~\cite{zhang2014an} investigated the scalability of
-selective mutation.
-In previous work~\cite{gopinath2016on} PI Groce showed that there is
-an upper bound on the improvement
-in \emph{mean effectiveness} that is possible using even
-an ideal mutation reduction strategy using post-hoc oracular knowledge of mutant
-kills, and later evaluated the actual improvement
-achieved by extant mutation reduction strategies, when they do not
-unrealistically have access to
-mutant kills~\cite{gopinath2017mutation}.  Recent work on Predictive
-Mutation Testing (PMT)~\cite{zhang2016predictive} applies machine
-learning to build a model that can predict mutation results without
-actually running mutation testing.
+% CLG: I propose we cut this, since we're not doing this. But I will not die on
+% this hill. 
+%
+% There has been extensive work on comparison of mutation
+% reduction strategies~\cite{zhang2010isoperator,zhang2013operator}.
+% Zhang et al.~\cite{zhang2014an} investigated the scalability of
+% selective mutation.
+% In previous work~\cite{gopinath2016on} PI Groce showed that there is
+% an upper bound on the improvement
+% in \emph{mean effectiveness} that is possible using even
+% an ideal mutation reduction strategy using post-hoc oracular knowledge of mutant
+% kills, and later evaluated the actual improvement
+% achieved by extant mutation reduction strategies, when they do not
+% unrealistically have access to
+% mutant kills~\cite{gopinath2017mutation}.  Recent work on Predictive
+% Mutation Testing (PMT)~\cite{zhang2016predictive} applies machine
+% learning to build a model that can predict mutation results without
+% actually running mutation testing.
 
-\subsubsection{Practical Mutation Analysis}
-
+\paragraph{Practical Mutation Analysis}
+%
 The above work largely focuses on computing or at least estimating the
 total mutation score of a
 test suite.  The assumption is that mutation testing is
@@ -227,3 +204,30 @@ PI Le Goues's work on declarative transformation for multiple languages~\cite{rv
 %in the context of this proposal, where executing all mutants is not
 %the goal, simply letting the compiler handle many validity and
 %equivalence questions is a simple and effective approach.
+
+\paragraph{Bug Triage and Distance Metrics in Software Engineering}
+%
+%A fundamental insight of this proposal is that the problem of
+%presenting mutants to a user is conceptually similar to the ``fuzzer
+%taming''/crash bucketing/bug triage problem studied in automated
+%testing research~\cite{PLDI13,SemCrash}.  
+This proposal's approach is centered on
+the idea of computing distances between mutants.  The use of distance metrics in
+software engineering for a variety of  
+purposes is long-standing.  Almost all such uses are
+essentially spectrum-based \cite{RepsSpectra} (that is, using counts
+of coverage of code entities), except for some work in model-checking
+\cite{GroceDist,ChakiLev} and some of the metrics in PI Groce's recent fuzzer
+taming work \cite{PLDI13}.  Reneiris and Reiss initially proposed
+using distance between executions to localize faults
+\cite{NearNeighbor}, and Liu and Han \cite{Liu06}, Vangala \cite{VangalaDist}, and others have
+followed this line with various metrics.
+Methods for clustering to identify bugs all rely on a distance \cite{Podgurski04}.  PI Groce's previous work
+has used distance metrics for a variety of purposes 
+\cite{PLDI13,icst2014,issta14}.  Recently, PI Groce proposed a novel,
+causal metric for fuzzer taming and fault localization, itself based on
+mutation testing results \cite{distMut}.  Work on
+presenting a few well-chosen mutants
+is also related to PI Groce's own work on end-user testing of machine learning
+systems \cite{EndUserMistake,OnlyOracle}, where the limits of human
+patience are a key factor.  \textbf{FIXME: distance metrics in repair.}
