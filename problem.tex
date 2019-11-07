@@ -129,11 +129,6 @@ mutation testing:  even for a very large project, it only has to build and
 execute a small set of mutants, because it only runs the test suite on mutants
 currently predicted to be of likely interest to the user.  
 
-Because our proposed feedback-driven approach no longer requires small absolute
-numbers of unkilled mutants, it extends the applicability of the approach to
-using manual tests to kill mutants, which was not in scope when extremely high
-kill-rates were required.
-
 Overall, our approach requires several fundamental research novelties:
 \begin{itemize}
 \item \textbf{Efficient, any-language mutation testing.}  The most widely used
@@ -197,6 +192,11 @@ We propose ``feedback-driven'' mutation analysis that elicits and incorporates
 user input on mutants, tests, and the SUT, supporting a concise, updating list
 of mutants to inspect based on expected utility or payoff for the user.
 \end{itemize}
+
+Because our proposed feedback-driven approach no longer requires small absolute
+numbers of unkilled mutants, it extends the applicability of the approach to
+using manual tests to kill mutants, which was not in scope when extremely high
+kill-rates were required.
 
 
 \subsection{Problem Statement}
