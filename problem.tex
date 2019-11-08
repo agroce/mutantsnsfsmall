@@ -1,5 +1,5 @@
-Mutation testing is: <FIXME>.  Significant prior work, dating back to the
-FIXMEs, aims to render mutation testing useful for constructing high quality
+Mutation testing research dates back to the 70s, and has long aimed to render
+mutation testing useful for constructing high quality
 test suites and, by extension, software. 
 Most of this previous mutation testing
 research focuses on computing a mutation score, a measure of adequacy for a
@@ -10,7 +10,7 @@ thrust of mutation testing research~\cite{jia2011analysis}.
 
 Although test suite adequacy is certainly a useful thing to measure, the most
 important goal of mutation testing\,---\,and indeed its original use
-case~\cite{something}\,---\,is to help \emph{improve} a test suite.  For this
+case~\cite{budd1980theoretical}\,---\,is to help \emph{improve} a test suite.  For this
 purpose, either a score or a list of all unkilled mutants generated across an
 expensive mutation campaign is not useful for practicing engineers.  An
 undifferentiated list of unkilled mutants contains many uninteresting or
@@ -20,7 +20,7 @@ mutants is only practical for formal verification efforts or critical software
 systems with high-powered test suites. 
 
 But even in these settings, examining
-surviving mutants produced by modern mutation testing campaigns is
+surviving mutants produced by comprehensive mutation testing campaigns is
 time-consuming and unpleasant, as PI Groce and co-authors noted in prior work on
 using mutants to drive formal verification and automated
 testing~\cite{groce2015verified,groce2018verified,mutKernel}.
@@ -43,13 +43,13 @@ RCU~\cite{MathieuDesnoyers2012URCU,DinakarGuniguntala2008IBMSysJ,McKenney:2013:S
 module and the {\tt pyfakefs} Python mock file
 system~\cite{pyfakefs}, despite the existence of very-high-quality
 automated test generation efforts for these
-systems~\cite{rcutorture,TSTL}.  Out preliminary work on
-falsification-driven methods proposed a number of algorithms and
+systems~\cite{rcutorture,TSTL}.  This prior work 
+proposed a number of algorithms and
 methods for finding bugs in testing and verification
 harnesses, rather than the code under test.  At a high level, however,
-the core concept was simple:  users should examine all unkilled
-mutants of a program, and for each mutant either understand why it is
-equivalent or uninteresting, or actually construct a way to kill it.  In a sense, this actually harkens back to the
+the core concept is simple:  users should examine all unkilled
+mutants, and for each mutant either understand why it is
+equivalent or uninteresting, or actually construct a way to kill it.  In a sense, this harkens back to the
 earliest ideas about mutation testing, but with 
 much more automated support. 
 
@@ -59,16 +59,13 @@ small, and focused on solving the problem of helping a developer or
 test engineer move from an unkilled mutant to killing it.
 In practice, however, human
 attention does not scale to analyzing large numbers of 
-unkilled mutants without further assistance in ``triaging'' the mutants.  The process of manually examining mutants bears a
+unkilled mutants without further assistance in ``triaging'' them.  The process of manually examining mutants bears a
 resemblance to the problem of manual confirmation of results from a
 machine-learning classifier~\cite{OnlyOracle,EndUserMistake}, where even highly-motivated scientific
 users are typically unwilling to examine more than a few tens of
 potentially problematic results~\cite{Segal}.
-The manual mutant-examination process was simply not feasible unless the number of
-unkilled mutants was relatively small, because the testing was already
-very high quality.  For sufficiently large software systems, even a
-very high quality testing effort may fail to kill a
-large absolute number of mutants.  The original approach simply provided no way to
+This prior approach suffers much the same problems as much of the other
+literature in mutation testing: it provides no way to
 scale human efforts to such a needle-in-a-haystack setting. 
 
 This project aims to make the falsification-driven approach to verification and testing feasible for larger
@@ -80,13 +77,21 @@ effectively improve the program, the test suite, or both.
 
 Figure \ref{fig:flow} shows the basic outline of a proposed workflow.  
 %
-An unkilled mutant is, conceptually, very similar to a failing test.
-With a larger number of unkilled
-mutants, the problem becomes one very much like the bug triage or ``fuzzer
+This framework aims to generate a small, diverse set of
+mutants that are characterized by their novelty to present to the developer or
+test engineer.  The framework further works
+ \emph{with} the test engineer to improve the SUT or
+the underlying tests, and incorporate user feedback into which mutants are
+interesting or useful (or not).  This results in a constantly-updated ranking of mutants,
+based on actions and feedback from the engineer. 
+
+A key insight behind our proposed approach is to view mutant triage as
+analogous to the bug triage of  ``fuzzer
 taming'' problem in random testing/fuzzing~\cite{PLDI13,SemCrash,vantonder-ase18}:  a user wants
 to quickly find mutants that indicate the most important ``holes'' in a testing
 or verification effort, and act on those most-critical gaps, possibly revealing
 faults in the System Under Test (SUT). 
+An unkilled mutant is, conceptually, very similar to a failing test.
 Fuzzers tend to produce very large numbers of failing tests for a much
 smaller number of distinct bugs.  Finding the set of distinct bugs,
 and identifying important bugs that need to be fixed immediately is
@@ -100,9 +105,8 @@ generator, but about seeing \emph{many very different test failures}
 or \emph{many
   different unkilled mutants} quickly, to maximize the chance of
 discovering the most important faults or holes in a testing effort.
-Thus, our proposed 
-mutation framework aims to generate a small, diverse set of
-mutants that are characterized by their novelty to present to the developer or test engineer.  
+Our approach thus fundamentally seeks to identify a small set of maximally different, maximally interesting mutants to present
+to the user. 
 
 \begin{figure}
 \centering
@@ -115,11 +119,14 @@ mutants that are characterized by their novelty to present to the developer or t
 \label{fig:flow}
 \end{figure}
 
-The proposed framework then works \emph{with} the test engineer to improve the SUT or
-the underlying tests, and incorporate user feedback into which mutants are
-interesting or useful (or not).  This results in a constantly-updated ranking of mutants,
-based on actions and feedback from the engineer. 
-This provides a stopping rule other than patience, time available, or
+A second important principle behind our approach is to take advantage of user
+feedback in refining the list of interesting mutants and improving the SUT.
+A test engineer has valuable insight\,---\,and the final word\,---\,about which
+unkilled mutants are uninteresting or equivalent, and which requires changes to
+the system itself or the test harness.  We propose to explicitly take this
+feedback into account, refining the analysis accordingly, as the user improves
+their system.  Beyond allowing for more effective mutation analysis, 
+this new paradigm provides a stopping rule other than patience, time available, or
 ``every last mutant'':  since mutants are ranked by likely payoff, once a user
 has examined several mutants in a row without benefit, or mutants are highly
 similar in behavior to other mutants, a user may reasonably stop, knowing that
@@ -131,48 +138,33 @@ currently predicted to be of likely interest to the user.
 
 Overall, our approach requires several fundamental research novelties:
 \begin{itemize}
-\item \textbf{Efficient, any-language mutation testing.}  The most widely used
-  mutation testing tool in the real world is PIT~\cite{pittest}, which targets
-  Java bytecode.  There are recent attempts to provide the same kind of support
-  for other languages, especially C, by targeting LLVM IR~\cite{HaririLLVM}.
-  This poses several problems for real-world mutation testing.  First, bytecode-
-  or IR-level mutation works well to compute a score for a test suite, but is
-  not not suitable for presentation to developers or test engineers, who need to
-  reason about a mutant's implications for their source or test code (i.e., Java
-  developers think in terms of Java, not compiled bytecode).  Even when
-  possible, translation may not help: a bytecode-level mutation may not have a
-  simple source-level equivalent, especially if the bytecode has been optimized.
-  Second, features that help identify semantically similar mutants are hard to
-  identify at the bytecode level.  Even if the mutant is, for example, a
-  constant replacement in one case and an arithmetic operator replacement in
-  another, the fact that both take place inside an argument to a logging
-  function with an {\tt INFO} argument may be enough to predict that their
-  effects are redundant.  Finally, bytecode-level mutation is highly
-  language-specific, leaving out popular languages like Python, Ruby, or Go, not
-  to mention project-specific Domain Specific Languages (DSLs)~\cite{Fow10}.
-  This is a problem for tool uptake and applicability: the vast majority of
-  real-world software projects are written in multiple languages~\cite{Ray2014}.
-  We propose novel mechanisms for \emph{efficient, any language mutation
-    testing} based on our novel recent work on language-agnostic declarative
-  program transformation using parser combinators~\cite{rvt-ppc}.  This
-  technique operate at the source level and produces mutants and mutations that
-  are easy for developers to understand. 
-\item \textbf{Mutant prioritization and selection by predicted payoff.}
+\item \textbf{Efficient, any-language mutation testing.}  
+Our goal of user-interactive mutation testing, integrated directly into
+the development and test process, requires that mutation generation be
+\emph{source-level} and \emph{multi-language}.
+Bytecode-level mutation is highly effective for computing
+mutation scores~\cite{pittest,HaririLLVM}.  However, developers or test
+engineers reason more naturally about a mutant's implications when mutations
+are presented in the source language in question.  Moreover, modern mutation
+testing frameworks are limited to specific languages, or to IR-defined
+ecosystems like LLVM or Java bytecode.  This leaves out popular languages like Python, Ruby, or Go, not
+to mention project-specific Domain Specific Languages (DSLs)~\cite{Fow10}.
+Meanwhile, the vast majority of
+real-world software projects are written in multiple languages~\cite{Ray2014}.
+We therefore propose novel mechanisms for \emph{efficient, any language mutation
+  testing} based on our novel recent work on language-agnostic declarative
+program transformation using parser combinators~\cite{rvt-ppc}.  
+\item \textbf{Mutant prioritization and selection.}  Our
+  proposed framework will present a small, maximally-informative ranked list of
+  mutants to the user.  
 Current mutation testing approaches make
-no real effort, with few exceptions~\cite{MutGoogle,FaRM} to prioritize mutants,
-and none are based on a user-centered feedback loop, where the user and mutation
-testing framework interact to improve a test suite, automated test generator, or
-verification harness --- and the SUT.  Other than (arguably) some efforts to
+no real effort, with few exceptions~\cite{MutGoogle,FaRM} to prioritize mutants.
+Other than (arguably) some efforts to
 incorporate dominance results~\cite{MutQuality}, no mutation testing approaches
 currently suggest any more sophisticated way to maximize the novelty of
-presented mutants than stratified sampling~\cite{gopinath2017mutation};
-stratified sampling does not aim at semantic novelty, and can present many
-mutants from the same class, if applied at the method level, even if those
-mutants are highly similar in impact.  Other work~\cite{gopinath2015howhard}
-proposes random sampling as the most effective way to select mutants.
-Unfortunately, when an important class of unkilled mutants has only a few
-members, random sampling is almost guaranteed to fail to present any of them.  
-We propose to adapt clustering optimization techniques based on the idea of
+presented mutants than stratified sampling~\cite{gopinath2017mutation}, which
+does not aim at (or achieve) significant semantic novelty.  Thus,
+we propose to adapt clustering optimization techniques based on the idea of
 novelty~\cite{Gonzalez85} to the problem of mutant selection, informed by a set
 of novel diversity metrics selected for this domain. 
 \item \textbf{User feedback elicitation and analysis.}
@@ -197,7 +189,6 @@ Because our proposed feedback-driven approach no longer requires small absolute
 numbers of unkilled mutants, it extends the applicability of the approach to
 using manual tests to kill mutants, which was not in scope when extremely high
 kill-rates were required.
-
 
 \subsection{Problem Statement}
 
