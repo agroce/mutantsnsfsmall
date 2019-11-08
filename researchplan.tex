@@ -135,7 +135,10 @@ languages~\cite{rvt-ppc}. \textbf{FIXME: 2--3 sentences on how it works: what's
   the key magic?  Words like ``parser combinators'' would be useful; the idea is
 to talk about how we get parsing without needing a parse tree.  This is the key
 magic, and we need to sell it; recall the reviewers who don't believe how good
-it is...}  This work has
+it is...it may be preferable to pull out some of the content currently in the
+next subsub section on proposed work up to here, and focus the proposed work on
+improvements Comby needs to be even more awesome for mut testing (LSPs, whatever
+else).}  This work has
 already shown its practical utility by
 performing lightweight refactors in more than 10 languages (including those
 targeted by {\tt universalmutator}). The associated tool, {\tt
@@ -160,46 +163,42 @@ an instance of the general field of automated program transformation~\cite{Ptran
 
 \subsubsection{Proposed work: Any language mutation}
 
-% FIXME: integrate me in here somewhere, as a benefit.
-One ongoing limitation of mutation testing is that tools are often research
-projects, and eventually become unusable due to lack of support, even in
-mainstream languages such as Java and C~\cite{MutChoice}.
-This is because mutation tools that parse a language and guarantee generation of
-valid programs in the source language are complex, hard-to-maintain-and-extend
-systems; language complexity makes such a tool for C++, for example, an
-extremely daunting task.   
-
-The source of all mutants to be presented to the user is the mutant
-generator, and in order to maximize the effectiveness of the approach,
-this proposal aims to allow effective generation of mutants for any
-programming
-language or DSL, with minimal additional effort.  The {\tt
+Our goal is a source-level mutant generator that can apply to any language,
+maximizing applicability and usability.  
+ The {\tt
   universalmutator} provides an initial source of mutants that
 satisfies this requirement for initial experimentation, but for
-long-term effectiveness is both inefficient and inexpressive.  The
-current implementation avoids parsing to such an extent that it
-generates numerous useless mutants embedded in code comments, or that
-are obviously syntactically invalid.  While avoiding a parser-based
-approach, simple additional constraints could avoid this, without
-adding burden on users, such as allowing the definition of a
-language's comment mechanisms, and not producing mutants inside
-comments.  More generally, a mechanism for disabling mutation in
-contexts defined in the same way as mutation operators would handle
-other, even project-specific, constraints (e.g., never mutate inline
-assembly in C/C++).  A problem with the current representation of
-mutation operators and such contexts is that regular expressions are
-currently applied only at the line level, and in any case are not
-effective for defining such fundamentally non-regular aspects of code
-as blocks and nested delimiters.  A key goal in this project is to greatly
-enhance
-% the regular-expression language (without losing its simplicity
-%for ``normal'' operators) with the ability to express, in a
-%language-independent, syntactic form, such context-dependent aspects
-%of code.
-the expressity of transformations (e.g., operators for multi-line, context-dependent program fragments) while retaining the simplicity of specifying usual % or "normal" operators as above, but I'm not sure what normal is? Is Fig. 1 representative?
-operators.
+long-term effectiveness is both inefficient and inexpressive.  
 
-We propose to use {\tt comby}~\cite{comby-github, rvt-ppc} for specifying
+
+% The source of all mutants to be presented to the user is the mutant
+% generator, and in order to maximize the effectiveness of the approach,
+% this proposal aims to allow effective generation of mutants for any
+% programming
+% language or DSL, with minimal additional effort. The
+% current implementation avoids parsing to such an extent that it
+% generates numerous useless mutants embedded in code comments, or that
+% are obviously syntactically invalid.  While avoiding a parser-based
+% approach, simple additional constraints could avoid this, without
+% adding burden on users, such as allowing the definition of a
+% language's comment mechanisms, and not producing mutants inside
+% comments.  More generally, a mechanism for disabling mutation in
+% contexts defined in the same way as mutation operators would handle
+% other, even project-specific, constraints (e.g., never mutate inline
+% assembly in C/C++).  A problem with the current representation of
+% mutation operators and such contexts is that regular expressions are
+% currently applied only at the line level, and in any case are not
+% effective for defining such fundamentally non-regular aspects of code
+% as blocks and nested delimiters.  A key goal in this project is to greatly
+% enhance
+% % the regular-expression language (without losing its simplicity
+% %for ``normal'' operators) with the ability to express, in a
+% %language-independent, syntactic form, such context-dependent aspects
+% %of code.
+% the expressity of transformations (e.g., operators for multi-line, context-dependent program fragments) while retaining the simplicity of specifying usual % or "normal" operators as above, but I'm not sure what normal is? Is Fig. 1 representative?
+% operators.
+
+We therefore propose to use {\tt comby}~\cite{comby-github, rvt-ppc} for specifying
 transformations and generating mutants. {\tt Comby} uses
 declarative templates that describe before/after changes for program fragments. For example, the following transformation swaps the first two arguments of the function {\tt memcpy}:
 
@@ -277,11 +276,23 @@ multi-language mutation testing with structural code changes. % for the first ti
 The generator will also need to be improved to allow users
 to easily specify novel build environments and plug-ins for checking
 Trivial Compiler Equivalence~\cite{TCE} to make the entire
-feedback-driven mutation process workable.  Because some distance
+feedback-driven mutation process workable.  \textbf{FIXME, rvt: can we keep this
+  and think about making it work for comby?} Because some distance
 metrics may require compiling mutants, which is costly, a specialized
 projection of the distance only requiring textual analysis will need
 to be developed, to allow generation, compilation, and execution of
 only high-priority mutants for very large projects.
+
+% FIXME: integrate me in here somewhere, as a benefit.
+\textbf{FIXME: RVT: this paragraph speaks to the benefit of avoiding parsing;
+  perhaps you can integrate the idea into the Comby text you add? And then cut this?} 
+One ongoing limitation of mutation testing is that tools are often research
+projects, and eventually become unusable due to lack of support, even in
+mainstream languages such as Java and C~\cite{MutChoice}.
+This is because mutation tools that parse a language and guarantee generation of
+valid programs in the source language are complex, hard-to-maintain-and-extend
+systems; language complexity makes such a tool for C++, for example, an
+extremely daunting task.   
 
 \subsection{FPF-Based Novelty Ranking}
 \label{sec:fpfplan}
@@ -298,22 +309,8 @@ only high-priority mutants for very large projects.
 \label{fig:distances}
 \end{figure}
 
-\textbf{FIXME: moved from intro}
-and none are based on a user-centered feedback loop, where the user and mutation
-testing framework interact to improve a test suite, automated test generator, or
-verification harness --- and the SUT.  Other than (arguably) some efforts to
-incorporate dominance results~\cite{MutQuality}, no mutation testing approaches
-currently suggest any more sophisticated way to maximize the novelty of
-presented mutants than stratified sampling~\cite{gopinath2017mutation};
-stratified sampling does not aim at semantic novelty, and can present many
-mutants from the same class, if applied at the method level, even if those
-mutants are highly similar in impact.  Other work~\cite{gopinath2015howhard}
-proposes random sampling as the most effective way to select mutants.
-Unfortunately, when an important class of unkilled mutants has only a few
-members, random sampling is almost guaranteed to fail to present any of them.  
 
-
-Feedback-driven mutation testing is predicated on selecting and ranking a small
+Our vision of feedback-driven mutation testing is predicated on selecting and ranking a small
 set of highly interesting mutants to present to the developers.  An unkilled
 mutant is, conceptually, very similar to a failing test.  It presents
 information of possible relevance to a developer.  The mutant or test \emph{may}
@@ -329,7 +326,20 @@ code~\cite{ivankovic2018industrial,groce2018verified}), examining a mutant that
 is equivalent to, or extremely similar to, an already-understood mutant is
 almost never worthwhile.  A key research challenge is thus to select and
 prioritzize mutants that provide maximum utility to a user.  
-\textbf{Possible FIXME: rehash of the fact that previous work doesn't do this?}
+
+Current mutation testing approaches make little effort (with a few exceptions~\cite{MutGoogle,FaRM})
+to prioritize mutants.  Other than (arguably) some efforts to
+incorporate dominance results~\cite{MutQuality}, no mutation testing approaches
+currently suggest any more sophisticated way to maximize the novelty of
+presented mutants than stratified sampling~\cite{gopinath2017mutation};
+stratified sampling does not aim at semantic novelty, and can present many
+mutants from the same class, if applied at the method level, even if those
+mutants are highly similar in impact.  Other work~\cite{gopinath2015howhard}
+proposes random sampling as the most effective way to select mutants.
+Unfortunately, when an important class of unkilled mutants has only a few
+members, random sampling is almost guaranteed to fail to present any of them.  
+Our preliminary results argue, however, that novelty-based clustering is a
+promising approach for solving this problem. 
 
 \subsubsection{Background and preliminary work} 
 
@@ -406,7 +416,7 @@ Solidity mutation analysis are available at
 \url{https://github.com/agroce/slithermutate}, with a publication to
 follow once the same technique has been applied to other languages.
 
-\subsubsection{Proposed work: FPF-Based Novelty Ranking FIXME} 
+\subsubsection{Proposed work: Mutant Novelty Ranking using FPF} 
 
 Ranking unkilled mutants according to how much ``new'' information they might
 provide to users requires more than simply using the FPF algorithm as
@@ -470,7 +480,7 @@ cross-project data will be less valuable than project-specific data
 extracted during the process itself; although there are unsupervised
 approaches to metric learning~\cite{scholkopf1998nonlinear,tipping1999probabilistic}, the most popular approaches require supervision.
 
-\subsubsection{Mutant Utility Predictor}
+\subsection{Mutant Utility Predictor}
 
 Novelty with respect to previously analyzed mutants is not the only
 important characteristic of a mutant.  Presenting a novel, but likely
@@ -494,7 +504,7 @@ good idea.  Also, if the mutant is \emph{not} equivalent (perhaps the
 user decides this kind of logging needs to be tested), then the
 information obtained may be high-value.
 
-\subsubsection{Feedback Analysis}
+\subsection{Feedback Analysis}
 \label{sec:feedbackplan}
 
 The ``feedback-driven'' aspect of feedback-driven mutation analysis
@@ -535,6 +545,43 @@ bug reports~\cite{bhattacharya2012automated,jonsson2016automated}.
 
 \subsection{Mutation-Driven-Development}
 
+\textbf{QUESTION FOR ALEX: ...what do you think of this way of incorporating
+  MDD? I had moved this from the introduction, and this might work?}
+The primary focus of this project is to develop feedback-driven mutation
+testing.  However, the ideas of Test-Driven Development
+(TDD)~\cite{TDD,TDDFuture}, which repeatedly turns requirements into specific
+test cases, then implements just enough functionality to pass the current tests,
+can be generalized into a mutation-driven form.  A potential weakness (and, of
+course, an actual goal) of TDD is that the code will be narrowly tailored to the
+requirements, which produce the tests, which means that missing requirements
+will almost always be omitted both from the tests and the code.  For ``shall''
+type behaviors~\cite{INCOSE}, this is not a key problem.  But for security and
+safety, ``shall not'' requirements that are omitted can be disastrous.
+Mutation-Driven-Development (MDD) in its simplest form would require an
+application of feedback-driven mutation to the test suite at each development
+step, to ensure that code not only does what the tests require, but that the
+tests also sufficiently constrain the code to capture many implicit shall-nots.
+Since such a process implemented by modifying TDD-driven tests would likely
+break the clean and appealing mapping between tests and requirements, and manual
+tests are inherently weak, for high-criticality systems, MDD should focus on
+augmenting TDD-driven tests with falsification-driven formal verification and
+automated testing.  One way to do this would be to ``elaborate'' TDD-produced
+unit tests into parameterized unit tests~\cite{UnitMeister,ParamUnit}, perhaps
+using a tool like DeepState~\cite{DeepState} for C/C++.  In such a process,
+weakness exposed by feedback-driven mutation testing would be addressed by
+taking an existing unit test and generalizing some parameters and assertions to
+kill the relevant mutants, letting AFL~\cite{aflfuzz},
+libFuzzer~\cite{libfuzzer}, or a symbolic execution
+tool~\cite{angr1,angr2,manticore} identify specific inputs.  The focus of the
+MDD process would be on producing a test harness~\cite{WODACommon,tstlsttt} that
+allows an automated tool to kill interesting mutants.  More radically, MDD could
+be implemented via a radical departure from normal TDD, with a single testing or
+model checking harness iteratively enhanced with assertions and checks drawn
+from more requirements, always requiring the ability to kill (most) mutants of
+the current implementation.  This would not produce the usual large set of TDD
+tests, but instead produce a single high-powered test generator and formal
+specification.
+
 Rather than a separate research focus, the idea of
 mutation-driven-development will inform the other
 research topics.  In particular, once tools
@@ -543,13 +590,11 @@ experiments in MDD as a methodology.  %In a sense, MDD is more central
 %to the evaluation of this proposal's results than a separate research
 %thrust, as discussed in the Evaluation Plan (Section \ref{sec:mevalplan}).
 
-\textbf{Fixme: this was from the introduction, and I moved it here, since it
-  sort of ties everything together nicely.  We may need one more sentence on the
-  idea to preface it in the introduction, though.  Maybe in intellectual merit?}
-The primary focus of this project is to develop feedback-driven mutation testing.  However, the ideas of Test-Driven Development (TDD)~\cite{TDD,TDDFuture}, which repeatedly turns requirements into specific test cases, then implements just enough functionality to pass the current tests, can be generalized into a mutation-driven form.  A potential weakness (and, of course, an actual goal) of TDD is that the code will be narrowly tailored to the requirements, which produce the tests, which means that missing requirements will almost always be omitted both from the tests and the code.  For ``shall'' type behaviors~\cite{INCOSE}, this is not a key problem.  But for security and safety, ``shall not'' requirements that are omitted can be disastrous.  Mutation-Driven-Development (MDD) in its simplest form would require an application of feedback-driven mutation to the test suite at each development step, to ensure that code not only does what the tests require, but that the tests also sufficiently constrain the code to capture many implicit shall-nots.  Since such a process implemented by modifying TDD-driven tests would likely break the clean and appealing mapping between tests and requirements, and manual tests are inherently weak, for high-criticality systems, MDD should focus on augmenting TDD-driven tests with falsification-driven formal verification and automated testing.  One way to do this would be to ``elaborate'' TDD-produced unit tests into parameterized unit tests~\cite{UnitMeister,ParamUnit}, perhaps using a tool like DeepState~\cite{DeepState} for C/C++.  In such a process, weakness exposed by feedback-driven mutation testing would be addressed by taking an existing unit test and generalizing some parameters and assertions to kill the relevant mutants, letting AFL~\cite{aflfuzz}, libFuzzer~\cite{libfuzzer}, or a symbolic execution tool~\cite{angr1,angr2,manticore} identify specific inputs.  The focus of the MDD process would be on producing a test harness~\cite{WODACommon,tstlsttt} that allows an automated tool to kill interesting mutants.  More radically, MDD could be implemented via a radical departure from normal TDD, with a single testing or model checking harness iteratively enhanced with assertions and checks drawn from more requirements, always requiring the ability to kill (most) mutants of the current implementation.  This would not produce the usual large set of TDD tests, but instead produce a single high-powered test generator and formal specification.
 
 \subsection{Core Research Questions}
 
+\textbf{THOUGHT: if we need space, we might consider condensing this or putting
+  it in evaluation.}
 The component-focused sections above provide an overview of the
 research problems to be addressed by this proposal, but it is also
 useful to consider the high-level research questions to be addressed,
