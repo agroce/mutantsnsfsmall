@@ -11,7 +11,7 @@ The most widely-used mutation testing tool in the real world
 is PIT~\cite{pittest}, which targets Java bytecode.  There are recent attempts
 to provide the same kind of support for other languages, especially C, by
 targeting LLVM IR~\cite{HaririLLVM}.  This poses several problems for
-feedback-driven mutation testing. 
+feedback-driven mutation testing.
 First, bytecode- or IR-level mutation works well to compute a
 score for a test suite, but is not not suitable for presentation to developers
 or test engineers, who need to reason about a mutant's implications for their
@@ -31,7 +31,7 @@ language ecosystems, excluding a large body of code written in other languages,
 as well as project-specific DSLs.
 Moreover, the vast majority of software projects are written
 in multiple languages~\cite{Ray2014}.  Our desire for real-world applicability
-thus motivates polyglot analysis and testing infrastructure.  
+thus motivates polyglot analysis and testing infrastructure.
 
 Thus, our first research task is to develop a novel {\tt mutant generator} that
 (1) operates at the source level, with output that is easy for developers to
@@ -65,26 +65,26 @@ component.
 \end{figure}
 
 The PI's combined prior work provides two important pieces of evidence for the
-feasibility of Any-Language mutation.  
+feasibility of Any-Language mutation.
 
 \paragraph{The universalmutator.} First, PI Groce and colleagues
 released a functional, regular-expression-based mutant
 generator~\cite{regexpMut,universalmutator}.
-This {\tt universalmutator} 
+This {\tt universalmutator}
 does not attempt to parse source code, but simply defines mutation
 operators by a set of regular-expression-defined text transformations.  These
 are organized into a hierarchy, so that if a program is, e.g., written in Swift,
 the ``universal'' mutation operators that apply to all programming languages are
 first applied, then operators for ``C-like'' languages, and finally a set of
 Swift-specific rules are applied.  Figure \ref{fig:rules} shows some of the
-current set of ``universal'' rules applied to all languages.  
+current set of ``universal'' rules applied to all languages.
 
 Importantly,  PI Groce demonstrated that the {\tt universalmutator} tool generated
 numbers of mutants and kill ratios for Java code comparable to
 PIT~\cite{pittest} and Major~\cite{Major}.  For falsification-driven
 verification, the regular-expression-based approach produced mutants of equal
 value to those produced by Andrews' tool~\cite{mutant} and Muupi~\cite{muupi}
-for C and Python, respectively.  
+for C and Python, respectively.
 %
 % As it stands, the {\tt universalmutator} tool
 % is usable for real-world mutation (in fact, it is being considered for use by
@@ -107,7 +107,7 @@ for C and Python, respectively.
 % TODO: probably cut back on this stuff.
 This preliminary work demonstrates that multi-language, syntax-driven, source-level mutation is
 feasible and, indeed, effective, producing results competitive with
-state-of-the-art single-language mutation tools.  
+state-of-the-art single-language mutation tools.
 However, it has significant limitations for long-term utility, motivating the
 propsoed research below: Because the source
 code is not parsed, and applies the regular expressions to lines of code, not
@@ -116,20 +116,20 @@ and cannot be compiled, or that are trivially equivalent because they, e.g.,
 mutate ``source code'' in a large comment block.  Integrating mutation
 generation with execution is currently supported, but extending it to new
 languages or build systems is hard for users, requiring writing considerable
-Python code or complex shell scripts.  
+Python code or complex shell scripts.
 %It is currently impossible to define
 %mutation operators that apply to blocks of code rather than text within a single
 %line, and standard regular expressions are not really suited to describing code
 %constructs such as blocks, functions, classes, or structs.  Natural formatting
 %of, e.g., an s-expression in a LISP-family language can hide opportunities for
-%mutation, such as switching argument orders.  
+%mutation, such as switching argument orders.
 Fundamentally, regular expressions are
 only occasionally a natural notation for expressing source-level mutation;
 source in all languages differs from arbitrary unstructured strings.
 
 \paragraph{Comby: Declarative, any-language transformation.} Fortunately, recent work by PI
 Le Goues and collaborators introduced a powerful new representation to
-declaratively 
+declaratively
 transform richer syntactic structures in programs across multiple
 languages~\cite{rvt-ppc}. \textbf{FIXME: 2--3 sentences on how it works: what's
   the key magic?  Words like ``parser combinators'' would be useful; the idea is
@@ -145,7 +145,7 @@ targeted by {\tt universalmutator}). The associated tool, {\tt
 comby}~\cite{comby-github}, enables a new language-general way of expressing
 transformations that regular expressions cannot typically recognize (e.g.,
 nested code blocks). \textbf{FIXME: 2--3 sentences summarizing results (esp efficient,
-  expressive power)} 
+  expressive power)}
 %Current mutation testing approaches largely rely on either
 %sophisticated language-specific tools that fail to generalize to other
 %languages~\cite{Major} or rudimentary textual manipulation~\cite{mutant} that is
@@ -154,7 +154,7 @@ Coupling declarative syntax manipulation that goes beyond the limits
 of regular expressions with
 mutation testing promises to yield greater effectiveness by (a) targeting more
 sophisticated properties of programs, and (b) delivering more user-accessible
-tools for developing mutation transformations. Our already achieved advances in 
+tools for developing mutation transformations. Our already achieved advances in
 real-world tooling (i.e., in {\tt universalmutator} and {\tt comby}) suggest that
 this goal is imminently feasible.  At heart, this line of work
 represents the conviction of the PIs that mutation testing (like
@@ -164,11 +164,11 @@ an instance of the general field of automated program transformation~\cite{Ptran
 \subsubsection{Proposed work: Any language mutation}
 
 Our goal is a source-level mutant generator that can apply to any language,
-maximizing applicability and usability.  
+maximizing applicability and usability.
  The {\tt
   universalmutator} provides an initial source of mutants that
 satisfies this requirement for initial experimentation, but for
-long-term effectiveness is both inefficient and inexpressive.  
+long-term effectiveness is both inefficient and inexpressive.
 
 
 % The source of all mutants to be presented to the user is the mutant
@@ -285,14 +285,14 @@ only high-priority mutants for very large projects.
 
 % FIXME: integrate me in here somewhere, as a benefit.
 \textbf{FIXME: RVT: this paragraph speaks to the benefit of avoiding parsing;
-  perhaps you can integrate the idea into the Comby text you add? And then cut this?} 
+  perhaps you can integrate the idea into the Comby text you add? And then cut this?}
 One ongoing limitation of mutation testing is that tools are often research
 projects, and eventually become unusable due to lack of support, even in
 mainstream languages such as Java and C~\cite{MutChoice}.
 This is because mutation tools that parse a language and guarantee generation of
 valid programs in the source language are complex, hard-to-maintain-and-extend
 systems; language complexity makes such a tool for C++, for example, an
-extremely daunting task.   
+extremely daunting task.
 
 \subsection{FPF-Based Novelty Ranking}
 \label{sec:fpfplan}
@@ -325,7 +325,7 @@ for refactoring or improving the efficiency of
 code~\cite{ivankovic2018industrial,groce2018verified}), examining a mutant that
 is equivalent to, or extremely similar to, an already-understood mutant is
 almost never worthwhile.  A key research challenge is thus to select and
-prioritzize mutants that provide maximum utility to a user.  
+prioritzize mutants that provide maximum utility to a user.
 
 Current mutation testing approaches make little effort (with a few exceptions~\cite{MutGoogle,FaRM})
 to prioritize mutants.  Other than (arguably) some efforts to
@@ -337,11 +337,11 @@ mutants from the same class, if applied at the method level, even if those
 mutants are highly similar in impact.  Other work~\cite{gopinath2015howhard}
 proposes random sampling as the most effective way to select mutants.
 Unfortunately, when an important class of unkilled mutants has only a few
-members, random sampling is almost guaranteed to fail to present any of them.  
+members, random sampling is almost guaranteed to fail to present any of them.
 Our preliminary results argue, however, that novelty-based clustering is a
-promising approach for solving this problem. 
+promising approach for solving this problem.
 
-\subsubsection{Background and preliminary work} 
+\subsubsection{Background and preliminary work}
 
 The mutant selection and prioritization problem is analogous to a similar
 problem in fuzz testing and triage.  That is, instead of contending with a large
@@ -350,8 +350,8 @@ most important, or most-critical inputs, that maximize the amount of payoff in
 terms of bugs found or information gained.
 
 \paragraph{Furthest point first and fuzzer taming} Fuzzer taming~\cite{PLDI13}
-was a solution PI Groce and colleagues proposed to the problem 
-of triaging test failures in automated test generation~\cite{SemCrash}.  
+was a solution PI Groce and colleagues proposed to the problem
+of triaging test failures in automated test generation~\cite{SemCrash}.
 Like mutant generators, fuzzers tend to produce very large numbers of failing
 tests (mutants) for a much
 smaller number of distinct bugs (interesting behaviors).  Finding the set of distinct bugs,
@@ -362,7 +362,7 @@ which are duplicates.  The fuzzer taming work proposed that rather than highly i
 clustering, which does not work well in practice, and handles outliers
 in a way that does not match the ``power law'' distribution of bugs, an
 algorithm matching the goal of ranking maximally-different test
-failures highly was appropriate. 
+failures highly was appropriate.
 
 The \emph{furthest-point-first} (FPF) algorithm of
 Gonzalez~\cite{Gonzalez85} does precisely this.  FPF, beginning with
@@ -416,7 +416,7 @@ Solidity mutation analysis are available at
 \url{https://github.com/agroce/slithermutate}, with a publication to
 follow once the same technique has been applied to other languages.
 
-\subsubsection{Proposed work: Mutant Novelty Ranking using FPF} 
+\subsubsection{Proposed work: Mutant Novelty Ranking using FPF}
 
 Ranking unkilled mutants according to how much ``new'' information they might
 provide to users requires more than simply using the FPF algorithm as
@@ -466,7 +466,7 @@ has proposed dynamic metrics over execution behavior for heuristic program repai
 including those measured over program state~\cite{desouza-gecco18,oliveira-ese18} and
 observations of intermediate predicate behavior~\cite{Ding2019} (mutation testing
 has strong conceptual analogies to program repair~\cite{Weimer2013}, suggesting
-natural application of these prior measures to this new domain). 
+natural application of these prior measures to this new domain).
 
  In fact, there may
 need to be two distance metrics:  one for selecting likely candidate
@@ -487,7 +487,7 @@ cross-project data will be less valuable than project-specific data
 extracted during the process itself; although there are unsupervised
 approaches to metric
 learning~\cite{scholkopf1998nonlinear,tipping1999probabilistic}, the most
-popular approaches require supervision.  
+popular approaches require supervision.
 
 \subsection{Mutant Utility Predictor}
 
@@ -664,4 +664,3 @@ search-and-replace approach?
   already evaluated mutants)?
 \end{enumerate}
 %\end{framed}
-
