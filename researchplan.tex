@@ -259,6 +259,12 @@ parsing of syntactic structures that typically correspond to nested expressions 
 In addition, {\tt comby} can distinguish between code, strings, and comments. Templates contextually match these dimensions of a program. % (which are common to virtually all languages)
 % Compared to regular-expressions, {\tt comby} can match on nested structures, can discriminate between code, data (strings), and comments on a language-aware basis.
 {\tt Comby} is language-aware in the sense that small language definitions describe whether syntax should be balanced (e.g., parentheses or braces) or delineate strings or comments. These definitions describe a coarse structural decomposition of programs (as typically understood by compilers) rather than just a sequence of characters (as treated by regex). Language definitions already exist for 20+ languages, and supports a simple extension mechanism for new languages (e.g., Solidity) or custom DSLs.\footnote{\url{https://comby.dev/\#faq-language-support}}
+One ongoing limitation of mutation testing is that tools are often research
+projects, and eventually become unusable due to lack of support, even in
+mainstream languages such as Java and C~\cite{MutChoice}.
+This is because mutation tools that fully parse a language and guarantee generation of
+valid programs in the source language are complex, hard-to-maintain-and-extend
+systems; language complexity makes such a tool for C++, for example, an extremely daunting task. From this development and maintenance perspective, {\tt comby} provides a considerable benefit in being able to adapt to new language syntax and tree structures at a coarse level, while maintaining a crucial language-aware ability for recognizing and parsing high-level program constructs.
 
 We believe that accessible structural syntax manipulation can achieve a leap in
 expressivity and effectiveness for mutation testing. % a cite to substantiate "based on what" would be nice
@@ -296,16 +302,6 @@ projection of the distance only requiring textual analysis will need
 to be developed, to allow generation, compilation, and execution of
 only high-priority mutants for very large projects.
 
-% FIXME: integrate me in here somewhere, as a benefit.
-\textbf{FIXME: RVT: this paragraph speaks to the benefit of avoiding parsing;
-  perhaps you can integrate the idea into the Comby text you add? And then cut this?}
-One ongoing limitation of mutation testing is that tools are often research
-projects, and eventually become unusable due to lack of support, even in
-mainstream languages such as Java and C~\cite{MutChoice}.
-This is because mutation tools that parse a language and guarantee generation of
-valid programs in the source language are complex, hard-to-maintain-and-extend
-systems; language complexity makes such a tool for C++, for example, an
-extremely daunting task.
 
 \subsection{FPF-Based Novelty Ranking}
 \label{sec:fpfplan}
