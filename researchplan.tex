@@ -129,23 +129,31 @@ source in all languages differs from arbitrary unstructured strings.
 
 \paragraph{Comby: Declarative, any-language transformation.} Fortunately, recent work by PI
 Le Goues and collaborators introduced a powerful new representation to
-declaratively
-transform richer syntactic structures in programs across multiple
-languages~\cite{rvt-ppc}. \textbf{FIXME: 2--3 sentences on how it works: what's
-  the key magic?  Words like ``parser combinators'' would be useful; the idea is
-to talk about how we get parsing without needing a parse tree.  This is the key
-magic, and we need to sell it; recall the reviewers who don't believe how good
-it is...it may be preferable to pull out some of the content currently in the
-next subsub section on proposed work up to here, and focus the proposed work on
-improvements Comby needs to be even more awesome for mut testing (LSPs, whatever
-else).}  This work has
-already shown its practical utility by
-performing lightweight refactors in more than 10 languages (including those
-targeted by {\tt universalmutator}). The associated tool, {\tt
-comby}~\cite{comby-github}, enables a new language-general way of expressing
-transformations that regular expressions cannot typically recognize (e.g.,
-nested code blocks). \textbf{FIXME: 2--3 sentences summarizing results (esp efficient,
-  expressive power)}
+declaratively transform richer syntactic structures in programs across multiple
+languages~\cite{rvt-ppc}. The key innovation is to convert declarative
+transformation templates into parsers that directly match and transform source
+code of interest. Parser
+combinators define how to match nested structures (much like traditional AST
+visitor traversals) but without the need to define or build an intermediate AST.
+% intermediate step of building the AST.
+% or AST, but I'm going with parse tree because it's specific to syntax.
+Our parser combinator mechnanism elegantly encapsulates the complexity of
+heterogeneous, multi-language syntax as a composition of small parsers (some
+being language-specific, and others being language-general). Conversely, defining and
+building a generic parse tree data structure (i.e., to encompass the complexity
+of multi-language syntax, which may be inherently incompatible across languages)
+\emph{after} parsing is comparably difficult.
+
+This work has already shown its practical utility by performing lightweight
+refactors in more than 10 languages (including those targeted by {\tt
+  universalmutator}). The associated tool, {\tt comby}~\cite{comby-github},
+enables a new language-general way of expressing transformations that regular
+expressions cannot typically recognize (e.g., nested code blocks). We showed
+that {\tt comby} has equivalent expressive power for a variety of nontrivial syntactic
+transformations in existing language-specific refactoring tools. {\tt Comby} is
+highly performant at scale (owing to the parser-driven approach), processing
+upwards of a quarter billion lines of code in 42 minutes (parallelized over 20 cores).
+
 %Current mutation testing approaches largely rely on either
 %sophisticated language-specific tools that fail to generalize to other
 %languages~\cite{Major} or rudimentary textual manipulation~\cite{mutant} that is
@@ -249,7 +257,7 @@ At a high-level, {\tt comby} performs
 % actual
 context-free
 parsing of syntactic structures that typically correspond to nested expressions and blocks in the underlying AST.\footnote{Regular expressions are not powerful enough to recognize such program terms in the general case.} Templates offer a \emph{declarative} description for matching and rewriting these structures in a way that is syntactically close to the source code.
-In addition, {\tt comby} can distinguish between code, strings, and comments. Templates contextually matches or ignores these dimensions of a program. % (which are common to virtually all languages)
+In addition, {\tt comby} can distinguish between code, strings, and comments. Templates contextually match these dimensions of a program. % (which are common to virtually all languages)
 % Compared to regular-expressions, {\tt comby} can match on nested structures, can discriminate between code, data (strings), and comments on a language-aware basis.
 {\tt Comby} is language-aware in the sense that small language definitions describe whether syntax should be balanced (e.g., parentheses or braces) or delineate strings or comments. These definitions describe a coarse structural decomposition of programs (as typically understood by compilers) rather than just a sequence of characters (as treated by regex). Language definitions already exist for 20+ languages, and supports a simple extension mechanism for new languages (e.g., Solidity) or custom DSLs.\footnote{\url{https://comby.dev/\#faq-language-support}}
 
@@ -257,17 +265,18 @@ We believe that accessible structural syntax manipulation can achieve a leap in
 expressivity and effectiveness for mutation testing. % a cite to substantiate "based on what" would be nice
 For one, targeted structural and contextual changes are
 more likely to produce a well-formed syntactic programs
-% compared to the regex counterpart
 that exercise interesting paths in a test suite.
 We propose to extend {\tt universalmutator}
 to generate mutants from {\tt comby} templates, and to evaluate the efficacy of
-% truly
-multi-language mutation testing with structural code changes. % for the first time, no?
-\textbf{FIXME: propose the LSP work to pull in type/static information.  A
-  reviewer who knows our work might say ``what's the new research, here?''
-  (indeed, a reviewer did say that about universalmutator).  Sometimes it's fine
-  to just be like, there is no new research, but we'll use this thing for this
-  part...but given that we HAVE new research to do, it's worth proposing it.}
+multi-language mutation testing with structural code changes.
+
+We propose to further enhance the expressive power of mutation operators by
+incorporating static semantics (e.g., type information and variable scope) via a
+DSL for structural syntax changes. The Language Server Protocol~\cite{} aims to
+provide a queryable interface for such static program properties, significantly
+reducing the burden of maintaining compiler infrastructure in a singular tool.
+This new capability, firmly outside the realm of regular
+expression approaches, will go beyond syntax and yield greater, semantic-driven precision for mutation testing.
 
 %the Cobra code-checking tool's language~\cite{Cobra} is an
 %example of the kind of approach desired, though the language itself
@@ -276,8 +285,12 @@ multi-language mutation testing with structural code changes. % for the first ti
 The generator will also need to be improved to allow users
 to easily specify novel build environments and plug-ins for checking
 Trivial Compiler Equivalence~\cite{TCE} to make the entire
-feedback-driven mutation process workable.  \textbf{FIXME, rvt: can we keep this
-  and think about making it work for comby?} Because some distance
+feedback-driven mutation process workable.
+
+ \textbf{FIXME, rvt: can we keep this
+  and think about making it work for comby?}
+\textbf{RVT responds: We can keep this. I have thoughts on this. Ever use a code refactoring tool with interactive edits (like codemod)? I already built this into comby for viewing/applying patches. The same extends to the ``feedback-driven'' here: display a transformation/mutant, and prompt the user with yes/no, or whatever else, and cycle through. This is better explained visually, but tl;dr it's fairly straightforward to build a terminal-UI interaction into comby (or I imagine, universalmutator, because it's written in Python and more amenable to plugins). Overall, this would be a neat deliverable without being a huge effort. My attempt at a sentence to capture this:  ``We propose to adapt existing and successful interactive code refactoring feedback loops~\cite{FB Codemod, comby, dart codemod} for mutation testing.''}
+ Because some distance
 metrics may require compiling mutants, which is costly, a specialized
 projection of the distance only requiring textual analysis will need
 to be developed, to allow generation, compilation, and execution of
