@@ -10,9 +10,9 @@ generally, and (3) qualitative experiences using and evaluating the tool,
 ideally in collaboration with industrial partners.
 
 \paragraph{Proxy metrics for individual research components.}
-Just computing a mutant kill matrix for a good test suite can also
+Just computing a mutant kill matrix for a test suite can
 partially evaluate novelty rankings, by ranking
-killed, rather than unkilled mutants; the experiment even
+killed, rather than unkilled mutants; the experiment
 realistically represents an early stage of test suite construction by
 feedback-driven mutation testing, especially if the mutants are only
 killed by a relatively small set of tests.  If
@@ -21,16 +21,16 @@ similar set of tests, this indicates a possible problem with the
 measure.  In real-world feedback-driven mutation testing, it is highly
 desirable not to compute the full kill matrix for all mutants, but
 for evaluation purposes, determining the extent to which kill
-bitvector similarity agrees with FPF distance metric similarity serves
-as a basic, if quite imperfect, sanity check on the novelty ranking.
+vector similarity agrees with FPF distance metric similarity serves
+as a basic, if imperfect, sanity check on the novelty ranking.
 Another automated way to evaluate a novelty ranking is to use automated
 testing to generate multiple tests to kill each mutant in ranked order.  A good ranking will mean
 that each additional mutant is unlikely to be killed by the killing
 tests for any previous mutants.  A similar, but more robust, measure of mutant similarity
 is how much adding a test that kills one mutant as the seed in a
-fuzzer~\cite{aflfuzz,libfuzzer} improves time required to kill the other
-mutant, on average.  Unfortunately, these measures cannot effectively
-measure ``real distance'' if one of the mutants is equivalent.
+fuzzer~\cite{aflfuzz,libfuzzer} improves time required to kill a
+(supposedly) similar
+mutant, on average.
 
 Evaluation of the mutant generator can also be partly automated, by
 comparing the output set of mutants to that of other tools, to ensure
@@ -71,7 +71,7 @@ think-aloud protocols~\cite{thinkaloud}, in which participants are instructed to
 continuously verbalize what they are thinking/attempting. This method helps the
 examiners determine why participants behave in particular ways, and to identify
 and isolate sources of confusion.  These barriers can then be used to improve
-the undelrying research technique.  To mitigate the risk of highly varying
+the underlying research technique.  To mitigate the risk of highly varying
 programmer skill, we will use a counterbalanced, within-subjects design,
 exposing each participant to both experimental and control conditions.  The
 design just outlined has been profitably used in many
@@ -79,7 +79,10 @@ experiments about programming tools and
 methodology~\cite{Endrikat2014,Stylos07}.  PI Le Goues has experience in both
 lab studies involving think aloud protocols~\cite{frameworkDebugging} as well as
 qualitative analysis generally~\cite{testingUnderReview}, and will lead the
-design and execution of these lab studies at CMU.
+design and execution of these lab studies at CMU.  Note that, to our
+knowledge, these experiments will also provide the first well-founded
+human studies of the baseline value of mutants in improving test suites, not
+just of our proposed methods; in itself this is a major research contribution.
 % Stefan Endrikat, Stefan Hanenberg, Romain Robbes, and Andreas Stefik. How do
 % api documentation and static typing affect api usability? In International
 % Conference on Software Engineering (ICSE), 2014.
@@ -91,17 +94,18 @@ design and execution of these lab studies at CMU.
 Evaluation for this proposal includes both human-performed assessment
 via trying to use feedback-driven mutation for actual test improvement
 tasks and automated evaluations with more objective criteria, but a
-weaker relationship to the actual goal of helping users quickly find
+weaker relationship to the actual goal of helping expert developers in
+real projects quickly find
 the most important unkilled mutants.  For the human portion, informal
 evaluation will be performed by the research team itself, using known
 programs with known testing weaknesses; this will help tune the
 approach and experiment with new ideas.  However, for more advanced
 assessment, expert users outside the team will be offered the chance
 to use the system once it is in suitable shape.  In the past, PI Groce
-has worked with IBM Distinguished Engineer Paul E. McKenney, a
-prominent Linux kernel developer, on using mutants to improve kernel
+has worked with IBM Distinguished Engineer Paul E. McKenney
+on using mutants to improve Linux kernel
 test suites, and has discussed similar efforts with Richard Hipp, the
-lead developer of the SQLite database, a rather famously well-tested
+lead developer of the SQLite database, a famously well-tested
 program, with some resulting improvements to both test suites.  Other
 potential users with whom PI Groce has a working relationship include  NASA/JPL engineers working on upcoming CubeSat
 missions, colleagues working on the DeepState~\cite{DeepState}
@@ -110,10 +114,10 @@ engines, and the developers of {\tt pyfakefs}.  This type of
 evaluation is, of necessity, somewhat qualitative.  A more unbiased retrospective
 version that retains the core element of human rating of the value of mutants can be performed by examining actual mutants that resulted in
 improvements to the rcutorture~\cite{rcutorture} tests for the Linux
-kernel and the {\tt pyfakefs} tests in previous
-work~\cite{groce2018verified}, and comparing the useful mutants to the
-highly ranked mutants:  could the highly ranked mutants have motivated
-the key improvements to the test suites?
+kernel and the {\tt pyfakefs} tests~\cite{groce2018verified}, and
+comparing them to
+highly ranked mutants:  could the highly ranked mutants have exposed
+the same problems?
 
 
 \paragraph{Mutation-Driven Development.}

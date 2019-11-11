@@ -10,7 +10,7 @@ These components serve to organize the research plan.
 The most widely-used mutation testing tool in the real world
 is PIT~\cite{pittest}, which targets Java bytecode.  There are recent attempts
 to provide the same kind of support for other languages, especially C, by
-targeting LLVM IR~\cite{HaririLLVM}.  This poses several problems for
+targeting LLVM IR~\cite{HaririLLVM,Mart}.  This poses several problems for
 feedback-driven mutation testing.
 First, bytecode- or IR-level mutation works well to compute a
 score for a test suite, but is not not suitable for presentation to developers
@@ -51,6 +51,7 @@ component.
 % need the space for that
 
 \begin{figure}
+{\scriptsize
 \begin{tabularx}{0.75\textwidth}{XXX}
 \verb|\+ ==> -| & \verb|== ==> !=| & \verb|(\D)(\d+)(\D) ==> \1(\2+1)\3|\\
 \verb|\+ ==> *| & \verb|== ==> <| & \verb|(\D)(\d+)(\D) ==> \1(\2-1)\3|\\
@@ -60,24 +61,25 @@ component.
 %{\tt \\+ ==> /} & {\tt != ==> >=} & {\tt ".+" ==> ""}\\
 %{\tt \\+ ==> \%} & {\tt != ==> >=} & {\tt (^\\s*)(\\S+.*)\\n ==> \\1\\2\\n\\1break;\\n}\\
 \end{tabularx}
+}
 \caption{Some universal mutation rules}
 \label{fig:rules}
 \end{figure}
 
-The PI's combined prior work provides two important pieces of evidence for the
-feasibility of Any-Language mutation.
+The PI's combined prior work provides evidence for the
+feasibility of any-language mutation:
 
 \paragraph{The universalmutator.} First, PI Groce and colleagues
-released a functional, regular-expression-based mutant
+released a fully functional, regular-expression-based mutant
 generator~\cite{regexpMut,universalmutator}.
-This {\tt universalmutator}
+The {\tt universalmutator}
 does not attempt to parse source code, but simply defines mutation
 operators by a set of regular-expression-defined text transformations.  These
 are organized into a hierarchy, so that if a program is, e.g., written in Swift,
 the ``universal'' mutation operators that apply to all programming languages are
 first applied, then operators for ``C-like'' languages, and finally a set of
 Swift-specific rules are applied.  Figure \ref{fig:rules} shows some of the
-current set of ``universal'' rules applied to all languages.
+``universal'' rules applied to all languages.
 
 Importantly,  PI Groce demonstrated that the {\tt universalmutator} tool generated
 numbers of mutants and kill ratios for Java code comparable to
@@ -109,14 +111,15 @@ This preliminary work demonstrates that multi-language, syntax-driven, source-le
 feasible and, indeed, effective, producing results competitive with
 state-of-the-art single-language mutation tools.
 However, it has significant limitations for long-term utility, motivating the
-propsoed research below: Because the source
+proposed research below: Because the source
 code is not parsed, and applies the regular expressions to lines of code, not
-larger blocks, the technique generates many mutants that are not valid programs,
+larger blocks, the technique generates many mutants that are invalid
 and cannot be compiled, or that are trivially equivalent because they, e.g.,
-mutate ``source code'' in a large comment block.  Integrating mutation
-generation with execution is currently supported, but extending it to new
-languages or build systems is hard for users, requiring writing considerable
-Python code or complex shell scripts.
+mutate ``source code'' in a large comment block.
+%Integrating mutation
+%generation with execution is currently supported, but extending it to new
+%languages or build systems is hard for users, requiring writing considerable
+%Python code or complex shell scripts.
 %It is currently impossible to define
 %mutation operators that apply to blocks of code rather than text within a single
 %line, and standard regular expressions are not really suited to describing code
@@ -158,7 +161,7 @@ upwards of a quarter billion lines of code in 42 minutes (parallelized over 20 c
 %sophisticated language-specific tools that fail to generalize to other
 %languages~\cite{Major} or rudimentary textual manipulation~\cite{mutant} that is
 %fundamentally limited in effectiveness.
-Coupling declarative syntax manipulation that goes beyond the limits
+Coupling with declarative syntax manipulation that goes beyond the limits
 of regular expressions  promises to yield more effective mutation testing by (a) targeting more
 sophisticated properties of programs, and (b) delivering more user-accessible
 tools for developing mutation transformations. Our joint advances in
@@ -259,7 +262,13 @@ context-free
 parsing of syntactic structures that typically correspond to nested expressions and blocks in the underlying AST.\footnote{Regular expressions are not powerful enough to recognize such program terms in the general case.} Templates offer a \emph{declarative} description for matching and rewriting these structures in a way that is syntactically close to the source code.
 In addition, {\tt comby} can distinguish between code, strings, and comments. Templates contextually match these dimensions of a program. % (which are common to virtually all languages)
 % Compared to regular-expressions, {\tt comby} can match on nested structures, can discriminate between code, data (strings), and comments on a language-aware basis.
-{\tt Comby} is language-aware in the sense that small language definitions describe whether syntax should be balanced (e.g., parentheses or braces) or delineate strings or comments. These definitions describe a coarse structural decomposition of programs (as typically understood by compilers) rather than just a sequence of characters (as treated by regex). Language definitions already exist for 20+ languages, and supports a simple extension mechanism for new languages (e.g., Solidity) or custom DSLs.\footnote{\url{https://comby.dev/\#faq-language-support}}
+{\tt Comby} is language-aware in the sense that small language
+definitions describe whether syntax should be balanced (e.g.,
+parentheses or braces) or delineate strings or comments. These
+definitions describe a coarse structural decomposition of programs (as
+typically understood by compilers) rather than just a sequence of
+characters (as treated by regex). Language definitions already exist
+for 20+ languages, and {\tt comby} supports a simple extension mechanism for new languages (e.g., Solidity) or custom DSLs.\footnote{\url{https://comby.dev/\#faq-language-support}}
 One ongoing limitation of mutation testing is that tools are often research
 projects, and eventually become unusable due to lack of support, even in
 mainstream languages such as Java and C~\cite{MutChoice}.
@@ -270,7 +279,7 @@ systems; language complexity makes such a tool for C++, for example, an extremel
 We believe that accessible structural syntax manipulation can achieve a leap in
 expressivity and effectiveness for mutation testing. % a cite to substantiate "based on what" would be nice
 For one, targeted structural and contextual changes are
-more likely to produce a well-formed syntactic programs
+more likely to produce well-formed syntactic programs
 that exercise interesting paths in a test suite.
 We propose to extend {\tt universalmutator}
 to generate mutants from {\tt comby} templates, and to evaluate the efficacy of
@@ -282,7 +291,7 @@ DSL for structural syntax changes. The Language Server Protocol~\cite{lsp-web} a
 provide a queryable interface for such static program properties, significantly
 reducing the burden of maintaining compiler infrastructure in a singular tool.
 This new capability, firmly outside the realm of regular
-expression approaches, will go beyond syntax and yield greater, semantic-driven precision for mutation testing.
+expression approaches, will go beyond syntax and yield greater, semantic-driven precision.
 
 %the Cobra code-checking tool's language~\cite{Cobra} is an
 %example of the kind of approach desired, though the language itself
@@ -310,17 +319,6 @@ only high-priority mutants for very large projects.
 \subsection{FPF-Based Novelty Ranking}
 \label{sec:fpfplan}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.95\columnwidth]{distmetric}
-
-\caption{Which mutants are most similar?  If the user marked the
-  mutant in the upper left corner as uninteresting and added a test
-  to kill the
-  mutant in the upper middle, which mutant
-  should she examine next?}
-\label{fig:distances}
-\end{figure}
 
 
 Our vision of feedback-driven mutation testing is predicated on selecting and ranking a small
@@ -340,11 +338,9 @@ is equivalent to, or extremely similar to, an already-understood mutant is
 almost never worthwhile.  A key research challenge is thus to select and
 prioritzize mutants that provide maximum utility to a user.
 
-Current mutation testing approaches make little effort (with a few exceptions~\cite{MutGoogle,FaRM})
-to prioritize mutants.  Other than (arguably) some efforts to
-incorporate dominance results~\cite{MutQuality}, no mutation testing approaches
-currently suggest any more sophisticated way to maximize the novelty of
-presented mutants than stratified sampling~\cite{gopinath2017mutation};
+As noted above, with a few exceptions~\cite{MutGoogle,FaRM,MutQuality}, current mutation testing approaches
+offer little in the way of prioritization beyond dominance (which
+requires executing tests on mutants) or stratified sampling~\cite{gopinath2017mutation,MutQuality};
 stratified sampling does not aim at semantic novelty, and can present many
 mutants from the same class, if applied at the method level, even if those
 mutants are highly similar in impact.  Other work~\cite{gopinath2015howhard}
@@ -358,11 +354,11 @@ promising approach for solving this problem.
 
 The mutant selection and prioritization problem is analogous to a similar
 problem in fuzz testing and triage.  That is, instead of contending with a large
-list of undifferentiated inputs (or mutants), a user ideally preferes a few,
-most important, or most-critical inputs, that maximize the amount of payoff in
+list of undifferentiated inputs (or mutants), a user wants to see a few,
+most-critical results, that maximize the amount of payoff in
 terms of bugs found or information gained.
 
-\paragraph{Furthest point first and fuzzer taming} Fuzzer taming~\cite{PLDI13}
+\paragraph{Furthest point first and fuzzer taming.} Fuzzer taming~\cite{PLDI13}
 was a solution PI Groce and colleagues proposed to the problem
 of triaging test failures in automated test generation~\cite{SemCrash}.
 Like mutant generators, fuzzers tend to produce very large numbers of failing
@@ -443,6 +439,19 @@ equivalent to
 the test suite on uninteresting mutants is one of the goals of
 feedback-driven mutation testing in the first place.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\columnwidth]{distmetric}
+
+\caption{Which mutants are most similar?  If the user marked the
+  mutant in the upper left corner as uninteresting and added a test
+  to kill the
+  mutant in the upper middle, which mutant
+  should she examine next?}
+\label{fig:distances}
+\end{figure}
+
+
 FPF requires a distance metric, and a distance metric requires a
 \emph{representation} of mutants.  Mutants can be similar because they
 modify the same line, function, class, or module, but also because,
@@ -462,7 +471,8 @@ likely to have some similarity, though probably of a lower importance
 than the previous two types of similarity).  Are all logging statements
 equivalent, or are only {\tt INFO} logging calls similar, while every
 {\tt WARNING}, {\tt ERROR} or {\tt FATAL} is unique?  Some of these
-decisions are unlikely to be project-independent, and so a good metric
+decisions are likely to be project-independent, or even
+developer-expertise-driven, and so a good metric
 may well change during feedback-driven mutation testing, in response
 to information from users (see Section \ref{sec:feedbackplan} below).
 
@@ -490,16 +500,16 @@ This is therefore a quite complex problem in representation and weighting of ele
 representation, especially for a language- and
 project- agnostic metric, that is also open to tuning via feedback
 analysis.  One approach to the problem is to exploit metric learning
-methods~\cite{kulis2012metric}, which was used in some of PI Groce's
+methods~\cite{kulis2012metric}, which were used in some of PI Groce's
 previous work~\cite{SoftMining}.  But, to avoid over-fitting
 to even a set of good examples, the final metric may have to be largely
 hand-tuned, and designed to incorporate feedback and dynamically
 extracted information, which is not easily handled with learned metrics.  In part this is due to the difficulty of establishing
-large amounts of ground truth data, and the expectation that
+large amounts of ground truth data, and the reality that
 cross-project data will be less valuable than project-specific data
-extracted during the process itself; although there are unsupervised
+from users; there are unsupervised
 approaches to metric
-learning~\cite{scholkopf1998nonlinear,tipping1999probabilistic}, the most
+learning~\cite{scholkopf1998nonlinear,tipping1999probabilistic}, but most
 popular approaches require supervision.
 
 \subsection{Mutant Utility Predictor}
@@ -521,10 +531,8 @@ might suggest avoiding a highly novel mutant because it is likely
 equivalent; however, it may be that labeling this mutant as equivalent
 lets the FPF ranking avoid numerous other similar mutants --- e.g.,
 postponing labeling a logging statement as confirmed equivalent by the
-user may not be a
-good idea.  Also, if the mutant is \emph{not} equivalent (perhaps the
-user decides this kind of logging needs to be tested), then the
-information obtained may be high-value.
+user may be a bad idea.  Also, if the mutant is \emph{not} equivalent (perhaps \emph{this} kind of logging needs to be tested), then the
+information is high-value.
 
 \subsection{Feedback Analysis}
 \label{sec:feedbackplan}
@@ -590,14 +598,13 @@ unit tests into parameterized unit tests~\cite{UnitMeister,ParamUnit}, perhaps
 using a tool like DeepState~\cite{DeepState} for C/C++.  In such a process,
 weakness exposed by feedback-driven mutation testing would be addressed by
 taking an existing unit test and generalizing some parameters and assertions to
-kill the relevant mutants, letting AFL~\cite{aflfuzz},
+kill the relevant mutants, letting, e.g., AFL~\cite{aflfuzz},
 libFuzzer~\cite{libfuzzer}, or a symbolic execution
 tool~\cite{angr1,angr2,manticore} identify specific inputs.  The focus of the
-MDD process would be on producing a test harness~\cite{WODACommon,tstlsttt} that
-allows an automated tool to kill interesting mutants.  More radically, MDD could
+MDD process would be on producing test harnesses~\cite{WODACommon,tstlsttt} that
+can kill \emph{all} interesting mutants.  More radically, MDD could
 be implemented via a radical departure from normal TDD, with a single testing or
-model checking harness iteratively enhanced with assertions and checks drawn
-from more requirements, always requiring the ability to kill (most) mutants of
+model checking harness iteratively enhanced, always requiring the ability to kill (most) mutants of
 the current implementation.  This would not produce the usual large set of TDD
 tests, but instead produce a single high-powered test generator and formal
 specification.
