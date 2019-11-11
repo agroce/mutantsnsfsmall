@@ -54,8 +54,8 @@ component.
 {\scriptsize
 \begin{tabularx}{0.75\textwidth}{XXX}
 \verb|\+ ==> -| & \verb|== ==> !=| & \verb|(\D)(\d+)(\D) ==> \1(\2+1)\3|\\
-\verb|\+ ==> *| & \verb|== ==> <| & \verb|(\D)(\d+)(\D) ==> \1(\2-1)\3|\\
-\verb|\+ ==> /| & \verb|== ==> >| & \verb|(\D)(\d+)(\D) ==> \g<1>0\3|\\
+%\verb|\+ ==> *| & \verb|== ==> <| & \verb|(\D)(\d+)(\D) ==> \1(\2-1)\3|\\
+%\verb|\+ ==> /| & \verb|== ==> >| & \verb|(\D)(\d+)(\D) ==> \g<1>0\3|\\
 \verb|".+" ==> ""| & \verb|while ==> if| & \verb|(^\s*)(\S+.*)\n ==> \1\2\n\1break;\n|\\
 %{\tt \\+ ==> *} & {\tt != ==> <=} & {\tt (\D)(\\d+)(\D) ==> \\1\\2-1\\3}\\
 %{\tt \\+ ==> /} & {\tt != ==> >=} & {\tt ".+" ==> ""}\\
@@ -259,7 +259,8 @@ memcpy(\textcolor{ForestGreen}{mad_bit_nextbyte(&stream->ptr)},
 At a high-level, {\tt comby} performs
 % actual
 context-free
-parsing of syntactic structures that typically correspond to nested expressions and blocks in the underlying AST.\footnote{Regular expressions are not powerful enough to recognize such program terms in the general case.} Templates offer a \emph{declarative} description for matching and rewriting these structures in a way that is syntactically close to the source code.
+parsing of syntactic structures that typically correspond to nested
+expressions and blocks in the underlying AST; eegular expressions are not powerful enough to recognize such program terms in general. Templates offer a \emph{declarative} description for matching and rewriting these structures in a way that is syntactically close to the source code.
 In addition, {\tt comby} can distinguish between code, strings, and comments. Templates contextually match these dimensions of a program. % (which are common to virtually all languages)
 % Compared to regular-expressions, {\tt comby} can match on nested structures, can discriminate between code, data (strings), and comments on a language-aware basis.
 {\tt Comby} is language-aware in the sense that small language
@@ -268,7 +269,8 @@ parentheses or braces) or delineate strings or comments. These
 definitions describe a coarse structural decomposition of programs (as
 typically understood by compilers) rather than just a sequence of
 characters (as treated by regex). Language definitions already exist
-for 20+ languages, and {\tt comby} supports a simple extension mechanism for new languages (e.g., Solidity) or custom DSLs.\footnote{\url{https://comby.dev/\#faq-language-support}}
+for 20+ languages, and {\tt comby} supports a simple extension
+mechanism for new languages (e.g., Solidity) or custom DSLs (\url{https://comby.dev/\#faq-language-support}).
 One ongoing limitation of mutation testing is that tools are often research
 projects, and eventually become unusable due to lack of support, even in
 mainstream languages such as Java and C~\cite{MutChoice}.
@@ -353,9 +355,8 @@ promising approach for solving this problem.
 \subsubsection{Background and preliminary work}
 
 The mutant selection and prioritization problem is analogous to a similar
-problem in fuzz testing and triage.  That is, instead of contending with a large
-list of undifferentiated inputs (or mutants), a user wants to see a few,
-most-critical results, that maximize the amount of payoff in
+problem in fuzz testing and triage: a user wants to see a few,
+critical results, that maximize payoff in
 terms of bugs found or information gained.
 
 \paragraph{Furthest point first and fuzzer taming.} Fuzzer taming~\cite{PLDI13}
@@ -422,8 +423,7 @@ feedback-driven approaches are essential in this setting, since kill
 rates will obviously always be relatively low for purely static
 analysis without a specification.  The preliminary results from the
 Solidity mutation analysis are available at
-\url{https://github.com/agroce/slithermutate}, with a publication to
-follow once the same technique has been applied to other languages.
+\url{https://github.com/agroce/slithermutate}.
 
 \subsubsection{Proposed work: Mutant Novelty Ranking using FPF}
 
@@ -531,8 +531,9 @@ might suggest avoiding a highly novel mutant because it is likely
 equivalent; however, it may be that labeling this mutant as equivalent
 lets the FPF ranking avoid numerous other similar mutants --- e.g.,
 postponing labeling a logging statement as confirmed equivalent by the
-user may be a bad idea.  Also, if the mutant is \emph{not} equivalent (perhaps \emph{this} kind of logging needs to be tested), then the
-information is high-value.
+user may be a bad idea.
+%Also, if the mutant is \emph{not} equivalent (perhaps \emph{this} kind of logging needs to be tested), then the
+%information is high-value.
 
 \subsection{Feedback Analysis}
 \label{sec:feedbackplan}
@@ -568,8 +569,7 @@ analysis~\cite{Minicrowd}.  For high-visibility, high-criticality code
 such as, e.g., Linux kernel modules, this may be a very powerful
 tool.  The challenge in such a case is to allow communication between
 feedback-driven mutation efforts, splitting work both so as to
-minimize duplication and to target developers most familiar with
-different aspects of the code base, as done in automated assignment of
+minimize duplication and to target appropriate developers, as in automated assignment of
 bug reports~\cite{bhattacharya2012automated,jonsson2016automated}.
 
 
@@ -624,40 +624,13 @@ The component-focused sections above provide an overview of the
 research problems to be addressed by this proposal, but it is also
 useful to consider the high-level research questions as a whole:
 
-\subsubsection{Feedback-Driven Mutation Testing
-Research Questions}
+%\subsubsection{Feedback-Driven Mutation Testing
+%Research Questions}
 
 %\begin{framed}
 \begin{enumerate}[labelsep=3pt,leftmargin=12pt]
-\item What is a good generalized, language-agnostic mutant representation
-  and distance metric?
-\item How can FPF-based selection of mutants for novelty best incorporate
-  predictions of mutant equivalence, outcome, dominance, and
-  productivity?  Is novelty or expected utility more important?
-\item How can feedback-driven mutation testing most effectively incorporate feedback from users?
-\item Can mini-crowds be effectively leveraged to enhance the utility of user feedback?
-\item Is it possible to identify outliers in otherwise similar groups of
-  mutants?
-\item How can we quickly estimate whether a
-  mutant is killable?
-\item Can we predict the \emph{cause} of mutant
-  unkillability (e.g., oracle, coverage, equivalence, or nondeterminism)?
-\item How can  we most effectively use already generated killing tests
-  and counterexamples to prune mutants?
-\item Is distance-based clustering plus timing information useful for quickly
-  eliminating killable mutants similar to already-killed mutants?  How
-  does this relate to Predictive Mutation Testing (PMT)?
-
-\end{enumerate}
-%\end{framed}
-
-\subsubsection{Any-Language Mutation Research Questions}
-
-%\begin{framed}
-\begin{enumerate}[labelsep=3pt,leftmargin=12pt]
-\item What advances are required in order to maximize the efficiency and usability of a
-  fundamentally language-agnostic approach to
-  mutant generation?
+\item What advances are required in order to maximize the efficiency
+  and usability of any-language mutation?
 \item How can a domain-specific language
 enable new, more expressive mutation operators for
 structural code changes
@@ -669,9 +642,50 @@ search-and-replace approach?
 %  for language-agnostic definition of mutation operators that require
 %  more parser-like analysis of code structure, without compromising
 %  the usability and simplicity of the approach?
-\item Is it possible to perform on-the-fly mutant generation for very
-  large projects, and reconcile this approach with FPF (e.g., generate
-  new mutants based on \emph{predicted} distances from
-  already evaluated mutants)?
+\item What is a good generalized, language-agnostic mutant representation
+  and distance metric?
+\item How can FPF-based selection of mutants for novelty best incorporate
+  predictions of mutant equivalence, outcome, dominance, and
+  productivity?  Is novelty or expected utility more important?
+\item How can feedback-driven mutation testing most effectively
+  incorporate feedback, including from crowds?
+%\item Can mini-crowds be effectively leveraged to enhance the utility of user feedback?
+%\item Is it possible to identify outliers in otherwise similar groups of
+%  mutants?
+\item How can we perform on-the-fly and parallel mutant evaluation/generation guided by
+  (predicted) FPF?
+\item Can we predict the \emph{cause} of mutant
+  unkillability (e.g., oracle, coverage, equivalence, or nondeterminism)?
+\item How can  we most effectively use already generated killing tests
+  and counterexamples to prune mutants?
+\item Is distance-based clustering plus timing information useful for quickly
+  eliminating killable mutants similar to already-killed mutants?  How
+  does this relate to Predictive Mutation Testing (PMT)?
+
 \end{enumerate}
+%\end{framed}
+
+%\subsubsection{Any-Language Mutation Research Questions}
+
+%\begin{framed}
+% \begin{enumerate}[labelsep=3pt,leftmargin=12pt]
+% \item What advances are required in order to maximize the efficiency and usability of a
+%   fundamentally language-agnostic approach to
+%   mutant generation?
+% \item How can a domain-specific language
+% enable new, more expressive mutation operators for
+% structural code changes
+% % that typically require a full fidelity parse
+% without compromising on the usability of a % simpler regex-based
+% regular
+% search-and-replace approach?
+% %\item How should the language of regular expressions be extended to allow
+% %  for language-agnostic definition of mutation operators that require
+% %  more parser-like analysis of code structure, without compromising
+% %  the usability and simplicity of the approach?
+% \item Is it possible to perform on-the-fly mutant generation for very
+%   large projects, and reconcile this approach with FPF (e.g., generate
+%   new mutants based on \emph{predicted} distances from
+%   already evaluated mutants)?
+% \end{enumerate}
 %\end{framed}

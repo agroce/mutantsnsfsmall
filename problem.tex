@@ -108,13 +108,15 @@ discovering the most important faults or holes in a testing effort.
 Our approach thus fundamentally seeks to identify a small set of maximally different, maximally interesting mutants to present
 to the user.
 
-\begin{figure}
-\centering
-\includegraphics[width=0.6\columnwidth]{TestFlow}
+\begin{wrapfigure}{r}{.5\textwidth}
+\centering 
+\includegraphics[width=0.5\textwidth]{TestFlow}
 
-\caption{Basic flow of feedback-driven mutation testing. }
+\caption{Proposed mutation workflow. }
 \label{fig:flow}
-\end{figure}
+\end{wrapfigure}
+
+
 
 A second important principle behind our approach is to take advantage of user
 feedback in refining the list of interesting mutants and improving the SUT.
@@ -150,7 +152,7 @@ Meanwhile, the vast majority of
 real-world software projects are written in multiple languages~\cite{Ray2014}.
 We therefore propose novel mechanisms for \emph{efficient, any language mutation
   testing} based on our novel recent work on language-agnostic declarative
-program transformation using parser combinators~\cite{rvt-ppc}.
+program transformation~\cite{rvt-ppc}.
 \item \textbf{Mutant prioritization and selection.}  Our
   proposed framework will present a small, maximally-informative ranked list of
   mutants to the user.
@@ -197,17 +199,20 @@ possible for someone creating or enhancing a test suite to (1) use ``just
 enough'' mutation testing for their needs, maximizing benefit gained in exchange
 for work performed, and to (2) work in any programming language(s) without worrying
 about the quality of tool support, using intuitive source-based
-mutants and easy customization.  This project also aims to extend the insights of
-Test-Driven-Development (TDD) 
-beyond a paradigm where developers build a series of tests narrowly tailored to
-steps in development, and use Mutation-Driven-Development (MDD) to build
-automated test generators or verification harnesses that handle not only
-anticipated problems imagined during development, but problems not anticipated
-by developers.  In addition to traditional manual testing, this proposal targets
+mutants and easy customization
+%This project also aims to extend the insights of
+%Test-Driven-Development (TDD) 
+%beyond a paradigm where developers build a series of tests narrowly tailored to
+%steps in development, and use Mutation-Driven-Development (MDD) to build
+%automated test generators or verification harnesses that handle not only
+%anticipated problems imagined during development, but problems not anticipated
+%by developers.
+In addition to traditional manual testing, this proposal targets
 property-driven testing and formal verification, in
 order to be practical in the future, when many systems will be so
 safety- or mission- critical that even ``good'' manual testing is simply not 
-acceptable.
+acceptable, by extending Test-Driven-Development (TDD) to become
+Mutation-Driven-Development (MDD).
 
 
 \begin{framed} {\bf Problem:} Develop highly automated methods and tools that
