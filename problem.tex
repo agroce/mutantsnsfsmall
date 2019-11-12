@@ -67,7 +67,7 @@ This prior approach suffers the same problems as other
 mutation testing efforts: it provides no way to
 scale human efforts to such a needle-in-a-haystack setting.
 
-This project aims to make the falsification-driven approach to verification and testing feasible for larger
+This proposed project aims to make the falsification-driven approach to verification and testing feasible for larger
 projects, and those with lower mutation scores.
 Our goal is to enable \emph{Just Enough Mutation Testing}: We propose a mutation
 testing framework that identifies and interactively presents a few, very
@@ -76,7 +76,7 @@ effectively improve the program, the test suite, or both.
 
 Figure \ref{fig:flow} shows the basic outline of a proposed workflow.
 %
-This framework aims to generate a small, diverse set of
+Our framework aims to generate a small, diverse set of
 mutants, chiefly characterized by their novelty, to present to the developer or
 test engineer.  The framework further works
  \emph{with} the test engineer to improve the SUT or
@@ -127,7 +127,7 @@ feedback into account, refining the analysis accordingly, as the user improves
 their system.  Beyond allowing for more effective mutation analysis,
 this new paradigm provides a stopping rule other than patience, time available, or
 ``every last mutant'':  since mutants are ranked by likely payoff, once a user
-has examined several mutants in a row without benefit, or mutants are highly
+has examined several mutants in a row without benefit, or mutants that are highly
 similar in behavior to other mutants, a user may reasonably stop, knowing that
 the low-hanging fruit have probably all been picked.
  It also enables a new way to improve the efficiency of
@@ -199,7 +199,7 @@ possible for someone creating or enhancing a test suite to (1) use ``just
 enough'' mutation testing for their needs, maximizing benefit gained in exchange
 for work performed, and to (2) work in any programming language(s) without worrying
 about the quality of tool support, using intuitive source-based
-mutants and easy customization
+mutants and easy customization. 
 %This project also aims to extend the insights of
 %Test-Driven-Development (TDD) 
 %beyond a paradigm where developers build a series of tests narrowly tailored to
