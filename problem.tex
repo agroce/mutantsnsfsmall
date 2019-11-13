@@ -36,7 +36,7 @@ correctness and (2) refining a
 verification or testing effort by repeated efforts at falsification is an
 effective method for ensuring the quality of verification and testing
 efforts.  The
-approach allowed Groce and colleagues to identify of multiple previously unknown faults in
+approach allowed Groce and colleagues to identify multiple previously unknown faults in
 the Linux kernel's
 RCU~\cite{MathieuDesnoyers2012URCU,DinakarGuniguntala2008IBMSysJ,McKenney:2013:SDS:2483852.2483867}
 module and the {\tt pyfakefs} Python mock file
@@ -50,7 +50,8 @@ the core concept is simple:  users should examine all unkilled
 mutants, and for each mutant either understand why it is
 equivalent or uninteresting, or actually construct a way to kill it.  In a sense, this harkens back to the
 earliest ideas about mutation testing, but with
-much more automated support.
+much more automated support, for both understanding the mutants and
+actually killing them.
 
 Unfortunately, the
 methods proposed were, while useful, limited in applicability.  They simply assumed that the number of unkilled mutants was
