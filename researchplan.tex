@@ -169,7 +169,70 @@ real-world tooling (i.e., in {\tt universalmutator} and {\tt comby}) suggest tha
 this goal is imminently feasible.  At heart, this line of work
 represents the conviction of the PIs that mutation testing (like
 automated program repair) is simply
-an instance of the general field of automated program transformation~\cite{Ptransform}.
+an instance of the general field of automated program
+transformation~\cite{Ptransform}.
+
+\paragraph{Using differential mutation analysis to evaluate and
+  improve static analysis tools.}
+
+Finally, we have used the universalmutator and our basic idea to
+formulate a novel way to evaluate and (most relevant to this proposal)
+\emph{improve} static analysis tools.  This work is TODO: ICSE result
+(either accepted to ICSE or in submission).
+
+The proposed approach is simple in outline:
+
+\begin{enumerate}
+\item Run each tool on a set of unmutated source code target(s), and
+  determine the \emph{baseline}: the number of
+  (non-informational/stylistic) static analysis findings produced.
+\item Generate mutants of the source code targets and run each tool on
+  each mutant of each target.  Consider a mutant killed if the number
+  of findings for the mutated code is greater than the number for the
+  baseline, un-mutated version of the target.
+\item Compute, for each tool, the \emph{mutant ratio}:  the mutation score ($\frac{|\mathit{killed}|}{|\mathit{mutants}|}$) divided by (mean) baseline.  If the (mean) baseline is zero, use a baseline equal to either one or the lowest non-zero baseline for any tool in the comparison set\footnote{Unless the number of programs used for evaluation is small, a zero mean baseline for a tool is extremely unlikely to arise in practice.}.
+\item Discard all mutants not killed by at least one tool and all mutants killed by all tools.  What remains allows \emph{differential} analysis.
+Examine the remaining mutants in the difference in \emph{prioritized} order to qualitatively understand tool differences, or improve a tool.
+\end{enumerate}
+
+Rather than using a sophisticated prioritization scheme, we used a
+simple textual, ad-hoc scheme, in order to examine the most
+interesting mutants in the ``diff'' between static analysis tools.
+This was helpful for understanding our general results, showing
+differences in Solidity, Java, and Python static analysis tools and
+confirming known rankings of such tools based either on user
+impressions or more limited experiments.  However, it was essential
+for the most relevant part of this work to this proposal:  using our
+results, and the set of mutants in the ``diff'' of three Solidity
+smart contract analysis tools to improve the best of those tools.
+Improving the best of the tools was a wise use of our efforts, in that
+we found that differences between tools were mostly rooted in
+differences in the quality of the underlying analysis engine, not in
+differences in detectors.  Using prioritized mutants, we were able to
+identify three new candidate
+detector patterns for the Slither tool, based on mutants killed by
+Securify, SmartCheck, or both, but not by Slither:  Boolean constant
+misuse, type-based tautologies, and loss of precision due to ordering
+of arithmetic operations.
+
+All three of these detectors were submitted as PRs to the Slither
+project, vetted over an internal benchmark set of contracts used by
+the Slither developers to evaluate new detectors, and accepted for
+release in the public version of Slither.  All three detectors produce
+some true positives (actual problems, though not always exploitable)
+in benchmark contracts, have acceptably low false positive rates, and
+were deemed valuable enough to include as non-informational (medium
+severity) detectors.  The first mutants in prioritized rank exhibiting
+the issues, shown above, were the 2nd, 9th, and 12th
+non-statement-deletion mutants ranked for SmartCheck, out of over 800
+such mutants.  Using our prioritization, it was possible to identify
+these issues by examining fewer than 20 unkilled mutants.  Without
+prioritization, on average a developer would have to look at more than
+200, 80, and 400 mutants, respectively, to find instances of these
+problems.  Examining the first 100 mutants in the unprioritized lists for SmartCheck and Securify, ordered by contract ID and mutant number (roughly source line mutated) we were unable to identify \emph{any} obviously interesting mutants, suggesting that it is indeed hard to use mutation analysis results without prioritization. A large majority of the mutants we inspected involved either the missing
+{\tt return} problem noted in the introduction, or replacing {\tt msg.sender} with {\tt tx.origin}; Slither has a detector for misuses of {\tt tx.origin}.  SmartCheck and Securify tend to identify most (though not all) uses of {\tt tx.origin} as incorrect, while Slither has a more selective rule, intended to reduce false positives.
+
+
 
 \subsubsection{Proposed work: Any language mutation}
 \label{subsubsection:any-language}
