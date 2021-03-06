@@ -29,6 +29,24 @@ conclusions~\cite{ahmed_testedness}.  This is a foundational assumption of this 
 %faults that are similar to actual faults in terms of the error traces
 %produced.
 
+The most closely related work in a sense is that of Roman and
+Mnich~\cite{tddmut}, which studied the effectiveness of introducing
+mutation testing into the test-driven development (TDD) process in a
+student setting.  They showed that test written using TDD with the
+additional aid of mutation analysis had better code coverge on the
+code from TDD-only groups than the TDD-only tests did, and found more
+post-release defects in the TDD code.  However, the number of groups
+was limited to four for each approach (TDD, TDD+mutants), and the
+post-release defects were concentrated in the code of one group.  This
+study is promising, in that it suggests that mutants can indeed be
+useful in real testing tasks, but extremely limited in that the
+evaluation was only within a TDD context, not including ``legacy
+testing,'' only involved completely manual test development, and (most
+critically) the approach suggested simply could not scale to large
+numbers of mutants, without the addition of feedback techniques such
+as we propose.  Our experiments would, we suggest, ideally confirm and
+extend these results.
+
 %Cost of execution is often~\cite{jia2011analysis} considered
 %to be the most problematic aspect of practical mutation testing.
 Numerous approaches seek to reduce the cost~\cite{jia2011analysis} of mutation

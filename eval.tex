@@ -60,7 +60,17 @@ contexts~\cite{frameworkDebugging}; other researchers have demonstrated this
 type of methodology useful for tool pilot studies~\cite{sunshineDocumentation}.
 We may also construct implementation tasks around small, but easy-to-get-wrong
 code problems like binary search and AVL trees, especially when evaluating the
-potential benefits and key challenges for MDD.
+potential benefits and key challenges for MDD.  Methods used in our
+previous studies to control for user expertise and prior knowledge of
+problems will generally carry over, as we expect not to encounter
+prior expertise in mutation testing itself in this setting.
+
+In addition to traditional testing tasks, we will also conduct studies
+on the enhancement of random testing harnesses, with one set of
+experiments focusing on enhancing specifications/properties, and
+another set focusing on enhancing the set of generated tests
+(controlling for specification by using a reference implementation for
+differential testing).
 
 We may make use of ``dummy'' or ``Wizard of Oz'' versions of elements of the
 framework to isolate the effects of specific features, like the FPF-based
@@ -71,7 +81,7 @@ think-aloud protocols~\cite{thinkaloud}, in which participants are instructed to
 continuously verbalize what they are thinking/attempting. This method helps the
 examiners determine why participants behave in particular ways, and to identify
 and isolate sources of confusion.  These barriers can then be used to improve
-the underlying research technique.  To mitigate the risk of highly varying
+the underlying research technique.  Again, to mitigate the risk of highly varying
 programmer skill, we will use a counterbalanced, within-subjects design,
 exposing each participant to both experimental and control conditions.  The
 design just outlined has been profitably used in many
@@ -81,7 +91,10 @@ lab studies involving think aloud protocols~\cite{frameworkDebugging} as well as
 qualitative analysis generally~\cite{testingUnderReview}, and will lead the
 design and execution of these lab studies at CMU.  Note that, to our
 knowledge, these experiments will also provide the first well-founded
-human studies of the baseline value of mutants in improving test suites, not
+human studies of the baseline value of mutants in improving test
+suites in a traditional development setting\footnote{The only previous
+  study of which we are aware was both limited in scope and only applied in a Test-Driven
+  Development context~\cite{tddmut}.}, not
 just of our proposed methods; in itself this is a major research contribution.
 % Stefan Endrikat, Stefan Hanenberg, Romain Robbes, and Andreas Stefik. How do
 % api documentation and static typing affect api usability? In International
