@@ -47,6 +47,16 @@ numbers of mutants, without the addition of feedback techniques such
 as we propose.  Our experiments would, we suggest, ideally confirm and
 extend these results.
 
+Similarly, a paper by Petrovi\'c et al., to appear at ICSE this
+year~\cite{MutImpTest}, while limited in various ways (e.g., relying on Google's rule of only looking at one
+mutant per line, using mutant exposure and review requests rather than
+directly measuring use of mutants to derive tests, and using a control group of different projects), shows that even a limited examination and
+application of mutants results in
+visible positive effects on test quality and fault detection.  We
+believe that our approach will enable much more aggressive and efficient use of
+mutants in critical development efforts, and without the required
+context of industrial code reviews.
+
 %Cost of execution is often~\cite{jia2011analysis} considered
 %to be the most problematic aspect of practical mutation testing.
 Numerous approaches seek to reduce the cost~\cite{jia2011analysis} of mutation
@@ -72,7 +82,7 @@ evaluation time) approaches.
 %al.~\cite{wong1993mutation,wong1995reducing}, and Offutt et al.~\cite{offutt1993experimental}.
 Determining relative merits of selective mutation strategies such as operator
 selection and random sampling has long been an active field of
-research~\cite{wong1995reducing,mresa1999efficiency,zhang2010isoperator} 
+research~\cite{wong1995reducing,mresa1999efficiency,zhang2010isoperator,gopinath2016measuring,shin2016theoretical,lindstrom2015redundant} 
 %Skew in fault representativeness among mutants was initially noticed by Budd et
 %al.~\cite{budd1980mutation} who found that particular types of mutants are
 %representative for particular kinds of faults. Constrained mutation was
@@ -89,17 +99,18 @@ deletion as ``the'' mutation operator.
 %Deng et al.~\cite{deng2013empirical} extended the deletion operator for diverse
 %language elements, and obtained an effectiveness of 92\% while reducing the
 %number of mutants by 80\%.
-The subsumption of individual mutants and mutation operators is also an active
-area of research~\cite{gopinath2016measuring,shin2016theoretical,lindstrom2015redundant}.
+%The subsumption of individual mutants and mutation operators is also an active
+%area of research~\cite{gopinath2016measuring,shin2016theoretical,lindstrom2015redundant}.
 %Higher order mutants (HOM) aim to improve the quality of
 %mutants by combining simpler mutants into more complex mutants. Jia et
 %al.~\cite{jia2009higher,jia2008constructing}, found that the number of mutants
 %can be reduced by 50\% by making use of subsumption of simpler mutants
 %by higher order mutants.
-Mutation
-clustering~\cite{derezinska2015toward,strug2012machine,hussain2008mutation} is
-another \emph{do-fewer} approach where similar mutants are identified based on
-various properties.  We offer a fundamentally
+%Mutation
+%clustering~\cite{derezinska2015toward,strug2012machine,hussain2008mutation} is
+%another \emph{do-fewer} approach where similar mutants are identified based on
+%various properties.
+We offer a fundamentally
 different \emph{do-fewer/do-smarter} method that combines FPF-novelty, utility
 prediction, and user interaction for a more radical reduction in
 mutants run, and runs most mutants while users are examining early results.
@@ -132,38 +143,36 @@ mutants run, and runs most mutants while users are examining early results.
 The above work largely focuses on computing or at least estimating the
 total mutation score of a
 test suite.  The assumption is that mutation testing is
-meant to be, like a coverage metric, a kind of ``evaluation'' of a
-test suite, a number used to say ``this is a good test suite'' or at
-least ``this is a better test suite.''  In contrast,
+meant to be, like a coverage metric, an ``evaluation'' of a
+test suite, a number used to say ``this is a good test suite.''  In contrast,
 %important for some real-world purposes (evaluating QA efforts) and
 %certainly for software testing research, that is not the focus of
-this proposal considers the problem of presenting unkilled mutations to
+this proposal focuses on the problem of presenting unkilled mutations to
 a developer or test engineer in a way that facilitates the improvement
 of a test suite and the detection of faults, inspired by PI Groce's
 previous work on using mutation to find defects in verification
 and test generation
 efforts~\cite{groce2015verified,groce2018verified,mutKernel}.
 
-Very recent work by Papadakis et al. has
+Recent work by Papadakis et al. has
 aimed, unusually, at predicting the ``quality'' of~\cite{MutQuality}
 or even prioritizing~\cite{FaRM} mutants, to rank fault-revealing
 mutants highly so that users can produce tests to find faults, focusing on a single static
 pass to rank mutants by their fault-revealing potential, informed by
 (possibly cross-project)
 data on fault-revealing tests.  There is no feedback loop, or ability
-to indicate the \emph{importance} of various faults, and the language
-support issue is avoided by targeting only LLVM
-bitcode.  %The methods and results of this work
+to indicate the \emph{importance} of various faults, and only LLVM
+bitcode mutants are targeted.  %The methods and results of this work
 %will inform this proposal's utility estimation approach.
 
-The single most relevant work by others is to be found in a
-report on actual techniques in use at Google for applying mutation
-testing to real-world projects~\cite{MutGoogle}.  Their approach also
-uses a notion of feedback, but this is manually handled and based on
+Google is well known for applying mutation
+testing to real-world projects~\cite{MutGoogle}.  Their approach 
+uses a notion of feedback, but this is  essentially manual, and based on
 using a classification scheme to heuristically throw out ``arid''
 (likely not to be actionable)
 mutants; due to the size of Google's code base and the integration of
-their approach in Google's code review process, there is also a
+their approach in Google's code review process, there is also as noted
+above, a
 decision to only allow one mutation (initially randomly decided) per
 line of code.  While the underlying motivation, of giving developers
 actionable information, is
@@ -178,19 +187,18 @@ It is an attempt to select mutants
 in an industrial code review setting, not an effort to propose a
 new way to construct or enhance test suites; e.g., it only even
 proposes mutants of code in a diff with a previous version of the
-code, which makes it completely unusable in after-the-fact testing and
-verification efforts.  Further, it uses
+code.  Further, it uses
 Google-wide coding conventions and developer suggestions to fix
 heuristics such as ``avoid mutation of logging statements'' rather
 than trying to learn (with human assistance) such heuristics for
 projects that may vary widely in language and coding style.
-The techniques used in this proposal may be useful in generalizing or enhancing an
-effort such as Google's, however, and share the focus on mutants as
+The techniques used in this proposal may be useful in enhancing an
+effort such as Google's, and share the focus on mutants as
 tools for focusing developer/tester attention and producing action on the
 part of humans, not computing a mutation score.  The Google report
 itself allows that their approach does not truly scale, since it
 requires extensive manual support for each heuristic and language, a
-problem this proposal addresses.
+problem this proposal directly addresses.
 
 More broadly, a paper by the
 authors of the Google report and a group of academic mutation testing
@@ -200,14 +208,13 @@ concepts are highly related to this proposal's goals, but again centered on a
 diff-focused, large-scale industrial setting, rather than an approach
 that, like TDD, may also be applied to smaller coding efforts in a more
 isolated setting, such as development of embedded software, where
-crowdsourcing is impractical.  Another key difference is that, while their
+crowdsourcing is impractical or irrelevant.  Another key difference is that, while their
 work used EvoSuite to enhance a test suite to kill additional mutants,
 the assumption was that most suite enhancement would be due to
 developers adding manual tests.  Furthermore, we argue mutants
 are neither ``productive'' or ``unproductive'' in an absolute sense, but
 rather the value of a mutant depends on previous mutants a
-developer has manually examined, and the results of that examination;
-this project embodies this concept in the FPF-centric workflow.
+developer has manually examined, and the results of that examination.
 
 A second thrust of the efforts in this proposal is to simplify the
 development, maintenance, and (especially) extension of mutation
@@ -218,7 +225,14 @@ mutation operators through domain-specific templates, and separating the generat
 language or build-environment specific techniques for pruning invalid
 mutants.  This aspect of the proposal primarily builds on PI Groce's initial work on the topic of
 regular-expression-based mutant generation~\cite{regexpMut} and
-PI Le Goues's work on declarative transformation for multiple languages~\cite{rvt-ppc}.
+PI Le Goues's work on declarative transformation for multiple
+languages~\cite{rvt-ppc}.  Language agnostic mutation is also critical
+in PI Groce and PI Le Goues' in-progress work, using
+Comby~\cite{rvt-ppc}, to enable low-effort high-quality fuzzing for
+compilers, which has resulted in the detection of over 80 faults in a
+variety of compilers, including security-critical bugs in the Solidity
+smart contract language's compiler that resulted in the awarding of a
+substantial bug bounty~\cite{aflcompfuzz,tobsolcfuzz1,tobsolcfuzz2}.
 % {\bf CLG: DISCUSS COMBY}.  %Trivial compiler equivalence~\cite{TCE} is a key
 %technology for supporting effective any-language mutation; especially
 %in the context of this proposal, where executing all mutants is not
