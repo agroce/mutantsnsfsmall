@@ -11,20 +11,19 @@ thrust of mutation testing research~\cite{jia2011analysis}.
 Moreover, although test suite adequacy is certainly a useful thing to measure, the most
 important goal of mutation testing\,---\,and indeed its original use
 case~\cite{budd1980theoretical}\,---\,is to help \emph{improve} a test suite.  For this
-purpose, either a score or a vast list of all unkilled mutants is not useful for practicing engineers.  An
+purpose, neither a score nor a vast list of all unkilled mutants
+(which will exist for even very good tests of realistic software systems) is not useful.  An
 undifferentiated list of unkilled mutants typically contains mostly uninteresting or
-redundant mutants, and a much smaller number of actionable mutants that are
-maximally useful in guiding test improvement.  Examining all unkilled
-mutants is only practical for formal verification efforts or critical
-systems with high-powered test suites.
-
-But even in these settings, examining
-surviving mutants produced by comprehensive mutation testing campaigns is
+redundant mutants, and a much smaller number of \emph{actionable mutants} that are
+maximally useful for improving tests.  Examining all unkilled
+mutants is sometimes impractical even for formal verification efforts or critical
+systems.  Examining
+surviving mutants in even those settings is
 time-consuming and unpleasant, as PI Groce and co-authors noted in prior work on
 using mutants to drive formal verification and automated
 testing~\cite{groce2015verified,groce2018verified,mutKernel}.
 %
-That work proposes a novel approach to
+That work proposed a novel approach to
 formal verification and automated testing
 combining Karl Popper's falsification-based notion of
 scientific discovery~\cite{Popper,popperconjectures} with mutation
@@ -33,7 +32,8 @@ The heart of the idea is (1) a surviving non-equivalent mutant
 \emph{falsifies} the claim that a given
 formal verification or test effort captures a full notion of
 correctness and (2) refining a
-verification or testing effort by repeated efforts at falsification is an
+verification or testing effort by repeated efforts at falsification is
+the most
 effective method for ensuring the quality of verification and testing
 efforts.  The
 approach allowed Groce and colleagues to identify multiple previously unknown faults in
@@ -42,24 +42,26 @@ RCU~\cite{MathieuDesnoyers2012URCU,DinakarGuniguntala2008IBMSysJ,McKenney:2013:S
 module and the {\tt pyfakefs} Python mock file
 system~\cite{pyfakefs}, despite the existence of very-high-quality
 automated test generation efforts for these
-systems~\cite{rcutorture,TSTL}.  This prior work
+systems~\cite{rcutorture,TSTL}.  Follow-up preliminary work for this
+proposal has uncovered significant opportunities to improve the
+Slither static analysis tool for smart contracts~\cite{slitherpaper,slither-code}.  This prior work
 proposed a number of algorithms and
 methods for finding bugs in testing and verification
 harnesses.  At a high level, however,
-the core concept is simple:  users should examine all unkilled
+the core concept was simple:  users should examine all unkilled
 mutants, and for each mutant either understand why it is
-equivalent or uninteresting, or actually construct a way to kill it.  In a sense, this harkens back to the
+equivalent or uninteresting, or actually construct a way to kill it.  This harkens back to the
 earliest ideas about mutation testing, but with
 much more automated support, for both understanding the mutants and
 actually killing them.
 
 Unfortunately, the
 methods proposed were, while useful, limited in applicability.  They simply assumed that the number of unkilled mutants was
-small, and focused on solving the problem of helping a developer or
+small, and focused on helping a developer or
 test engineer kill surviving mutants.
 In practice, however, human
 attention does not scale to analyzing large numbers of
-unkilled mutants without further assistance in ``triaging'' them.  The process bears a
+unkilled mutants without considerable assistance in ``triaging'' them.  The process bears a
 resemblance to the problem of manual confirmation of results from a
 machine-learning classifier~\cite{OnlyOracle,EndUserMistake}, where even highly-motivated scientific
 users are unwilling to examine more than a few tens of
@@ -68,8 +70,8 @@ This prior approach suffers the same problems as other
 mutation testing efforts: it provides no way to
 scale human efforts to such a needle-in-a-haystack setting.
 
-This proposed project aims to make the falsification-driven approach to verification and testing feasible for larger
-projects, and those with lower mutation scores.
+This project aims to make the falsification-driven approach to verification and testing feasible for larger
+projects, and those with (much) lower mutation scores.
 Our goal is to enable \emph{Just Enough Mutation Testing}: We propose a mutation
 testing framework that identifies and interactively presents a few, very
 different, ranked mutants, and then \emph{works with the user} to 
@@ -81,8 +83,8 @@ Our framework aims to generate a small, diverse set of
 mutants, chiefly characterized by their novelty, to present to the developer or
 test engineer.  The framework further works
  \emph{with} the test engineer to improve the SUT or
-the underlying tests, and incorporate user feedback into which mutants are
-interesting or useful (or not).  This results in a constantly-updated ranking of mutants,
+the underlying tests, and incorporate user feedback to determine which mutants are
+worth examining.  This results in a constantly-updated ranking of mutants,
 based on actions and feedback from the engineer.
 
 A key insight behind our proposed approach is to view mutant triage as
@@ -92,7 +94,8 @@ taming'') problem in random testing/fuzzing~\cite{PLDI13,distMut,SemCrash,vanton
 to quickly find mutants that indicate the most important ``holes'' in a testing
 or verification effort, and act on those most-critical gaps, possibly revealing
 faults in the System Under Test (SUT).
-An unkilled mutant is, conceptually, very similar to a failing test.
+An unkilled mutant \emph{is}, conceptually, a failing test --- of the testing
+effort!
 Fuzzers tend to produce very large numbers of failing tests for a much
 smaller number of distinct bugs.  Finding the set of distinct bugs,
 and identifying important bugs that need to be fixed immediately is
@@ -106,8 +109,15 @@ generator, but about seeing \emph{many very different test failures}
 or \emph{many
   different unkilled mutants} quickly, to maximize the chance of
 discovering the most important faults or holes in a testing effort.
-Our approach thus fundamentally seeks to identify a small set of maximally different, maximally interesting mutants to present
-to the user.
+Previous efforts to identify ``critical'' mutants tend to focus on
+subsumption and potential to resolve other mutants, but this may be
+counterproductive for identifying the mutants most critical to
+resolve, which are likely to not subsume other mutants, precisely
+because they correspond to subtle assumptions in testing, not broad
+gaps in testing (e.g., not testing logging output).
+Our approach thus fundamentally seeks to identify a small set of maximally different, \emph{maximally interesting} mutants to present
+to the user, based on feedback and project context, not mere dominance
+hierarchy.
 
 \begin{wrapfigure}{r}{.5\textwidth}
 \centering 
