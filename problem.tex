@@ -56,9 +56,8 @@ much more automated support, for both understanding the mutants and
 actually killing them.
 
 Unfortunately, the
-methods proposed were, while useful, limited in applicability.  They simply assumed that the number of unkilled mutants was
-small, and focused on helping a developer or
-test engineer kill surviving mutants.
+methods proposed were very limited in applicability, due to an
+assumption that the number of unkilled mutants was small and manageable.
 In practice, however, human
 attention does not scale to analyzing large numbers of
 unkilled mutants without considerable assistance in ``triaging'' them.  The process bears a
@@ -115,9 +114,7 @@ counterproductive for identifying the mutants most critical to
 resolve, which are likely to not subsume other mutants, precisely
 because they correspond to subtle assumptions in testing, not broad
 gaps in testing (e.g., not testing logging output).
-Our approach thus fundamentally seeks to identify a small set of maximally different, \emph{maximally interesting} mutants to present
-to the user, based on feedback and project context, not mere dominance
-hierarchy.
+Our approach thus fundamentally seeks to identify a small set of maximally different, \emph{maximally interesting} mutants to present, based on feedback and project context.
 
 \begin{wrapfigure}{r}{.5\textwidth}
 \centering 
@@ -129,24 +126,23 @@ hierarchy.
 
 
 
-A second important principle behind our approach is to take advantage of user
-feedback in refining the list of interesting mutants and improving the SUT.
-A test engineer has valuable insight\,---\,and the final word\,---\,about which
-unkilled mutants are uninteresting or equivalent, and which require changes to
-the system itself or the test harness.  We propose to explicitly take this
-feedback into account, refining the analysis accordingly, as the user improves
-their system.  Beyond allowing for more effective mutation analysis,
-this new paradigm provides a stopping rule other than patience, time available, or
-``every last mutant'':  since mutants are ranked by likely payoff, once a user
-has examined several mutants in a row without benefit, or mutants that are highly
-similar in behavior to other mutants, a user may reasonably stop, knowing that
-the low-hanging fruit have probably all been picked.
- It also enables a new way to improve the efficiency of
-mutation testing:  even for a very large project, it only has to build and
-execute a small set of mutants, because it only runs the test suite on mutants
-currently predicted to be of likely interest to the user.
+The use of user feedback is critical to our goal.  A test engineer has
+valuable insight\,---\,and the final word\,---\,about which unkilled
+mutants are uninteresting or equivalent, and which require changes to
+the system itself or the test harness.  We propose to explicitly take
+this feedback into account, refining the analysis accordingly, as the
+user improves their system.  Beyond allowing for more effective
+mutation analysis, this new paradigm provides a stopping rule other
+than patience, time available, or ``every last mutant'': since mutants
+are ranked by likely payoff, once a user has examined several mutants
+in a row without benefit, or mutants that are highly similar in
+behavior to other mutants, a user may reasonably stop, knowing that
+the low-hanging fruit have probably all been picked.  This approach
+also helps scale mutation testing to very large projects, since it
+only has to execute the test suite on mutants currently predicted to
+be of likely interest to the user. 
 
-Overall, our approach requires several fundamental research novelties:
+Overall, our approach requires several fundamental research advances:
 \begin{itemize}[labelsep=3pt,leftmargin=12pt]
 \item \textbf{Efficient, any-language mutation testing.}
 Our goal of user-interactive mutation testing, integrated directly into
@@ -221,17 +217,14 @@ mutants and easy customization.
 In addition to traditional manual testing, this proposal targets
 property-driven testing and formal verification, in
 order to be practical in the future, when many systems will be so
-safety- or mission- critical that even ``good'' manual testing is simply not 
-acceptable, by extending Test-Driven-Development (TDD) to become
+safety- or mission- critical that automated test generation is obligatory, by extending Test-Driven-Development (TDD) to become
 Mutation-Driven-Development (MDD).
 
 
 \begin{framed} {\bf Problem:} Develop highly automated methods and tools that
   allow the practical application of mutation testing to real-world software in
   a feedback-driven way, where user and mutation testing framework cooperate to
-  improve testing efforts, while minimizing user effort and maximizing the
-  ability to quickly find the most important weaknesses of testing or
-  verification.
+  improve testing efforts, while minimizing user effort and maximizing payoff.
 \end{framed}
 
 % \begin{framed}
@@ -253,7 +246,8 @@ improving verification and automated testing
 efforts~\cite{groce2015verified,groce2018verified,mutKernel}.  PI Groce has
 extensive experience in developing mutation tools for new
 languages~\cite{le2014mucheck,muupi,regexpMut}, including the first reliable
-tools for mutation of Haskell, Python, and Swift, as well as in user-facing
+tools for mutation of Haskell, Python, Rust, Swift, and various smart
+contract languages, as well as in user-facing
 (vs. researcher-oriented) automated software testing
 tools~\cite{tstlsttt,DeepState}.  He additionally has expertise in driving
 testing of machine learning systems through user

@@ -15,10 +15,9 @@ feedback-driven mutation testing.
 First, bytecode- or IR-level mutation works well to compute a
 score for a test suite, but is not not suitable for presentation to developers
 or test engineers, who need to reason about a mutant's implications for their
-source or test code.   That is, Java developers
+source or test code.   Java developers
 think in terms of Java, not compiled bytecode; C and C+++ developers certainly
-do not generally understand LLVM IR; test engineers are even less likely to
-appreciate such low-level descriptions.  Even when possible, translation may not help: a bytecode-level
+do not generally understand LLVM IR.  Even when possible, translation may not help: a bytecode-level
 mutation may not have a simple source-level equivalent, especially if the
 bytecode has been optimized.  Second, features that help identify semantically
 similar (or dissimilar) mutants are hard to identify at the bytecode level.  Even if the mutant
@@ -37,7 +36,7 @@ Thus, our first research task is to develop a novel {\tt mutant generator} that
 (1) operates at the source level, with output that is easy for developers to
 understand and the framework to analyze; (2) is, as much as possible,
 \emph{language independent}, and applicable to projects written in a
-heterogeneity of languages; and finally (3) is efficient.  The PI's recent
+heterogeneity of languages; and finally (3) is efficient.  The PIs' recent
 advances in universal mutation~\cite{regexpMut,universalmutator} and
 language-agnostic declarative program transformation using parser
 combinators~\cite{rvt-ppc} provide key motivation and starting points for this
@@ -50,24 +49,23 @@ component.
 % viable for mutation testing, but since we're mostly building on Comby here, we
 % need the space for that
 
-\begin{figure}
-{\scriptsize
-\begin{tabularx}{0.75\textwidth}{XXX}
-\verb|\+ ==> -| & \verb|== ==> !=| & \verb|(\D)(\d+)(\D) ==> \1(\2+1)\3|\\
+%\begin{figure}
+%{\scriptsize
+%\begin{tabularx}{0.75\textwidth}{XXX}
+%\verb|\+ ==> -| & \verb|== ==> !=| & \verb|(\D)(\d+)(\D) ==> \1(\2+1)\3|\\
 %\verb|\+ ==> *| & \verb|== ==> <| & \verb|(\D)(\d+)(\D) ==> \1(\2-1)\3|\\
 %\verb|\+ ==> /| & \verb|== ==> >| & \verb|(\D)(\d+)(\D) ==> \g<1>0\3|\\
-\verb|".+" ==> ""| & \verb|while ==> if| & \verb|(^\s*)(\S+.*)\n ==> \1\2\n\1break;\n|\\
+%\verb|".+" ==> ""| & \verb|while ==> if| & \verb|(^\s*)(\S+.*)\n ==> \1\2\n\1break;\n|\\
 %{\tt \\+ ==> *} & {\tt != ==> <=} & {\tt (\D)(\\d+)(\D) ==> \\1\\2-1\\3}\\
 %{\tt \\+ ==> /} & {\tt != ==> >=} & {\tt ".+" ==> ""}\\
 %{\tt \\+ ==> \%} & {\tt != ==> >=} & {\tt (^\\s*)(\\S+.*)\\n ==> \\1\\2\\n\\1break;\\n}\\
-\end{tabularx}
-}
-\caption{Some universal mutation rules}
-\label{fig:rules}
-\end{figure}
+%\end{tabularx}
+%}
+%\caption{Some universal mutation rules}
+%\label{fig:rules}
+%\end{figure}
 
-The PI's combined prior work provides evidence for the
-feasibility of any-language mutation:
+%The PI's combined prior work provides evidence for the feasibility of any-language mutation:
 
 \paragraph{The universalmutator.} First, PI Groce and colleagues
 released a fully functional, regular-expression-based mutant
@@ -78,8 +76,8 @@ operators by a set of regular-expression-defined text transformations.  These
 are organized into a hierarchy, so that if a program is, e.g., written in Swift,
 the ``universal'' mutation operators that apply to all programming languages are
 first applied, then operators for ``C-like'' languages, and finally a set of
-Swift-specific rules are applied.  Figure \ref{fig:rules} shows some of the
-``universal'' rules applied to all languages.
+Swift-specific rules are applied.  %Figure \ref{fig:rules} shows some of the
+%``universal'' rules applied to all languages.
 
 Importantly,  PI Groce demonstrated that the {\tt universalmutator} tool generated
 numbers of mutants and kill ratios for Java code comparable to
@@ -87,32 +85,14 @@ PIT~\cite{pittest} and Major~\cite{Major}.  For falsification-driven
 verification, the regular-expression-based approach produced mutants of equal
 value to those produced by Andrews' tool~\cite{mutant} and Muupi~\cite{muupi}
 for C and Python, respectively.
-%
-% As it stands, the {\tt universalmutator} tool
-% is usable for real-world mutation (in fact, it is being considered for use by
-% NASA/JPL engineers in testing the C code for upcoming CubeSat~\cite{CubeSat}
-% missions) for languages including: C, C++, Java, Python, Swift, Rust, Go, and
-% the Solidity smart-contract language.  The {\tt universalmutator} allows easy
-% definition of new rules, and supports automated analysis of mutants,
-% coverage-based pruning of mutants, and (in some languages) trivial compiler
-% equivalence~\cite{TCE} checks.
-%
-% Adding a new
-% language, even a custom DSL, or a new set of project-specific rules for an
-% existing language, in this approach, simply requires writing a new rule file and
-% defining where it lies in the language hierarchy.  In our feedback-driven
-% setting, the problem of generating ``too many'' mutants is irrelevant: only a
-% small set of highly diverse and likely-actionable mutants is ever presented to
-% the
-% user. %, and a novelty-estimator helps a user stop examining new mutants when the payoff is likely to be low.
-%
-% TODO: probably cut back on this stuff.
-This preliminary work demonstrates that multi-language, syntax-driven, source-level mutation is
-feasible and, indeed, effective, producing results competitive with
-state-of-the-art single-language mutation tools.
-However, it has significant limitations for long-term utility, motivating the
-proposed research below: Because the source
-code is not parsed, and applies the regular expressions to lines of code, not
+This demonstrates that multi-language, syntax-driven, source-level mutation is
+\emph{feasible} and, indeed, effective, producing results competitive with
+state-of-the-art single-language mutation tools.  It is already being
+used, for instance as the Ethereum foundation recommended tool for mutation testing of
+Solidity smart contracts.
+However, it has significant limitations for long-term utility,
+motivating this project: Because the source
+code is not parsed, and applies regular expressions to lines of code, not
 larger blocks, the technique generates many mutants that are invalid
 and cannot be compiled, or that are trivially equivalent because they, e.g.,
 mutate ``source code'' in a large comment block.
@@ -171,68 +151,6 @@ represents the conviction of the PIs that mutation testing (like
 automated program repair) is simply
 an instance of the general field of automated program
 transformation~\cite{Ptransform}.
-
-\paragraph{Using differential mutation analysis to evaluate and
-  improve static analysis tools.}
-
-Finally, we have used the universalmutator and our basic idea to
-formulate a novel way to evaluate and (most relevant to this proposal)
-\emph{improve} static analysis tools.  This work is TODO: ICSE result
-(either accepted to ICSE or in submission).
-
-The proposed approach is simple in outline:
-
-\begin{enumerate}
-\item Run each tool on a set of unmutated source code target(s), and
-  determine the \emph{baseline}: the number of
-  (non-informational/stylistic) static analysis findings produced.
-\item Generate mutants of the source code targets and run each tool on
-  each mutant of each target.  Consider a mutant killed if the number
-  of findings for the mutated code is greater than the number for the
-  baseline, un-mutated version of the target.
-\item Compute, for each tool, the \emph{mutant ratio}:  the mutation score ($\frac{|\mathit{killed}|}{|\mathit{mutants}|}$) divided by (mean) baseline.  If the (mean) baseline is zero, use a baseline equal to either one or the lowest non-zero baseline for any tool in the comparison set\footnote{Unless the number of programs used for evaluation is small, a zero mean baseline for a tool is extremely unlikely to arise in practice.}.
-\item Discard all mutants not killed by at least one tool and all mutants killed by all tools.  What remains allows \emph{differential} analysis.
-Examine the remaining mutants in the difference in \emph{prioritized} order to qualitatively understand tool differences, or improve a tool.
-\end{enumerate}
-
-Rather than using a sophisticated prioritization scheme, we used a
-simple textual, ad-hoc scheme, in order to examine the most
-interesting mutants in the ``diff'' between static analysis tools.
-This was helpful for understanding our general results, showing
-differences in Solidity, Java, and Python static analysis tools and
-confirming known rankings of such tools based either on user
-impressions or more limited experiments.  However, it was essential
-for the most relevant part of this work to this proposal:  using our
-results, and the set of mutants in the ``diff'' of three Solidity
-smart contract analysis tools to improve the best of those tools.
-Improving the best of the tools was a wise use of our efforts, in that
-we found that differences between tools were mostly rooted in
-differences in the quality of the underlying analysis engine, not in
-differences in detectors.  Using prioritized mutants, we were able to
-identify three new candidate
-detector patterns for the Slither tool, based on mutants killed by
-Securify, SmartCheck, or both, but not by Slither:  Boolean constant
-misuse, type-based tautologies, and loss of precision due to ordering
-of arithmetic operations.
-
-All three of these detectors were submitted as PRs to the Slither
-project, vetted over an internal benchmark set of contracts used by
-the Slither developers to evaluate new detectors, and accepted for
-release in the public version of Slither.  All three detectors produce
-some true positives (actual problems, though not always exploitable)
-in benchmark contracts, have acceptably low false positive rates, and
-were deemed valuable enough to include as non-informational (medium
-severity) detectors.  The first mutants in prioritized rank exhibiting
-the issues, shown above, were the 2nd, 9th, and 12th
-non-statement-deletion mutants ranked for SmartCheck, out of over 800
-such mutants.  Using our prioritization, it was possible to identify
-these issues by examining fewer than 20 unkilled mutants.  Without
-prioritization, on average a developer would have to look at more than
-200, 80, and 400 mutants, respectively, to find instances of these
-problems.  Examining the first 100 mutants in the unprioritized lists for SmartCheck and Securify, ordered by contract ID and mutant number (roughly source line mutated) we were unable to identify \emph{any} obviously interesting mutants, suggesting that it is indeed hard to use mutation analysis results without prioritization. A large majority of the mutants we inspected involved either the missing
-{\tt return} problem noted in the introduction, or replacing {\tt msg.sender} with {\tt tx.origin}; Slither has a detector for misuses of {\tt tx.origin}.  SmartCheck and Securify tend to identify most (though not all) uses of {\tt tx.origin} as incorrect, while Slither has a more selective rule, intended to reduce false positives.
-
-
 
 \subsubsection{Proposed work: Any language mutation}
 \label{subsubsection:any-language}
@@ -348,9 +266,7 @@ more likely to produce well-formed syntactic programs
 that exercise interesting paths in a test suite.
 We propose to extend {\tt universalmutator}
 to generate mutants from {\tt comby} templates, and to evaluate the efficacy of
-multi-language mutation testing with structural code changes.
-
-We propose to further enhance the expressive power of mutation operators by
+multi-language mutation testing with structural code changes.  We propose to further enhance the expressive power of mutation operators by
 incorporating static semantics (e.g., type information and variable scope) via a
 DSL for structural syntax changes. The Language Server Protocol~\cite{lsp-web} aims to
 provide a queryable interface for such static program properties, significantly
@@ -411,16 +327,12 @@ mutants from the same class, if applied at the method level, even if those
 mutants are highly similar in impact.  Other work~\cite{gopinath2015howhard}
 proposes random sampling as the most effective way to select mutants.
 Unfortunately, when an important class of unkilled mutants has only a few
-members, random sampling is almost guaranteed to fail to present any of them.
-Our preliminary results argue, however, that novelty-based clustering is a
+members, random sampling is useless.
+Our preliminary results argue that novelty-based clustering is a
 promising approach for solving this problem.
 
 \subsubsection{Background and preliminary work}
 
-The mutant selection and prioritization problem is analogous to a similar
-problem in fuzz testing and triage: a user wants to see a few,
-critical results, that maximize payoff in
-terms of bugs found or information gained.
 
 \paragraph{Furthest point first and fuzzer taming.} Fuzzer taming~\cite{PLDI13}
 was a solution PI Groce and colleagues proposed to the problem
@@ -457,36 +369,76 @@ unkilled mutants such that novel mutants are presented first.  %The
 %for mutants and
 %the fuzzer taming problem.
 
-\paragraph{Preliminary use of FPF-based mutant ranking.} In collaboration with security analysts at Trail of Bits, PI Groce
-implemented a prototype version of mutant prioritization, without
-feedback, using a manually constructed distance metric tailored to
-Solidity smart contracts.  This was an essential step in an effort to
-use mutation analysis to compare three static analysis tools for smart
-contracts~\cite{slitherpaper,sc:smartcheck,securify}.  The comparison of three such tools over 100 random contracts
+\paragraph{Preliminary use of FPF-based mutant ranking: static
+  analysis tool evaluation and improvement.}
+
+Finally, we have used the universalmutator and our basic idea to
+formulate a novel way to evaluate and (most relevant to this proposal)
+\emph{improve} static analysis tools.  This work is in preparation for
+submission, but some results from it have already appeared in open
+source tools.  The proposed approach is simple in outline:
+
+\begin{enumerate}
+\item Run each tool on a set of unmutated source code target(s), and
+  determine the \emph{baseline}: the number of
+  (non-informational/stylistic) static analysis findings produced.
+\item Generate mutants of the source code targets and run each tool on
+  each mutant of each target.  Consider a mutant killed if the number
+  of findings for the mutated code is greater than the number for the
+  baseline, un-mutated version of the target.
+\item Compute, for each tool, the \emph{mutant ratio}:  the mutation score ($\frac{|\mathit{killed}|}{|\mathit{mutants}|}$) divided by (mean) baseline.  If the (mean) baseline is zero, use a baseline equal to either one or the lowest non-zero baseline for any tool in the comparison set\footnote{Unless the number of programs used for evaluation is small, a zero mean baseline for a tool is extremely unlikely in practice.}.
+\item Discard all mutants not killed by at least one tool and all mutants killed by all tools.  What remains allows \emph{differential} analysis.
+Examine the remaining mutants in the difference in \emph{prioritized} order to qualitatively understand tool differences, or improve a tool.
+\end{enumerate}
+
+Rather than using a sophisticated prioritization scheme, we used a
+simple textual, ad-hoc scheme, in order to examine the most
+interesting mutants in the ``diff'' between static analysis tools.
+This was helpful for understanding our general results, showing
+differences in Solidity, Java, and Python static analysis tools and
+confirming known rankings of such tools based either on user
+impressions or more limited experiments.  However, it was essential
+for the most relevant part of this work to this proposal:  using our
+results, and the set of mutants in the ``diff'' of three Solidity
+smart contract analysis tools to improve the best of those tools.
+Improving the best of the tools was a wise use of our efforts, in that
+we found that differences between tools were mostly rooted in
+differences in the quality of the underlying analysis engine, not in
+differences in detectors.  Using prioritized mutants, we were able to
+identify three new 
+detector patterns for the Slither~\cite{slitherpaper} tool, based on mutants killed by
+Securify~\cite{securify}, SmartCheck~\cite{sc:smartcheck}, or both, but not by Slither:  Boolean constant
+misuse, type-based tautologies, and loss of precision due to ordering
+of arithmetic operations.  
+
+All three of these detectors were submitted as PRs to the Slither
+project, vetted over an internal benchmark set of contracts used by
+the Slither developers to evaluate new detectors, and accepted for
+release in the public version of Slither.  All three detectors produce
+some true positives (actual problems, though not always exploitable)
+in benchmark contracts, have acceptably low false positive rates, and
+were deemed valuable enough to include as non-informational (medium
+severity) detectors.  The first mutants in prioritized rank exhibiting
+the issues, shown above, were the 2nd, 9th, and 12th
+non-statement-deletion mutants ranked for SmartCheck, out of over 800
+such mutants.  Using our prioritization, it was possible to identify
+these issues by examining fewer than 20 unkilled mutants.  Without
+prioritization, on average a developer would have to look at more than
+200, 80, and 400 mutants, respectively, to find instances of these
+problems.  Examining the first 100 mutants in the unprioritized lists for SmartCheck and Securify, ordered by contract ID and mutant number (roughly source line mutated) we were unable to identify \emph{any} obviously interesting mutants, suggesting that it is indeed hard to use mutation analysis results without prioritization. A large majority of the mutants we inspected involved either the missing
+{\tt return} problem noted in the introduction, or replacing {\tt
+  msg.sender} with {\tt tx.origin}; Slither has a detector for misuses
+of {\tt tx.origin}.  SmartCheck and Securify tend to identify most
+(though not all) uses of {\tt tx.origin} as incorrect, while Slither
+has a more selective rule, intended to reduce false positives.
+Putting it another way, the comparison of these three tools over 100 random contracts
 from the Ethereum blockchain~\cite{buterin2013whitepaper,wood2014yellow} required analysis of 46,769 mutants, with
-46,752 of these not killed by at least one static analysis tool.  The
-aim of the analysis was to (1) find cases where mutation caused each
-tool to flag a \emph{new} issue with the source code (thus
-differentially identifying kills), then (2) find cases where at
-least one tool flags a mutant, while others do not, and finally (3) baseline
-this with respect to general warning rates for the tools over the same contracts.
-Sorting through the surviving mutants to understand weaknesses of the
-tools was simply not possible without using a simple version of the
-FPF ranking algorithm, combined with an \emph{ad hoc} distance
-metric.  With even this rudimentary, untuned version of our approach,
-PI Groce and Trail of Bits engineers identified three significant new
-detectors, which were implemented and added to the Slither static
-analysis tool~\cite{slitherpaper}.  These are currently in use by Trail of Bits for
-security audits, and will be released to the public after tuning.  Without the FPF ranking, finding these three
-opportunities for improving Slither would not have been feasible.  To
-our knowledge, the use of mutation to compare and improve static
-analysis tools, rather than test suites, in this \emph{differential}
-(both within tools and across tools) sense, is novel, and we believe that
-feedback-driven approaches are essential in this setting, since kill
-rates will obviously always be relatively low for purely static
-analysis without a specification.  The preliminary results from the
+46,752 of these not killed by at least one static analysis tool;
+without prioritization, understanding this data in detail would have
+been essentially impossible.  Results from the
 Solidity mutation analysis are available at
 \url{https://github.com/agroce/slithermutate}.
+
 
 \subsubsection{Proposed work: Mutant Novelty Ranking using FPF}
 
@@ -642,16 +594,14 @@ The primary focus of this project is to develop feedback-driven mutation
 testing.  However, the ideas of Test-Driven Development
 (TDD)~\cite{TDD,TDDFuture}, which repeatedly turns requirements into specific
 test cases, then implements just enough functionality to pass the current tests,
-can be generalized into a mutation-driven form.  A potential weakness (and, of
-course, an actual goal) of TDD is that the code will be narrowly tailored to the
-requirements, which produce the tests, which means that missing requirements
-will almost always be omitted both from the tests and the code.  For ``shall''
-type behaviors~\cite{INCOSE}, this is not a key problem.  But for security and
+can be generalized into a mutation-driven form.  A weakness of TDD is that the code will be narrowly tailored to the
+requirements, which produce tests most effectively for ``shall''
+type behaviors~\cite{INCOSE}.  But for security and
 safety, ``shall not'' requirements that are omitted can be disastrous.
 Mutation-Driven Development (MDD) in its simplest form would require an
 application of feedback-driven mutation to the test suite at each development
 step, to ensure that code not only does what the tests require, but that the
-tests also sufficiently constrain the code to capture many implicit shall-nots.
+tests also sufficiently constrain the code to capture implicit shall-nots.
 Since such a process implemented by modifying TDD-driven tests would likely
 break the clean and appealing mapping between tests and requirements, and manual
 tests are inherently weak, for high-criticality systems, MDD should focus on
@@ -661,24 +611,15 @@ unit tests into parameterized unit tests~\cite{UnitMeister,ParamUnit}, perhaps
 using a tool like DeepState~\cite{DeepState} for C/C++.  In such a process,
 weakness exposed by feedback-driven mutation testing would be addressed by
 taking an existing unit test and generalizing some parameters and assertions to
-kill the relevant mutants, letting, e.g., AFL~\cite{aflfuzz},
+kill the relevant mutants, letting, e.g., afl~\cite{aflfuzz},
 libFuzzer~\cite{libfuzzer}, or a symbolic execution
 tool~\cite{angr1,angr2,manticore} identify specific inputs.  The focus of the
 MDD process would be on producing test harnesses~\cite{WODACommon,tstlsttt} that
-can kill \emph{all} interesting mutants.  More radically, MDD could
-be implemented via a radical departure from normal TDD, with a single testing or
-model checking harness iteratively enhanced, always requiring the ability to kill (most) mutants of
-the current implementation.  This would not produce the usual large set of TDD
-tests, but instead produce a single high-powered test generator and formal
-specification.
+can kill \emph{all} interesting mutants.  This aspect of the proposal
+is better understood in terms of a scenario than as an explicit
+research program:
 
-Rather than a separate research focus, the idea of
-mutation-driven-development will inform the other
-research topics.  In particular, once tools
-reach sufficient maturity, they will be used to conduct preliminary
-experiments in MDD as a methodology.  %In a sense, MDD is more central
-%to the evaluation of this proposal's results than a separate research
-%thrust, as discussed in the Evaluation Plan (Section \ref{sec:mevalplan}).
+\input{scenario}
 
 
 \subsection{Core Research Questions}
@@ -724,6 +665,8 @@ search-and-replace approach?
 \item Is distance-based clustering plus timing information useful for quickly
   eliminating killable mutants similar to already-killed mutants?  How
   does this relate to Predictive Mutation Testing (PMT)?
+  \item How can we integrate all of these aspects into a complete
+    automated testing approach, and assist users in killing surfaced mutants?
 
 \end{enumerate}
 %\end{framed}
