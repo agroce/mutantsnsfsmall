@@ -41,7 +41,7 @@ suggestions of multiple previous papers on detecting faults via
 mutation~\cite{just2014mutants,gopinath2017mutation}.
 We will further evaluate and delineate the relative effectiveness of the new modes of expressive power (proposed in Section~\ref{subsubsection:any-language}) compared to regular expressions: We will catalog the efficiency of new mutant operators that rely on structural syntax changes both with and without incorporation of static program properties (like type information).
 Efficiency
-gains (e.g., removal of invalid or equivalent-by-construction mutants) can
+gains can
 be measured by simple, traditional measures.
 
 \paragraph{Lab studies.}
@@ -141,6 +141,5 @@ various small, but easy-to-get-wrong, code projects, such as binary
 search and AVL trees, will make it possible both to see how effective
 the tools for feedback-driven mutation testing are, and to see how effective an MDD approach to development is.  In
 addition, using various versions of actual TDD efforts, with the
-associated test suites for each step of development, it should be
-possible to evaluate how much additional testing power MDD would have
-required at each step of development.
+associated test suites for each step of development, we can identify
+the ``missing tests'' MDD would add.

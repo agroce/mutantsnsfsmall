@@ -12,16 +12,13 @@ Moreover, although test suite adequacy is certainly a useful thing to measure, t
 important goal of mutation testing\,---\,and indeed its original use
 case~\cite{budd1980theoretical}\,---\,is to help \emph{improve} a test suite.  For this
 purpose, neither a score nor a vast list of all unkilled mutants
-(which will exist for even very good tests of realistic software systems) is not useful.  An
+(which will exist for even very good tests of most software) is useful.  An
 undifferentiated list of unkilled mutants typically contains mostly uninteresting or
-redundant mutants, and a much smaller number of \emph{actionable mutants} that are
-maximally useful for improving tests.  Examining all unkilled
-mutants is sometimes impractical even for formal verification efforts or critical
-systems.  Examining
-surviving mutants in even those settings is
-time-consuming and unpleasant, as PI Groce and co-authors noted in prior work on
-using mutants to drive formal verification and automated
-testing~\cite{groce2015verified,groce2018verified,mutKernel}.
+redundant mutants, and a much smaller number of \emph{actionable
+  mutants} that can improve tests.  EExamining
+surviving mutants even in the presence of formal verification and
+aggressive automated fuzzing  is
+time-consuming and unpleasant, as PI Groce and co-authors noted in prior work~\cite{groce2015verified,groce2018verified,mutKernel}.
 %
 That work proposed a novel approach to
 formal verification and automated testing
@@ -78,14 +75,12 @@ effectively improve the program, the test suite, or both.
 
 Figure \ref{fig:flow} shows the basic outline of a proposed workflow.
 %
-Our framework aims to generate a small, diverse set of
+Our framework aims to repeatedly compute and present a small, 
+diverse set of unkilled
 mutants, chiefly characterized by their novelty, to present to the developer or
-test engineer.  The framework further works
+test engineer by working
  \emph{with} the test engineer to improve the SUT or
-the underlying tests, and incorporate user feedback to determine which mutants are
-worth examining.  This results in a constantly-updated ranking of mutants,
-based on actions and feedback from the engineer.
-
+the underlying tests.
 A key insight behind our proposed approach is to view mutant triage as
 analogous to the bug triage
 (a.k.a.  ``fuzzer
@@ -114,7 +109,9 @@ counterproductive for identifying the mutants most critical to
 resolve, which are likely to not subsume other mutants, precisely
 because they correspond to subtle assumptions in testing, not broad
 gaps in testing (e.g., not testing logging output).
-Our approach thus fundamentally seeks to identify a small set of maximally different, \emph{maximally interesting} mutants to present, based on feedback and project context.
+Our approach thus fundamentally seeks to identify a small set of
+maximally different, \emph{maximally interesting} mutants to present,
+based on user feedback and project context.
 
 \begin{wrapfigure}{r}{.5\textwidth}
 \centering 

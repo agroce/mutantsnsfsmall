@@ -152,7 +152,7 @@ automated program repair) is simply
 an instance of the general field of automated program
 transformation~\cite{Ptransform}.
 
-We have jointly used ideas from universalmutator and comby to develop
+\paragraph{Source mutation as compiler fuzzing method.}  We have jointly used ideas from universalmutator and comby to develop
 a novel approach to compiler fuzzing, supported by a tool~\cite{aflcompfuzz} (with
 industrial users and 47 stars on GitHub), which has resulted in
 discovery of more than 80 bugs in production compilers, and a
@@ -392,11 +392,12 @@ source tools.  The proposed approach is simple in outline:
   (non-informational/stylistic) static analysis findings produced.
 \item Generate mutants of the source code targets and run each tool on
   each mutant of each target.  Consider a mutant killed if the number
-  of findings for the mutated code is greater than the number for the
-  baseline, un-mutated version of the target.
-\item Compute, for each tool, the \emph{mutant ratio}:  the mutation score ($\frac{|\mathit{killed}|}{|\mathit{mutants}|}$) divided by (mean) baseline.  If the (mean) baseline is zero, use a baseline equal to either one or the lowest non-zero baseline for any tool in the comparison set\footnote{Unless the number of programs used for evaluation is small, a zero mean baseline for a tool is extremely unlikely in practice.}.
+  of findings for the mutated code is greater than for the
+  baseline.
+\item Compute, for each tool, the \emph{mutant ratio}:  the mutation score ($\frac{|\mathit{killed}|}{|\mathit{mutants}|}$) divided by (mean) baseline. 
 \item Discard all mutants not killed by at least one tool and all mutants killed by all tools.  What remains allows \emph{differential} analysis.
-Examine the remaining mutants in the difference in \emph{prioritized} order to qualitatively understand tool differences, or improve a tool.
+Examine the remaining mutants in the difference in \emph{prioritized}
+order.
 \end{enumerate}
 
 Rather than using a sophisticated prioritization scheme, we used a
@@ -443,8 +444,7 @@ Putting it another way, the comparison of these three tools over 100 random cont
 from the Ethereum blockchain~\cite{buterin2013whitepaper,wood2014yellow} required analysis of 46,769 mutants, with
 46,752 of these not killed by at least one static analysis tool;
 without prioritization, understanding this data in detail would have
-been essentially impossible.  Results from the
-Solidity mutation analysis are available at
+been essentially impossible.  Our results are available at
 \url{https://github.com/agroce/slithermutate}.
 
 
@@ -453,14 +453,10 @@ Solidity mutation analysis are available at
 Ranking unkilled mutants according to how much ``new'' information they might
 provide to users requires more than simply using the FPF algorithm as
 in fuzzer taming.  The key difference is the problem of determining
-how similar two mutants are.  In fuzzer taming, it is possible to
-extract a large amount of information about similarity of failing
-tests from executing the tests, and, in fact, from executing the tests
-on program mutants~\cite{PLDI13,distMut}.  There is no obvious
-equivalent to
-``just run the test'' for mutants, and in fact avoiding the expense of running
-the test suite on uninteresting mutants is one of the goals of
-feedback-driven mutation testing in the first place.
+how similar two mutants are.  In fuzzer taming, information about similarity of failing
+tests comes from executing the tests, and, in fact, from executing the tests
+on program mutants~\cite{PLDI13,distMut}; in contrast, avoiding the
+expense of even compiling uninteresting mutants is one of our goals.
 
 \begin{figure}[t]
 \centering
@@ -514,11 +510,11 @@ observations of intermediate predicate behavior~\cite{Ding2019} (mutation testin
 has strong conceptual analogies to program repair~\cite{Weimer2013}, suggesting
 natural application of these prior measures to this new domain).
 
- In fact, there may
-need to be two distance metrics:  one for selecting likely candidate
+We likely require
+\emph{two} distance metrics:  one for selecting likely candidate
 mutants to execute, that uses only static information and user
-feedback, and one that uses dynamic results from compiling and testing
-mutants to refine the notion of similarity for likely-novel mutants.
+feedback, and one that uses testing results to refine the notion of
+similarity for likely-interesting mutants.
 This is therefore a quite complex problem in representation and weighting of elements of a
 representation, especially for a language- and
 project- agnostic metric, that is also open to tuning via feedback
