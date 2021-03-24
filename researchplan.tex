@@ -110,9 +110,8 @@ mutate ``source code'' in a large comment block.
 %constructs such as blocks, functions, classes, or structs.  Natural formatting
 %of, e.g., an s-expression in a LISP-family language can hide opportunities for
 %mutation, such as switching argument orders.
-Fundamentally, regular expressions are
-only occasionally a natural notation for expressing source-level mutation;
-source in all languages differs from arbitrary unstructured strings.
+Finally, regular expressions are
+only occasionally a natural notation for expressing source-level mutations.
 
 \paragraph{Comby: Declarative, any-language transformation.} Fortunately, recent work by PI
 Le Goues and collaborators introduced a powerful new representation to
@@ -510,18 +509,18 @@ static aspects may also be augmented with user feedback (as noted
 above), but also with dynamic information obtained during the process,
 such as frequency with which tests cover the mutated
 statements/modules, or the way the mutant changes the
-program path from the unmutated code in tests.  PI Le Goues, with collaborators,
-has proposed dynamic metrics over execution behavior for heuristic program repair,
+program path.  PI Le Goues, with collaborators,
+has proposed dynamic metrics for heuristic program repair,
 including those measured over program state~\cite{desouza-gecco18,oliveira-ese18} and
-observations of intermediate predicate behavior~\cite{Ding2019} (mutation testing
+intermediate predicate behavior~\cite{Ding2019} (mutation testing
 has strong conceptual analogies to program repair~\cite{Weimer2013}, suggesting
-natural application of these prior measures to this new domain).
+natural application of these measures to our new domain).
 
 We likely require
-\emph{two} distance metrics:  one for selecting likely candidate
+\emph{two} distance metrics:  one for selecting candidate
 mutants to execute, that uses only static information and user
 feedback, and one that uses testing results to refine the notion of
-similarity for likely-interesting mutants.
+similarity among executed mutants.
 This is therefore a quite complex problem in representation and weighting of elements of a
 representation, especially for a language- and
 project- agnostic metric, that is also open to tuning via feedback
