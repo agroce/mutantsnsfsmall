@@ -118,13 +118,17 @@ transformation templates into parsers that directly match and transform source
 code of interest. Parser
 combinators~\cite{Hutton96monadicparser} define how to match nested structures (much like traditional AST
 visitor traversals) but without the need to define or build an intermediate AST.
+At a high-level, {\tt comby} performs
+context-free
+parsing of syntactic structures that typically correspond to nested
+expressions and blocks in an underlying AST (without actually buidling one); regular expressions are not powerful enough to recognize such program terms in general. 
 % intermediate step of building the AST.
 % or AST, but I'm going with parse tree because it's specific to syntax.
 Our parser combinator mechanism elegantly encapsulates the complexity of
 heterogeneous, multi-language syntax as a composition of small parsers (some
 being language-specific, and others being language-general). Conversely, defining and
 building a generic parse tree data structure (i.e., to encompass the complexity
-of multi-language syntax, which may be inherently incompatible across languages)
+of multi-language syntax, which may be inherently incompatible)
 \emph{after} parsing is comparably difficult.
 
 This work has already shown its practical utility by performing lightweight
@@ -165,12 +169,12 @@ to benefit polyglot mutation.
 
 Our goal is a source-level mutant generator that can apply to any language,
 maximizing applicability and usability.
- The {\tt
-  universalmutator} provides an initial source of mutants that
-satisfies this requirement for initial experimentation, but for
-long-term effectiveness is both inefficient and inexpressive.
-
-
+%  The {\tt
+%   universalmutator} provides an initial source of mutants that
+% satisfies this requirement for initial experimentation, but for
+% long-term effectiveness is both inefficient and inexpressive.
+%
+%
 % The source of all mutants to be presented to the user is the mutant
 % generator, and in order to maximize the effectiveness of the approach,
 % this proposal aims to allow effective generation of mutants for any
@@ -197,8 +201,8 @@ long-term effectiveness is both inefficient and inexpressive.
 % %of code.
 % the expressity of transformations (e.g., operators for multi-line, context-dependent program fragments) while retaining the simplicity of specifying usual % or "normal" operators as above, but I'm not sure what normal is? Is Fig. 1 representative?
 % operators.
-
-We therefore propose to use {\tt comby}~\cite{comby-github, rvt-ppc} for specifying
+%
+We propose to enable sufficiently expressive, efficient mutation by using (and extending) {\tt comby}~\cite{comby-github, rvt-ppc} for specifying
 transformations and generating mutants. {\tt Comby} uses
 declarative templates that describe before/after changes for program fragments. For example, the following transformation swaps the first two arguments of the function {\tt memcpy}:
 
@@ -245,12 +249,10 @@ memcpy(\textcolor{ForestGreen}{mad_bit_nextbyte(&stream->ptr)},
 % The above fragment comes from real example: https://sourcegraph.com/github.com/markjeee/libmad/-/blob/layer3.c#L2637
 % The above example of in a live example here: bit.ly/2Nmh3v2
 
-At a high-level, {\tt comby} performs
-% actual
-context-free
-parsing of syntactic structures that typically correspond to nested
-expressions and blocks in the underlying AST; regular expressions are not powerful enough to recognize such program terms in general. Templates offer a \emph{declarative} description for matching and rewriting these structures in a way that is syntactically close to the source code.
-In addition, {\tt comby} can distinguish between code, strings, and comments. Templates contextually match these dimensions of a program. % (which are common to virtually all languages)
+ Templates offer a \emph{declarative} description for matching and rewriting these structures in a way that is syntactically close to the source code.
+In addition, {\tt comby} can distinguish between code, strings, and comments
+(common to virtually all languages).
+% Templates contextually match these dimensions of a program. % (which are common to virtually all languages)
 % Compared to regular-expressions, {\tt comby} can match on nested structures, can discriminate between code, data (strings), and comments on a language-aware basis.
 {\tt Comby} is language-aware in the sense that small language
 definitions describe whether syntax should be balanced (e.g.,
@@ -265,7 +267,9 @@ projects, and eventually become unusable due to lack of support, even in
 mainstream languages such as Java and C~\cite{MutChoice}.
 This is because mutation tools that fully parse a language and guarantee generation of
 valid programs in the source language are complex, hard-to-maintain-and-extend
-systems; language complexity makes such a tool for C++, for example, an extremely daunting task. From this development and maintenance perspective, {\tt comby} provides a considerable benefit in being able to adapt to new language syntax and tree structures at a coarse level, while maintaining a crucial language-aware ability for recognizing and parsing high-level program constructs.
+systems; language complexity makes such a tool for C++, for example, 
+extremely daunting. From this development and maintenance perspective, {\tt
+  comby} provides a considerable benefit in its easy adaptability to new languages. 
 
 Accessible structural syntax manipulation can achieve a leap in
 expressivity and effectiveness for mutation testing. % a cite to substantiate "based on what" would be nice
@@ -274,11 +278,16 @@ more likely to produce well-formed syntactic programs
 that exercise interesting paths in a test suite.
 We propose to extend {\tt universalmutator}
 to generate mutants from {\tt comby} templates, and to evaluate the efficacy of
-multi-language mutation testing with structural code changes.  We propose to further enhance the expressive power of mutation operators by
+multi-language mutation testing with structural code changes.  We propose to
+further enhance the expressive power of mutation operators by 
 incorporating static semantics (e.g., type information and variable scope) via a
-DSL for structural syntax changes. The Language Server Protocol~\cite{lsp-web} aims to
-provide a queryable interface for such static program properties, significantly
-reducing the burden of maintaining compiler infrastructure in a singular tool.
+DSL for structural syntax changes. 
+%\clg{Is there a half sentence we could put here to motivate this more
+%  specifically? A citation that says that being type-aware is good for mutation,
+%  for example?}
+We propose to extend our template language and processing framework to interface
+with the Language Server Protocol~\cite{lsp-web}, which
+provides a queryable interface for such static program properties.
 This new capability, firmly outside the realm of regular
 expression approaches, will go beyond syntax and yield greater, semantic-driven precision.
 
@@ -309,21 +318,18 @@ only high-priority mutants for very large projects.
 \label{sec:fpfplan}
 
 
-
 Our vision of feedback-driven mutation testing is predicated on selecting and ranking a small
-set of highly interesting mutants to present to the developers.  An unkilled
+set of highly interesting mutants to present to developers.  An unkilled
 mutant is, conceptually, very similar to a failing test.  It presents
-information of possible relevance to a developer.  The mutant or test \emph{may}
-indicate the presence of a previously unknown fault that needs to be fixed,
-either in the SUT or in testing.  It may indicate the presence of a previously
-unknown fault of less importance.  It may also indicate an even less interesting
-result: an equivalent mutant or an inherently flaky test.  Additionally, an
-unkilled mutant or failing test may contain information that is uninteresting
-because \emph{it duplicates information already examined.}  While examining an
-equivalent mutant is not always useless (e.g., it may indicate an opportunity
-for refactoring or improving the efficiency of
-code~\cite{ivankovic2018industrial,groce2018verified}), examining a mutant that
-is equivalent to, or extremely similar to, an already-understood mutant is
+information of possible relevance to a developer, such as the
+presence of a previously unknown but critical fault (in the SUT or in testing);
+a previously unknown but unimportant fault; or, even less interesting, an
+equivalent mutant or inherently flaky test. An
+unkilled mutant or failing test may also contain information that is uninteresting
+because \emph{it duplicates information already examined.} Although equivalent mutants 
+may indicate an opportunity
+for refactoring or improving efficiency~\cite{ivankovic2018industrial,groce2018verified}, examining a mutant that
+is equivalent or extremely similar to an already-understood mutant is
 almost never worthwhile.  A key research challenge is thus to select and
 prioritize mutants that provide maximum utility to a user.
 
@@ -380,7 +386,7 @@ unkilled mutants such that novel mutants are presented first.  %The
 \paragraph{Preliminary use of FPF-based mutant ranking: static
   analysis tool evaluation and improvement.}
 
-Finally, we have used the universalmutator and our basic idea to
+We have used the {\tt universalmutator} and our basic idea to
 formulate a novel way to evaluate and (most relevant to this proposal)
 \emph{improve} static analysis tools.  This work is in preparation for
 submission, but some results from it have already appeared in open
@@ -400,27 +406,34 @@ Examine the remaining mutants in the difference in \emph{prioritized}
 order.
 \end{enumerate}
 
-Rather than using a sophisticated prioritization scheme, we used a
-simple textual, ad-hoc scheme, in order to examine the most
-interesting mutants in the ``diff'' between static analysis tools.
+We used a
+simple textual, ad-hoc scheme, to examine the most
+interesting mutants in the ``diff'' between static analysis tools (rather than a
+sophisticated prioritization scheme).
 This was helpful for understanding our general results, showing
 differences in Solidity, Java, and Python static analysis tools and
 confirming known rankings of such tools based either on user
-impressions or more limited experiments.  However, it was essential
-for the most relevant part of this work to this proposal:  using our
+impressions or more limited experiments.  However, it was essential in a way
+that is highly relevant to this proposal, namely in how to use our
 results, and the set of mutants in the ``diff'' of three Solidity
-smart contract analysis tools to improve the best of those tools.
-Improving the best of the tools was a wise use of our efforts, in that
-we found that differences between tools were mostly rooted in
-differences in the quality of the underlying analysis engine, not in
-differences in detectors.  Using prioritized mutants, we were able to
-identify three new 
+smart contract analysis tools, to improve the best of those tools.
+%Improving the best of the tools was a wise use of our efforts, in that
+%we found that differences between tools were mostly rooted in
+%differences in the quality of the underlying analysis engine, not in
+%differences in detectors.  
+% CLG: again, I'm hesitant about that cut, but I'm not 100% sure I know what it
+% means and I think expanding it to explain it would take more space than we have.
+Using prioritized mutants, we
+identified three new 
 detector patterns for the Slither~\cite{slitherpaper} tool, based on mutants killed by
 Securify~\cite{securify}, SmartCheck~\cite{sc:smartcheck}, or both, but not by Slither:  Boolean constant
 misuse, type-based tautologies, and loss of precision due to ordering
 of arithmetic operations.  
 
-All three of these detectors were submitted as PRs to the Slither
+% CLG sez: this reads a bit long and perhaps slightly too much detail for this
+% context.  Also, possibly references examples we don't have in this docuemnt
+% (but you do have in your submission!)
+All three of these new detectors were submitted as PRs to the Slither
 project, vetted over an internal benchmark set of contracts used by
 the Slither developers to evaluate new detectors, and accepted for
 release in the public version of Slither.  All three detectors produce
@@ -434,7 +447,12 @@ such mutants.  Using our prioritization, it was possible to identify
 these issues by examining fewer than 20 unkilled mutants.  Without
 prioritization, on average a developer would have to look at more than
 200, 80, and 400 mutants, respectively, to find instances of these
-problems.  Examining the first 100 mutants in the unprioritized lists for SmartCheck and Securify, ordered by contract ID and mutant number (roughly source line mutated) we were unable to identify \emph{any} obviously interesting mutants, suggesting that it is indeed hard to use mutation analysis results without prioritization. A large majority of the mutants we inspected involved either the missing
+problems.  Examining the first 100 mutants in the unprioritized lists for
+SmartCheck and Securify, ordered by contract ID and mutant number (roughly
+source line mutated) we were unable to identify \emph{any} obviously interesting
+mutants, suggesting that it is indeed hard to use mutation analysis results
+without prioritization. A large majority of the mutants we inspected involved
+either the missing 
 {\tt return} problem noted in the introduction, or replacing {\tt
   msg.sender} with {\tt tx.origin}; Slither has a detector for misuses
 of {\tt tx.origin}.  SmartCheck and Securify tend to identify most

@@ -15,25 +15,27 @@ purpose, neither a score nor a vast list of all unkilled mutants
 (which will exist for even very good tests of most software) is useful.  An
 undifferentiated list of unkilled mutants typically contains mostly uninteresting or
 redundant mutants, and a much smaller number of \emph{actionable
-  mutants} that can improve tests.  EExamining
+  mutants} that can improve tests.  Examining
 surviving mutants even in the presence of formal verification and
 aggressive automated fuzzing  is
-time-consuming and unpleasant, as PI Groce and co-authors noted in prior work~\cite{groce2015verified,groce2018verified,mutKernel}.
+time-consuming and unpleasant, as PI Groce and co-authors have noted~\cite{groce2015verified,groce2018verified,mutKernel}.
 %
 That work proposed a novel approach to
 formal verification and automated testing
 combining Karl Popper's falsification-based notion of
 scientific discovery~\cite{Popper,popperconjectures} with mutation
 testing~\cite{groce2015verified,groce2018verified,mutKernel}.
-The heart of the idea is (1) a surviving non-equivalent mutant
-\emph{falsifies} the claim that a given
-formal verification or test effort captures a full notion of
-correctness and (2) refining a
-verification or testing effort by repeated efforts at falsification is
-the most
-effective method for ensuring the quality of verification and testing
-efforts.  The
-approach allowed Groce and colleagues to identify multiple previously unknown faults in
+%The heart of the idea is (1) a surviving non-equivalent mutant
+%\emph{falsifies} the claim that a given
+%formal verification or test effort fully captures 
+%correctness and (2) repeated efforts at falsification is
+%the most
+%effective method for refining the quality of verification and testing
+%efforts.  
+% CLG says: I'm not sure about this cut; it's nice to highlight the insight.
+% But also, length.  Feel free to overrule me.
+Groce and colleagues used the
+approach to identify multiple previously unknown faults in
 the Linux kernel's
 RCU~\cite{MathieuDesnoyers2012URCU,DinakarGuniguntala2008IBMSysJ,McKenney:2013:SDS:2483852.2483867}
 module and the {\tt pyfakefs} Python mock file
@@ -41,21 +43,23 @@ system~\cite{pyfakefs}, despite the existence of very-high-quality
 automated test generation efforts for these
 systems~\cite{rcutorture,TSTL}.  Follow-up preliminary work for this
 proposal has uncovered significant opportunities to improve the
-Slither static analysis tool for smart contracts~\cite{slitherpaper,slither-code}.  This prior work
-proposed a number of algorithms and
-methods for finding bugs in testing and verification
+Slither static analysis tool for smart
+contracts~\cite{slitherpaper,slither-code}.  
+This prior work
+proposed a number of algorithms 
+for finding bugs in testing and verification
 harnesses.  At a high level, however,
 the core concept was simple:  users should examine all unkilled
 mutants, and for each mutant either understand why it is
 equivalent or uninteresting, or actually construct a way to kill it.  This harkens back to the
 earliest ideas about mutation testing, but with
-much more automated support, for both understanding the mutants and
-actually killing them.
+much more automated support, for both understanding and actually killing
+mutants. 
 
 Unfortunately, the
-methods proposed were very limited in applicability, due to an
+methods proposed were limited in applicability, due to an
 assumption that the number of unkilled mutants was small and manageable.
-In practice, however, human
+In practice, human
 attention does not scale to analyzing large numbers of
 unkilled mutants without considerable assistance in ``triaging'' them.  The process bears a
 resemblance to the problem of manual confirmation of results from a
@@ -88,29 +92,27 @@ taming'') problem in random testing/fuzzing~\cite{PLDI13,distMut,SemCrash,vanton
 to quickly find mutants that indicate the most important ``holes'' in a testing
 or verification effort, and act on those most-critical gaps, possibly revealing
 faults in the System Under Test (SUT).
-An unkilled mutant \emph{is}, conceptually, a failing test --- of the testing
+Analogously, an unkilled mutant \emph{is}, conceptually, a failing test --- of the testing
 effort!
 Fuzzers tend to produce very large numbers of failing tests for a much
-smaller number of distinct bugs.  Finding the set of distinct bugs,
-and identifying important bugs that need to be fixed immediately is
-difficult, because the important bugs may be represented by only one
-or two failing tests in a set of thousands of failing tests, most of
-which are duplicates.
+smaller number of distinct bugs. Identifying the distinct, important bugs
+represented by one or two failing tests in a set of thousands of duplicates, is typically
+difficult. 
 Users do not (usually) care much
-about finding the group of all tests failing due to a fault, or the
+about finding the group of all tests failing due to a fault (or, analogously, the
 set of all mutants killable by the same extension to a test suite or
-generator, but about seeing \emph{many very different test failures}
-or \emph{many
-  different unkilled mutants} quickly, to maximize the chance of
+generator), but about seeing \emph{several very different test failures}
+or \emph{several  different unkilled mutants} quickly, to maximize the chance of
 discovering the most important faults or holes in a testing effort.
+%
 Previous efforts to identify ``critical'' mutants tend to focus on
 subsumption and potential to resolve other mutants, but this may be
 counterproductive for identifying the mutants most critical to
 resolve, which are likely to not subsume other mutants, precisely
 because they correspond to subtle assumptions in testing, not broad
 gaps in testing (e.g., not testing logging output).
-Our approach thus fundamentally seeks to identify a small set of
-maximally different, \emph{maximally interesting} mutants to present,
+Our approach fundamentally seeks to identify a small set of
+maximally different, \emph{maximally interesting} mutants,
 based on user feedback and project context.
 
 \begin{wrapfigure}{r}{.5\textwidth}
@@ -211,11 +213,16 @@ mutants and easy customization.
 %automated test generators or verification harnesses that handle not only
 %anticipated problems imagined during development, but problems not anticipated
 %by developers.
-In addition to traditional manual testing, this proposal targets
-property-driven testing and formal verification, in
-order to be practical in the future, when many systems will be so
-safety- or mission- critical that automated test generation is obligatory, by extending Test-Driven-Development (TDD) to become
-Mutation-Driven-Development (MDD).
+% In addition to traditional manual testing, this proposal targets
+% property-driven testing and formal verification, in
+% order to be practical in the future, when many systems will be so
+% safety- or mission- critical that automated test generation is obligatory, by extending Test-Driven-Development (TDD) to become
+% Mutation-Driven-Development (MDD).
+Beyond traditional manual testing, this proposal additionally targets
+property-driven testing and formal verification, allowing for application to
+future-generation safety- and mission-critical systems that require 
+automated test generation.  To this end, we envision extending Test-Driven-Development (TDD) to become
+\emph{Mutation-Driven-Development (MDD)}.
 
 
 \begin{framed} {\bf Problem:} Develop highly automated methods and tools that
