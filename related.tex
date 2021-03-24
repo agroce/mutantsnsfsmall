@@ -2,30 +2,32 @@
 
 \noindent\textbf{Mutation Testing.}
 %
-There is a vast body of work on mutation testing or analysis, an area whose foundations date
+The vast body of work on mutation testing or analysis dates
 to the late 70's~\cite{demillo1978hints,budd1980theoretical}.  
 The most closely related work by others is that of Roman and
 Mnich~\cite{tddmut}, which studied the effectiveness of introducing
 mutation testing into the test-driven development (TDD) process in a
-student setting.  They showed that test written using TDD with the
+student setting.  They showed that tests written using TDD with the
 additional aid of mutation analysis had better code coverge on the
 code from TDD-only groups than the TDD-only tests did, and found more
-post-release defects in the TDD code.  However, the number of groups
-was limited to four for each approach (TDD, TDD+mutants), and the
-post-release defects were concentrated in the code of one group.  This
-study is promising, in that it suggests that mutants can indeed be
-useful in real testing tasks, but extremely limited in that the
-evaluation was only within a TDD context, not including ``legacy
-testing,'' only involved completely manual test development, and (most
-critically) the approach suggested simply could not scale to large
-numbers of mutants, without the addition of feedback techniques such
+post-release defects in the TDD code.  
+%However, 
+%number of groups
+%was limited to four for each approach (TDD, TDD+mutants), and the
+%post-release defects were concentrated in the code of one group.  
+The study is promising in that it suggests that mutants can indeed be
+useful in real testing tasks.  However, the study size is quite small and
+limited in both the considered contexts and the strength of its
+conclusions.  Critically, the approach suggested simply could not scale to large
+numbers of mutants without the addition of feedback techniques such
 as we propose.   Similarly, a paper by Petrovi\'c et al., to appear at ICSE this
 year~\cite{MutImpTest}, while limited in various ways (e.g., relying on Google's rule of only looking at one
-mutant per line, using mutant exposure and review requests rather than
-directly measuring use of mutants to derive tests, and using a control group of different projects), shows that even a limited examination and
-application of mutants results in
-visible positive effects on test quality and fault detection.  We
-believe that our approach will enable much more aggressive and efficient use of
+mutant per line, and using mutant exposure and review requests rather than
+directly measuring use of mutants to derive tests), 
+%, and using a control group of different projects), 
+shows that even a limited use of mtuation testing can positively affect test
+quality and fault detection power. 
+Our approach will enable much more aggressive and efficient use of
 mutants in critical development efforts.
 
 %Cost of execution is often~\cite{jia2011analysis} considered
@@ -111,11 +113,9 @@ mutants run.
 
 \paragraph{Practical Mutation Analysis.}
 %
-The above work largely focuses on computing or at least estimating the
-total mutation score of a
-test suite.  The assumption is that mutation testing is
-meant to be, like a coverage metric, an ``evaluation'' of a
-test suite, a number used to say ``this is a good test suite.''  In contrast,
+The above work largely focuses on computing or estimating a test suite's
+mutation score, using mutation testing as an ``evaluation'' of a test suite
+(like a coverage metric). In contrast,
 %important for some real-world purposes (evaluating QA efforts) and
 %certainly for software testing research, that is not the focus of
 this proposal focuses on the problem of presenting unkilled mutations to
@@ -141,23 +141,23 @@ testing to real-world projects~\cite{MutGoogle}.  Their approach
 uses a notion of feedback, but this is  essentially manual, and based on
 using a classification scheme to heuristically throw out ``arid''
 (likely not to be actionable)
-mutants; due to the size of Google's code base and the integration of
-their approach in Google's code review process, there is also as noted
-above, a
-decision to only allow one mutation (initially randomly decided) per
-line of code.  
+mutants. As noted above, the system only permits one mutation per line of code
+(due to the size of the code base and the nature of the code review process). 
 Our approach in contrast targets the individual(s) developing, testing, or verifying a particular software
 element (either a small project, or a component of a project), and
 assumes an iterative process, where developers consider one unkilled
-mutant at a time.  The Google approach does not attempt to prioritize
-unkilled mutants it surfaces, or support custom mutation
+mutant at a time.  The Google approach does not prioritize
+unkilled mutants, support custom mutation
 operators, or learn an individual testing effort's characteristics; it only even
 proposes mutants of code in a diff with a previous version of the
-code.  Further, it uses
-Google-wide coding conventions and developer suggestions to fix
-heuristics such as ``avoid mutation of logging statements'' rather
-than trying to learn such heuristics for
-projects that may vary widely in language and coding style.  The Google report
+code.  
+%Further, it uses
+%Google-wide coding conventions and developer suggestions to fix
+%heuristics such as ``avoid mutation of logging statements'' rather
+%than trying to learn such heuristics for
+%projects that may vary widely in language and coding style.  
+% CLG sez: true I assume but maybe not so important to justify the space?
+The Google report
 itself allows that their approach does not truly scale, since it
 requires extensive manual support for each heuristic and language, a
 problem this proposal directly addresses.
@@ -165,15 +165,18 @@ problem this proposal directly addresses.
 More broadly, a paper by the
 authors of the Google report and a group of academic mutation testing
 researchers~\cite{ivankovic2018industrial}, uses the Google effort to
-propose a notion of productive and unproductive mutants.  Their
+propose a notion of \emph{productive} versus \emph{unproductive} mutants.  Their
 concepts are highly related to this proposal's goals, but again centered on a
 diff-focused, large-scale industrial setting, rather than an approach
 that, like TDD, may also be applied to smaller coding efforts in a more
 isolated setting, such as development of embedded software, where
-crowdsourcing is impractical or irrelevant.  Another key difference is that, while their
-work used EvoSuite to enhance a test suite to kill additional mutants,
-the assumption was that most suite enhancement would be due to
-developers adding manual tests.  Furthermore, we argue mutants
+crowdsourcing is impractical or irrelevant.  
+%Another key difference is that, while their
+%work used EvoSuite to enhance a test suite to kill additional mutants,
+%the assumption was that most suite enhancement would be due to
+%developers adding manual tests.  
+% CLG: as above
+Furthermore, we argue mutants
 are neither ``productive'' or ``unproductive'' in an absolute sense, but
 rather their value of a mutant depends on previous mutants a
 developer has seen, and other context.
