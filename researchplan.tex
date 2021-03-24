@@ -73,10 +73,14 @@ generator~\cite{regexpMut,universalmutator}.
 The {\tt universalmutator}
 does not attempt to parse source code, but simply defines mutation
 operators by a set of regular-expression-defined text transformations.  These
-are organized into a hierarchy, so that if a program is, e.g., written in Swift,
-the ``universal'' mutation operators that apply to all programming languages are
-first applied, then operators for ``C-like'' languages, and finally a set of
-Swift-specific rules are applied.  %Figure \ref{fig:rules} shows some of the
+are organized into a hierarchy, so that for, e.g., a Swift program,
+first ``universal'' operators are applied, then ``C-like'' operators,
+and finally Swift-specific rules.
+
+%that if a program is, e.g., written in Swift,
+%the ``universal'' mutation operators that apply to all programming languages are
+%first applied, then operators for ``C-like'' languages, and finally a set of
+%Swift-specific rules are applied.  %Figure \ref{fig:rules} shows some of the
 %``universal'' rules applied to all languages.
 
 Importantly,  PI Groce demonstrated that the {\tt universalmutator} tool generated
@@ -136,10 +140,11 @@ refactors in more than 10 languages (including those targeted by {\tt
   universalmutator}). The associated tool, {\tt comby}~\cite{comby-github},
 enables a new language-general way of expressing transformations that regular
 expressions cannot typically recognize (e.g., nested code blocks). We showed
-that {\tt comby} has equivalent expressive power for a variety of nontrivial syntactic
-transformations in existing language-specific refactoring tools. {\tt Comby} is
-highly performant at scale (owing to the parser-driven approach), processing
-upwards of a quarter billion lines of code in 42 minutes (parallelized over 20 cores).
+that {\tt comby} has equivalent expressive power for a variety of nontrivial 
+transformations in existing language-specific refactoring tools. {\tt
+  Comby}'s parser driven approach is
+highly performant at scale, processing
+upwards of a quarter billion lines of code in 42 minutes, using 20 cores.
 
 %Current mutation testing approaches largely rely on either
 %sophisticated language-specific tools that fail to generalize to other
@@ -157,8 +162,7 @@ an instance of the general field of automated program
 transformation~\cite{Ptransform}.
 
 \paragraph{Source mutation as compiler fuzzing method.}  We have jointly used ideas from universalmutator and comby to develop
-a novel approach to compiler fuzzing, supported by a tool~\cite{aflcompfuzz} (with
-industrial users and 47 stars on GitHub), which has resulted in
+a novel approach to compiler fuzzing, supported by a new tool~\cite{aflcompfuzz}, which has resulted in
 discovery of more than 100 bugs in production compilers, more than 90
 of which have been confirmed and fixed, and a
 substantial bug bounty from the Ethereum foundation~\cite{tobsolcfuzz1,tobsolcfuzz2}.  Work from this
@@ -267,7 +271,7 @@ One ongoing limitation of mutation testing is that tools are often research
 projects, and eventually become unusable due to lack of support, even in
 mainstream languages such as Java and C~\cite{MutChoice}.
 This is because mutation tools that fully parse a language and guarantee generation of
-valid programs in the source language are complex, hard-to-maintain-and-extend
+valid programs complex, hard-to-maintain-and-extend
 systems; language complexity makes such a tool for C++, for example, 
 extremely daunting. From this development and maintenance perspective, {\tt
   comby} provides a considerable benefit in its easy adaptability to new languages. 
@@ -289,8 +293,7 @@ DSL for structural syntax changes.
 We propose to extend our template language and processing framework to interface
 with the Language Server Protocol~\cite{lsp-web}, which
 provides a queryable interface for such static program properties.
-This new capability, firmly outside the realm of regular
-expression approaches, will go beyond syntax and yield greater, semantic-driven precision.
+This new capability will go beyond syntax (and ``regexps'') and yield greater, semantic-driven precision.
 
 %the Cobra code-checking tool's language~\cite{Cobra} is an
 %example of the kind of approach desired, though the language itself
@@ -622,10 +625,8 @@ taking an existing unit test and generalizing some parameters and assertions to
 kill the relevant mutants, letting, e.g., afl~\cite{aflfuzz},
 libFuzzer~\cite{libfuzzer}, or a symbolic execution
 tool~\cite{angr1,angr2,manticore} identify specific inputs.  The focus of the
-MDD process would be on producing test harnesses~\cite{WODACommon,tstlsttt} that
-can kill \emph{all} interesting mutants.  This aspect of the proposal
-is better understood in terms of a scenario than as an explicit
-research program:
+MDD process would be on producing and enhancing test harnesses~\cite{WODACommon,tstlsttt} that
+can kill \emph{all} interesting mutants, in a semi-automated fashion.
 
 \input{scenario}
 

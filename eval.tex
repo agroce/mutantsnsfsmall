@@ -27,10 +27,8 @@ Another automated way to evaluate a novelty ranking is to use automated
 testing to generate multiple tests to kill each mutant in ranked order.  A good ranking will mean
 that each additional mutant is unlikely to be killed by the killing
 tests for any previous mutants.  A similar, but more robust, measure of mutant similarity
-is how much adding a test that kills one mutant as the seed in a
-fuzzer~\cite{aflfuzz,libfuzzer} improves time required to kill a
-(supposedly) similar
-mutant, on average.
+is how much adding a test that kills mutant A as a seed in a
+fuzzer~\cite{aflfuzz,libfuzzer} makes it easier to kill mutant B.
 
 Evaluation of the mutant generator can also be partly automated, by
 comparing the output set of mutants to that of other tools, to ensure
@@ -68,9 +66,7 @@ prior expertise in mutation testing itself in this setting.
 In addition to traditional testing tasks, we will also conduct studies
 on the enhancement of random testing harnesses, with one set of
 experiments focusing on enhancing specifications/properties, and
-another set focusing on enhancing the set of generated tests
-(controlling for specification by using a reference implementation for
-differential testing).
+another set focusing on enhancing the set of generated tests.
 
 We may make use of ``dummy'' or ``Wizard of Oz'' versions of elements of the
 framework to isolate the effects of specific features, like the FPF-based
@@ -92,9 +88,7 @@ qualitative analysis generally~\cite{testingUnderReview}, and will lead the
 design and execution of these lab studies at CMU.  Note that, to our
 knowledge, these experiments will also provide the first well-founded
 human studies of the baseline value of mutants in improving test
-suites in a traditional development setting\footnote{The only previous
-  study of which we are aware was both limited in scope and only applied in a Test-Driven
-  Development context~\cite{tddmut}.}, not
+suites in a traditional development setting, not
 just of our proposed methods; in itself this is a major research contribution.
 % Stefan Endrikat, Stefan Hanenberg, Romain Robbes, and Andreas Stefik. How do
 % api documentation and static typing affect api usability? In International

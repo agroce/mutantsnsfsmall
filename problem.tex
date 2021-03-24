@@ -50,10 +50,9 @@ proposed a number of algorithms
 for finding bugs in testing and verification
 harnesses.  At a high level, however,
 the core concept was simple:  users should examine all unkilled
-mutants, and for each mutant either understand why it is
-equivalent or uninteresting, or actually construct a way to kill it.  This harkens back to the
+mutants, and for each, either  understand why it is not a test weakness or actually construct a way to kill it.  This harkens back to the
 earliest ideas about mutation testing, but with
-much more automated support, for both understanding and actually killing
+automated support for both understanding and killing
 mutants. 
 
 Unfortunately, the
@@ -61,14 +60,13 @@ methods proposed were limited in applicability, due to an
 assumption that the number of unkilled mutants was small and manageable.
 In practice, human
 attention does not scale to analyzing large numbers of
-unkilled mutants without considerable assistance in ``triaging'' them.  The process bears a
+unkilled mutants without considerable assistance in ``triaging'' them.  That process bears a
 resemblance to the problem of manual confirmation of results from a
 machine-learning classifier~\cite{OnlyOracle,EndUserMistake}, where even highly-motivated scientific
 users are unwilling to examine more than a few tens of
 potentially incorrect results~\cite{Segal}.
-This prior approach suffers the same problems as other
-mutation testing efforts: it provides no way to
-scale human efforts to such a needle-in-a-haystack setting.
+A realistic approach must 
+leverage human effort in such a needle-in-a-haystack setting.
 
 This project aims to make the falsification-driven approach to verification and testing feasible for larger
 projects, and those with (much) lower mutation scores.
