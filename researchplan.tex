@@ -159,7 +159,8 @@ transformation~\cite{Ptransform}.
 \paragraph{Source mutation as compiler fuzzing method.}  We have jointly used ideas from universalmutator and comby to develop
 a novel approach to compiler fuzzing, supported by a tool~\cite{aflcompfuzz} (with
 industrial users and 47 stars on GitHub), which has resulted in
-discovery of more than 80 bugs in production compilers, and a
+discovery of more than 100 bugs in production compilers, more than 90
+of which have been confirmed and fixed, and a
 substantial bug bounty from the Ethereum foundation~\cite{tobsolcfuzz1,tobsolcfuzz2}.  Work from this
 project will benefit that effort, and we expect work from that effort
 to benefit polyglot mutation.
@@ -416,7 +417,7 @@ confirming known rankings of such tools based either on user
 impressions or more limited experiments.  However, it was essential in a way
 that is highly relevant to this proposal, namely in how to use our
 results, and the set of mutants in the ``diff'' of three Solidity
-smart contract analysis tools, to improve the best of those tools.
+smart contract~\cite{buterin2013whitepaper,wood2014yellow} analysis tools, to improve the best of those tools.
 %Improving the best of the tools was a wise use of our efforts, in that
 %we found that differences between tools were mostly rooted in
 %differences in the quality of the underlying analysis engine, not in
@@ -428,41 +429,26 @@ identified three new
 detector patterns for the Slither~\cite{slitherpaper} tool, based on mutants killed by
 Securify~\cite{securify}, SmartCheck~\cite{sc:smartcheck}, or both, but not by Slither:  Boolean constant
 misuse, type-based tautologies, and loss of precision due to ordering
-of arithmetic operations.  
+of arithmetic operations.
 
 % CLG sez: this reads a bit long and perhaps slightly too much detail for this
 % context.  Also, possibly references examples we don't have in this docuemnt
 % (but you do have in your submission!)
 All three of these new detectors were submitted as PRs to the Slither
-project, vetted over an internal benchmark set of contracts used by
-the Slither developers to evaluate new detectors, and accepted for
-release in the public version of Slither.  All three detectors produce
-some true positives (actual problems, though not always exploitable)
-in benchmark contracts, have acceptably low false positive rates, and
-were deemed valuable enough to include as non-informational (medium
-severity) detectors.  The first mutants in prioritized rank exhibiting
-the issues, shown above, were the 2nd, 9th, and 12th
+project, vetted,  and accepted for
+release in the public version of Slither.  All three detectors were
+added as medium
+severity detectors, and have detected flaws in real contracts.  The first mutants in prioritized rank exhibiting
+these issues were the 2nd, 9th, and 12th
 non-statement-deletion mutants ranked for SmartCheck, out of over 800
 such mutants.  Using our prioritization, it was possible to identify
 these issues by examining fewer than 20 unkilled mutants.  Without
 prioritization, on average a developer would have to look at more than
 200, 80, and 400 mutants, respectively, to find instances of these
 problems.  Examining the first 100 mutants in the unprioritized lists for
-SmartCheck and Securify, ordered by contract ID and mutant number (roughly
-source line mutated) we were unable to identify \emph{any} obviously interesting
+SmartCheck and Securify, ordered by contract ID and mutant number we were unable to identify \emph{any} obviously interesting
 mutants, suggesting that it is indeed hard to use mutation analysis results
-without prioritization. A large majority of the mutants we inspected involved
-either the missing 
-{\tt return} problem noted in the introduction, or replacing {\tt
-  msg.sender} with {\tt tx.origin}; Slither has a detector for misuses
-of {\tt tx.origin}.  SmartCheck and Securify tend to identify most
-(though not all) uses of {\tt tx.origin} as incorrect, while Slither
-has a more selective rule, intended to reduce false positives.
-Putting it another way, the comparison of these three tools over 100 random contracts
-from the Ethereum blockchain~\cite{buterin2013whitepaper,wood2014yellow} required analysis of 46,769 mutants, with
-46,752 of these not killed by at least one static analysis tool;
-without prioritization, understanding this data in detail would have
-been essentially impossible.  Our results are available at
+without prioritization.  Our preliminary results are available at
 \url{https://github.com/agroce/slithermutate}.
 
 
@@ -682,13 +668,15 @@ search-and-replace approach?
   (predicted) FPF?
 \item Can we predict the \emph{cause} of mutant
   unkillability (e.g., oracle, coverage, equivalence, or nondeterminism)?
-\item How can  we most effectively use already generated killing tests
-  and counterexamples to prune mutants?
+%\item How can  we most effectively use already generated killing tests
+%  and counterexamples to prune mutants?
 \item Is distance-based clustering plus timing information useful for quickly
   eliminating killable mutants similar to already-killed mutants?  How
   does this relate to Predictive Mutation Testing (PMT)?
   \item How can we integrate all of these aspects into a complete
-    automated testing approach, and assist users in killing surfaced mutants?
+    automated testing approach, and assist users in killing surfaced
+    mutants, by guiding/enhancing automated test harnesses, or
+    targeting fuzzer runs?
 
 \end{enumerate}
 %\end{framed}
