@@ -34,10 +34,10 @@ aggressive and efficient, scalable, approaches.
 %to be the most problematic aspect of practical mutation testing.
 Numerous approaches seek to reduce the cost~\cite{jia2011analysis} of mutation
 analysis. Offutt and Untch~\cite{offutt2001mutation} categorize these,
-as: do \textit{fewer} (e.g., operator selection, mutant sampling or clustering),
-do \textit{smarter} (i.e., intelligent organization to reduce time taken for the
-entire analysis), and do \textit{faster} (i.e., in terms of single mutant
-evaluation time) approaches. 
+as: do \textit{fewer} (e.g., operator selection),
+do \textit{smarter} (e.g., weak mutation), and do \textit{faster}
+(i.e., quicker single mutant
+evaluation) approaches. 
 %Operator selection, mutant sampling, and mutant clustering fall under
 %\textit{do fewer} --- approaches that seek to reduce the number of mutants
 %evaluated.  
@@ -126,13 +126,11 @@ and test generation
 efforts~\cite{groce2015verified,groce2018verified,mutKernel}.
 
 Recent work by Papadakis et al. has
-aimed, unusually, at predicting the ``quality'' of~\cite{MutQuality}
-or even prioritizing~\cite{FaRM} mutants, to rank fault-revealing
-mutants highly so that users can produce tests to find faults, focusing on a single static
-pass to rank mutants by their fault-revealing potential, informed by
-(possibly cross-project)
-data on fault-revealing tests.  There is no feedback loop, or ability
-to indicate the \emph{importance} of various faults, and only LLVM
+aimed at predicting the ``quality'' of~\cite{MutQuality},
+or prioritizing~\cite{FaRM}, mutants, focusing on a single static
+pass, informed by
+(cross-project) test data.  There is no feedback loop, or ability
+to indicate the \emph{importance} of faults, and only LLVM
 bitcode mutants are targeted.  %The methods and results of this work
 %will inform this proposal's utility estimation approach.
 
@@ -161,26 +159,22 @@ The Google report
 notes their approach does not truly scale, since it
 requires manual work for each heuristic and language, a
 problem this proposal aims to solve.
-
-More broadly, a paper by the
-authors of the Google report and a group of academic mutation testing
-researchers~\cite{ivankovic2018industrial}, uses the Google effort to
-propose a notion of \emph{productive} versus \emph{unproductive} mutants.  Their
-concepts are highly related to this proposal's goals, but again centered on a
+Another paper by the
+authors of the Google report~\cite{ivankovic2018industrial}, uses the Google effort to
+propose a notion of \emph{productive} versus \emph{unproductive} mutants.  These
+concepts are highly related to this proposal's goals, but too centered on a
 diff-focused, large-scale industrial setting, rather than an approach
-that, like TDD, may also be applied to smaller coding efforts in a more
-isolated setting, such as development of embedded software, where
-crowdsourcing is impractical or irrelevant.  
+that, like TDD, can be applied to smaller-scale critical coding efforts, such as development of embedded software, where
+crowdsourcing is often irrelevant.  
 %Another key difference is that, while their
 %work used EvoSuite to enhance a test suite to kill additional mutants,
 %the assumption was that most suite enhancement would be due to
 %developers adding manual tests.  
 % CLG: as above
-Furthermore, we argue mutants
+We argue that mutants
 are neither ``productive'' or ``unproductive'' in an absolute sense, but
-rather their value of a mutant depends on previous mutants a
-developer has seen, and other context.
-
+rather their value depends greatly on context, including other mutants a
+developer has seen.
 
 
 %\paragraph{Bug Triage and Distance Metrics in Software Engineering.}
