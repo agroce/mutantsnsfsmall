@@ -1,0 +1,106 @@
+Part 1: A non-technical description of the project, which explains the project's
+significance and importance. This description also serves as a public
+justification for NSF funding by articulating how the project serves the
+national interest, as stated by NSF's mission: to promote the progress of
+science; to advance the national health, prosperity and welfare; or to secure
+the national defense. This part of the abstract should describe the fundamental
+issues the project seeks to address, as well as other potential benefits, such
+as how the project advances the field, supports education and diversity, or
+benefits society. This part should be understandable by a broad, non-technical
+audience. 
+
+Part 2: A technical description of the project that states its goals and scope,
+the methods and approaches to be used, and its potential contribution. In many
+cases, the technical project description may be a modified version of the
+project summary that is submitted with the proposal. However, the technical
+description should reflect any changes in the project's goals made after the
+review process. 
+
+2. Tips for Writing Abstracts
+
+* Make each of the two parts a single, separate paragraph.
+* The first paragraph should be understandable by someone with little to no
+  scientific background. Do not expect the readers to be college graduates or to 
+  have taken high- school level courses in mathematics or science, for example. 
+
+* The first paragraph should describe the problem that the project will address,
+  why this problem is important, and potential social benefits and real-world
+  applications that will derive from the work. 
+
+* The second paragraph should be understandable by a computer scientist who is
+  not working in the same area. Strive to keep it free from area-specific
+  technical jargon. 
+
+* Make sure that the second paragraph contains an outline of the research
+activities to be undertaken in the award. 
+
+* Do not use the terms “PI” or “co-PI”. Use “investigator”, “team of
+researchers”, or similar. 
+
+* Avoid all first-person pronouns (i.e., no “we”, “I”, “our”, “my”), because the
+  first-person references could be mistaken by a reader to refer to NSF itself. 
+
+* Do not use the term “proposal”, because this is an award. Use either “award”
+  or “project”.
+
+* Do not use the terms “Broader impacts” or “Intellectual Merit” in the
+  abstract, because they are NSF specific terms. Talk about the activities
+  instead. 
+
+* Strive to avoid abbreviations. If you must use abbreviations, limit yourself
+  to three and expand each upon first use. 
+
+* Do not use any non-ascii characters in your text. 
+ 
+********************************************************************************
+
+
+
+Testing, validation, and verification are all central activities in programming
+and software engineering. Unfortunately, existing techniques for testing remain
+inadequate for finding and eliminating key vulnerabilities before software
+deployment --- even the most critical modern software is rife with security
+vulnerabilities and defects that ultimately cost the economy billions of
+dollars annually in lost productivity and compromised data. A technique known as
+"mutation testing" has been researched since the 1970's; it aims to help
+software engineers improve their tests and their software at the same time, by
+automatically adding bugs to a program and checking whether the test suite can
+detect them. Although in theory this technique is extremely effective for
+improving software quality, in practice there are several fundamental factors
+that prevent it from being widely used in practice: it is difficult and time
+consuming to use, and the tools that exist for it cannot all handle the
+diversity of program languages that are deployed in modern software system. This
+project will tackle these challenges and allow this important technique to be
+used to improve quality of real-world software by developing efficient tools
+that can apply mutation testing to programs written in any language; prioritize
+the output of the tools to reduce the amount of time and effort needed to make
+maximal use of them; and incorporate user feedback into the technique to
+maximize testing efficiency. The project will be evaluated on real-world open
+source software like the Linux kernel, and build on the researchers' previous
+collaborations with entities like NASA, to substantially improve program and
+test effort quality on critical real-world software.
+
+The core problem this project aims to address is making 
+program mutants practical in nonresearch settings, in a way that meets
+developers' or test engineers' needs; that is, making it possible for someone
+creating or enhancing a test suite, or developing code and test suite in tandem,
+to (1) use "just enough" mutation testing for their needs, maximizing benefit
+gained in exchange for work performed, and (2) to work in any programming
+language without worrying about the quality of tool support provided for
+mutation testing, and without sacrificing the ease of understanding of
+source-based mutants, while easily adding custom mutation operators that target
+their specific software development task. This project aims to adapt the
+Furthest-Point-First metric previously used in fuzzer bug triaging to the
+problem of maximizing the novelty of mutants examined by a user, in order to
+make it possible to quickly discover unkilled mutants that expose serious
+defects in a testing or verification effort. However, novelty alone is not
+sufficient: feedback-driven mutation testing must also help users avoid
+(uninteresting) equivalent mutants, kill mutants high in the dominance
+hierarchy, and (most importantly) incorporate user feedback.  If a user marks a
+mutant as uninteresting, or equivalent, or (especially) high impact, then that
+information must be used to inform the ranking of future mutants as well. In
+order to make such an approach maximally valuable, this project also proposes to
+improve the state-of-the-art in source level multilingual mutant generation,
+allowing users to easily generate mutants for new programming languages, or even
+for custom DSLs that are part of a specific project. 
+
